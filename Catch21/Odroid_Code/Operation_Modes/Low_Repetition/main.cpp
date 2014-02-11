@@ -1,4 +1,4 @@
-#include <QtCore/QCoreApplication>
+//#include <QtCore/QCoreApplication>
 #include <opencv2/highgui/highgui.hpp>  //Gives acces to opencv libraries
 #include <iostream>
 #include <stdio.h>
@@ -8,7 +8,7 @@ using namespace cv;
 using namespace std;
 
 
-int main(int argc, char *argv[])
+int main()
 {
 
 
@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
         Mat inFrame;//Storing format
 
         captureFromCam >> inFrame;
-        outToFile.open("test.avi", CV_FOURCC('D', 'I', 'V', 'X'), 30,inFrame.size(), true); //Opens/creates a file, video format, fps et.
+        outToFile.open("test.avi", CV_FOURCC('D', 'I', 'V', 'X'), 12,inFrame.size(), true); //Opens/creates a file, video format, fps et.
         //Issues: CV_FOURCC not working properly...
 
         //Writing to file
@@ -88,6 +88,6 @@ int main(int argc, char *argv[])
 
     return 0;
 
-    QCoreApplication a(argc, argv);
-    return a.exec();
+    // QCoreApplication a(argc, argv);
+    // return a.exec();
 }
