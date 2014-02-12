@@ -6,18 +6,40 @@ Color_Recognition::Color_Recognition()
 	initialize();
 }
 
+int Color_Recognition::getUserPosition()
+{
+	int direction;
+	runDetection();
+
+	if(posX < 150)
+	{
+		direction = 1;
+	}
+
+	else if (posX > 490)
+	{
+		direction = -1;
+	}
+
+	else
+	{
+		direction = 0;
+	} 
+
+	return direction;
+}
+
+void Color_Recognition::stopDetection()
+{
+	// We're done using the camera. Other applications can now use it
+    	cvReleaseCapture(&capture);
+}
+
 void Color_Recognition::runDetection()
 {
 	// Will hold a frame captured from the camera
         IplImage* frame = 0;
         frame = cvQueryFrame(capture);
-	
-	IplImage* imgScribble = NULL;
-	// If this is the first frame, we need to initialize it
-        if(imgScribble == NULL)
-        {
-           	imgScribble = cvCreateImage(cvGetSize(frame), 8, 3);
-        }
 
 	// Holds the thresholded image (detected color = white, rest = black)
        	IplImage* imgThresh = getThresholdedImage(frame);
@@ -33,11 +55,8 @@ void Color_Recognition::runDetection()
 
 
 	// Holding the last and current ball positions
-        static int posX = 0;
-        static int posY = 0;
-
-        int lastX = posX;
-        int lastY = posY;
+        posX = 0;
+        posY = 0;
 
         posX = moment10/area;
         posY = moment01/area;
@@ -45,29 +64,12 @@ void Color_Recognition::runDetection()
  	// Print it out for debugging purposes
         printf("position (%d,%d)\n", posX, posY);
 
-        // We want to draw a line only if its a valid position
-       	if(lastX>0 && lastY>0 && posX>0 && posY>0)
-       	{
-       		// Draw a red line from the previous point to the current point
-          	cvLine(imgScribble, cvPoint(posX, posY), cvPoint(lastX, lastY), cvScalar(0,0,255), 5);
-       	}
-
-	// Add the scribbling image and the frame...
-       	cvAdd(frame, imgScribble, frame);
        	cvShowImage("thresh", imgThresh);
        	cvShowImage("video", frame);
 
 	// Release the thresholded image+moments... we need no memory leaks.. please
         cvReleaseImage(&imgThresh);
-	cvReleaseImage(&imgScribble);
         delete moments;
-	delete imgScribble;
-}
-
-void Color_Recognition::stopDetection()
-{
-	// We're done using the camera. Other applications can now use it
-    	cvReleaseCapture(&capture);
 }
 
 //PRIVATE FUNCTIONS
@@ -98,4 +100,5 @@ void Color_Recognition::initialize()
 	// One window for video, one window for debugging purposes. 
     	cvNamedWindow("video");
     	cvNamedWindow("thresh");
+	cvResizeWindow("video", 640, 480);
 }
