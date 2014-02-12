@@ -78,7 +78,7 @@ IplImage* Color_Recognition::getThresholdedImage(IplImage* img)
    	cvCvtColor(img, imgHSV, CV_BGR2HSV);
 
    	IplImage* imgThreshed = cvCreateImage(cvGetSize(img), 8, 1);
-	cvInRangeS(imgHSV, cvScalar(10, 160, 40), cvScalar(15, 255, 120), imgThreshed);
+	cvInRangeS(imgHSV, cvScalar(10, 130, 40), cvScalar(20, 230, 200), imgThreshed);
 
 	cvReleaseImage(&imgHSV);
     	return imgThreshed;
