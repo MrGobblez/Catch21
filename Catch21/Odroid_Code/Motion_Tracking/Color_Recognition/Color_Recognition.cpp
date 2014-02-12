@@ -12,12 +12,12 @@ int Color_Recognition::getUserDirection()
 
 	if(posX < 150)
 	{
-		this->direction = 1;
+		this->direction = -1;
 	}
 
 	else if (posX > 490)
 	{
-		this->direction = -1;
+		this->direction = 1;
 	}
 
 	else
@@ -142,7 +142,7 @@ IplImage* Color_Recognition::getThresholdedImage(IplImage* img)
    	cvCvtColor(img, imgHSV, CV_BGR2HSV);
 
    	IplImage* imgThreshed = cvCreateImage(cvGetSize(img), 8, 1);
-	cvInRangeS(imgHSV, cvScalar(10, 130, 40), cvScalar(20, 230, 200), imgThreshed);
+	cvInRangeS(imgHSV, cvScalar(1, 130, 30), cvScalar(15, 255, 250), imgThreshed);
 
 	cvReleaseImage(&imgHSV);
     	return imgThreshed;

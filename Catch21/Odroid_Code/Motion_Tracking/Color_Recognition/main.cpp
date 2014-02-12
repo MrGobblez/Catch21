@@ -12,24 +12,8 @@ int main()
 	{
 		direction = test.getUserDirection();
 		speed = test.getUserSpeed();
+		serial.sendData(direction, speed);
 
-		if(direction == 1)
-		{
-			serial.sendData(direction, speed);
-			printf("Move camera left with speed %d \n", speed);
-		}
-
-		else if(direction == -1)
-		{
-			serial.sendData(direction, speed);
-			printf("Move camera right with speed %d \n", speed);
-		}
-
-		else
-		{
-			serial.sendData(direction, speed);
-			printf("Stand still. \n");
-		}
 		// Wait for a keypress
         	c = cvWaitKey(10);
 		if(c!=-1)
