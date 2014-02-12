@@ -6,27 +6,89 @@ Color_Recognition::Color_Recognition()
 	initialize();
 }
 
-int Color_Recognition::getUserPosition()
+int Color_Recognition::getUserDirection()
 {
-	int direction;
 	runDetection();
 
 	if(posX < 150)
 	{
-		direction = 1;
+		this->direction = 1;
 	}
 
 	else if (posX > 490)
 	{
-		direction = -1;
+		this->direction = -1;
 	}
 
 	else
 	{
-		direction = 0;
+		this->direction = 0;
 	} 
 
-	return direction;
+	return this->direction;
+}
+
+int Color_Recognition::getUserSpeed()
+{
+	//GOING LEFT OF PICTURE
+	if(posX < 160 && posX > 140)
+	{
+		this->speed = 100;
+	}
+
+	else if (posX < 140 && posX > 120)
+	{
+		this->speed = 140;
+	}
+
+	else if (posX < 120 && posX > 80)
+	{
+		this->speed = 180;
+	}
+
+	else if (posX < 80 && posX > 40)
+	{
+		this->speed = 250;
+	}
+
+	else if (posX < 40)
+	{
+		this->speed = 300;
+	}
+
+	//GOING RIGHT OF PICTURE
+	else if (posX > 480 && posX < 500)
+	{
+		this->speed = 0;
+	}
+
+	else if (posX > 500 && posX < 520)
+	{
+		this->speed = 140;
+	}
+
+	else if (posX > 520 && posX < 560)
+	{
+		this->speed = 180;
+	}
+
+	else if (posX > 560 && posX < 600)
+	{
+		this->speed = 250;
+	}
+
+	else if (posX > 600)
+	{
+		this->speed = 300;
+	}
+
+	//IN THE MIDDLE OF THE PICTURE
+	else
+	{
+		this->speed = 0;
+	}
+
+	return this->speed;
 }
 
 void Color_Recognition::stopDetection()
@@ -62,7 +124,7 @@ void Color_Recognition::runDetection()
         posY = moment01/area;
 
  	// Print it out for debugging purposes
-        printf("position (%d,%d)\n", posX, posY);
+        // printf("position (%d,%d)\n", posX, posY);
 
        	cvShowImage("thresh", imgThresh);
        	cvShowImage("video", frame);
