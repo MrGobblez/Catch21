@@ -11,10 +11,8 @@ Write_To_Memory_Ver2::~Write_To_Memory_Ver2()
 
 }
 
-void Write_To_Memory_Ver2::write(bool show)
+void Write_To_Memory_Ver2::write(bool showCapturing)
 {
-    bool showCapturing = show;
-
     cv::VideoCapture captureFromCam(0); //Captures the camera
     cv::VideoWriter outToFile; //Outputs
     cv::Mat inFrame;//Storing format
@@ -23,6 +21,11 @@ void Write_To_Memory_Ver2::write(bool show)
     outToFile.open("test.avi", CV_FOURCC('D', 'I', 'V', 'X'), 30,inFrame.size(), true); //Opens/creates a file, video format, fps et.
     //!!!Issues: CV_FOURCC not working properly!!!
 
+    if(showCapturing)
+    {
+	cv::namedWindow("Recording", CV_WINDOW_AUTOSIZE);
+	cvMoveWindow("Recording", 0,0);
+    } 
     //Writing to file
     while (1)
     {
@@ -31,8 +34,6 @@ void Write_To_Memory_Ver2::write(bool show)
 
         if(showCapturing)
         {
-            cv::namedWindow("Recording", CV_WINDOW_AUTOSIZE);
-            cvMoveWindow("Recording", 0,0);
             cv::imshow("Recording", inFrame);
         }//end if
 

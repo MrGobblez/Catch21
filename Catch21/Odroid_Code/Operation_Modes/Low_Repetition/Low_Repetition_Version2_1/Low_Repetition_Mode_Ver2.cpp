@@ -20,7 +20,8 @@
         //Read_From_Memory memoRead;
        // cv::namedWindow("Recording", CV_WINDOW_AUTOSIZE);
 
-
+	window = true;
+	speed = true;
 
         // mouselock function in open cv
         // make empty window
