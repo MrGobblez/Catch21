@@ -20,3 +20,9 @@
 *.exe
 *.out
 *.app
+
+# Qt Creator Files
+*.pro
+*.pro.*
+main.cpp
+Catch21-build*

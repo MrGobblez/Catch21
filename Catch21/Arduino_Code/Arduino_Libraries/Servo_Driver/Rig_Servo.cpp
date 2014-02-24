@@ -22,12 +22,12 @@ void Rig_Servo::setTiltDefaultAngle(int angle)
     this->tiltDefault = angle;
 }
 
-void Rig_Servo::tiltServo(int angle)
+void Rig_Servo::tiltServoPosition(int angle)
 {
     tiltServo.write(angle);
 }
 
-void Rig_Servo::tiltServoToDefault()
+void Rig_Servo::tiltServoToDefaultPosition()
 {
     tiltServo.write(this->tiltDefault);
 }
@@ -49,12 +49,12 @@ void Rig_Servo::setPanDefaultAngle(int angle)
     this->panDefault = angle;
 }
 
-void Rig_Servo::panServo(int angle)
+void Rig_Servo::panServoPosition(int angle)
 {
     panServo.write(angle);
 }
 
-void Rig_Servo::panServoToDefault()
+void Rig_Servo::panServoToDefaultPosition()
 {
     panServo.write(this->panDefault);
 }

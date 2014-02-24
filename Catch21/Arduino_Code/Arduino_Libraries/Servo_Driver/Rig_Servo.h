@@ -14,15 +14,15 @@ public:
     void setTiltPin(int pin);
     void setMaxMinTilt(int maxTilt, int minTilt);
     void setTiltDefaultAngle(int angle);
-    void tiltServo(int angle);
-    void tiltServoToDefault();
+    void tiltServoPosition(int angle);
+    void tiltServoToDefaultPosition();
 
     //PAN FUNCTIONS
     void setPanPin(int pin);
     void setMaxMinPan(int maxPan, int minPan);
     void setPanDefaultAngle(int angle);
-    void panServo(int angle);
-    void panServoToDefault();
+    void panServoPosition(int angle);
+    void panServoToDefaultPosition();
 
 private:
 
