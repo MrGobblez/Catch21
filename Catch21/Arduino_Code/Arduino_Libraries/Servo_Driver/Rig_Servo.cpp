@@ -60,7 +60,7 @@ void Rig_Servo::panServoToDefaultPosition()
 }
 
 //OTHER FUNCTIONS
-Rig_Servo::initialize()
+void Rig_Servo::initialize()
 {
     tiltPin = 5;
     panPin = 11;
