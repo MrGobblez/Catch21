@@ -19,11 +19,15 @@ byte YLS = 0;     // Y-axis, Left stick
 
 void setup()
 {
+  // Setting up seial connection for debug purposes.
+  Serial.begin(9600);
+
+  Serial.println("starting setup");
   rigServo.setTiltPin(10);
   rigServo.setPanPin(9);
   
   // Playstation controller setup.
-  error = ps2Controller.config_gamepad(2,4,3,5, false, false);   	//setup pins and settings:  GamePad(clock, command, attention, data, Pressures?, Rumble?) check for error
+  error = ps2Controller.config_gamepad(2,4,3,5, true, true);   	//setup pins and settings:  GamePad(clock, command, attention, data, Pressures?, Rumble?) check for error
   
   if(error == 0){
      Serial.println("Found Controller, configured successful");
@@ -49,8 +53,6 @@ void setup()
    }
   // Playstation Controller setup completed.
    
-  // Setting up seial connection for debug purposes.
-  Serial.begin(9600);
 }
 
 void loop()
@@ -63,26 +65,33 @@ void loop()
   else
   {
     // Read stick values
+    ps2Controller.read_gamepad(false, 0);
     XLS = ps2Controller.Analog(PSS_LX);
     YLS = ps2Controller.Analog(PSS_LY);
-    
+    Serial.print("XLS: ");
+    Serial.println(XLS);
+    Serial.print("YLS");
+    Serial.println(YLS);
     //Check for controller input, if stick is in relaxed/middle position (+/- 5% to remove noise), run:
-    if (XLS > 116 && YLS > 116 || XLS < 140 && YLS < 140)
+    if (XLS > 116 && XLS < 140)
+    {
+      rigServo.panServoToDefaultPosition();
+    }
+    if (YLS > 116 && YLS < 140)
     {
       rigServo.tiltServoToDefaultPosition();
-      rigServo.panServoToDefaultPosition();
     }
     
     //If the stick is not in relaxed/middle position, run:
     else
     {
-      stickTiltValue = map(stickTiltValue, 0, 255, 70, 120);
-      stickPanValue = map(stickPanValue, 0, 255, 50, 142);
+      stickTiltValue = map(YLS, 0, 255, 70, 120);
+      stickPanValue = map(XLS, 0, 255, 50, 142);
       
       rigServo.tiltServoPosition(stickTiltValue);
       rigServo.panServoPosition(stickPanValue);
     }  
-    //delay(15);
+    delay(50);
   }
   
 }

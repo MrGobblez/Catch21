@@ -8,7 +8,7 @@ class Rig_Servo
 {
 public:
     Rig_Servo();
-    ~Rig_Servo();
+    
 
     //TILT FUNCTIONS
     void setTiltPin(int pin);
