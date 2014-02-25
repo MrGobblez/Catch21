@@ -75,10 +75,6 @@ void loop()
     XLS = ps2Controller.Analog(PSS_LX);
     YLS = ps2Controller.Analog(PSS_LY);
     XRS = ps2Controller.Analog(PSS_RX);
-    Serial.print("XLS: ");
-    Serial.println(XLS);
-    Serial.print("YLS");
-    Serial.println(YLS);
     
     
     //Check for controller input to servo, if stick is in relaxed/middle position (+/- 5% to remove noise), run:
@@ -106,10 +102,10 @@ void loop()
       stickTiltValue = map(YLS, 0, 255, 70, 120);
       rigServo.tiltServoPosition(stickTiltValue);
     }
-  
+    
     // Check for controller input to motor
     motorDriver.movePlatform(map(XRS, 0, 255, -512, 511));  
-    delay(50);
+    
   }
   
 }

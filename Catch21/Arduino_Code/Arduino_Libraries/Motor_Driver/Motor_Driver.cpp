@@ -10,9 +10,12 @@ void Motor_Driver::movePlatform(int translation)
 {
     // Sets speed of the motor
     speedControl(translation);
+    Serial.print("translation: ");
+    Serial.println(translation);
 
     if(translation > lowerThreshold && translation < upperThreshold)
     {
+        Serial.println("Stille");
         digitalWrite(enablerTop, LOW);
         digitalWrite(enablerBottom, LOW);
     }
@@ -20,6 +23,7 @@ void Motor_Driver::movePlatform(int translation)
     //Forward range: upper->512: enable motor, call forward function
     else if(translation >= upperThreshold)
     {
+        Serial.println("forward");
         digitalWrite(enablerTop, HIGH);
         digitalWrite(enablerBottom, HIGH);
         forward();
@@ -28,6 +32,7 @@ void Motor_Driver::movePlatform(int translation)
     //Reverse range: -511->lower: enable motor, call reverse function
     else if(translation <= lowerThreshold)
     {
+        Serial.println("reverse");
         digitalWrite(enablerTop, HIGH);
         digitalWrite(enablerBottom, HIGH);
         reverse();
@@ -42,6 +47,12 @@ void Motor_Driver::setPins(byte positiveTop, byte negativeTop, byte positiveBott
     this->negativeBottom = negativeBottom;
     this->enablerTop = enablerTop;
     this->enablerBottom = enablerBottom;
+
+    Serial.print("lowerThreshold: ");
+    Serial.println(lowerThreshold);
+    Serial.print("upperThreshold: ");
+    Serial.println(upperThreshold);
+
 }
 
 
@@ -65,8 +76,8 @@ void Motor_Driver::initialize()
     digitalWrite(enablerBottom, LOW);
 
     // setting Threshold
-    upperThreshold = 64;
-    lowerThreshold = 64;
+    upperThreshold = 32;
+    lowerThreshold = (-32);
 }
 
 
