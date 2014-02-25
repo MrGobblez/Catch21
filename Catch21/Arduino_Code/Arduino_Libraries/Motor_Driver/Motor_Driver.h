@@ -16,7 +16,7 @@ private:
     void initialize();
     void forward();
     void reverse();
-    void speedControl();
+    void speedControl(int translation);
 
     // Pinout
     byte positiveTop;

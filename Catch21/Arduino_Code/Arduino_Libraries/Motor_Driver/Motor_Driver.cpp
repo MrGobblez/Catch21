@@ -9,7 +9,7 @@ Motor_Driver::Motor_Driver()
 void Motor_Driver::movePlatform(int translation)
 {
     // Sets speed of the motor
-    speedControl();
+    speedControl(translation);
 
     if(translation > lowerThreshold && translation < upperThreshold)
     {
@@ -19,7 +19,7 @@ void Motor_Driver::movePlatform(int translation)
     }
 
     //Forward range: upper->512: enable motor, call forward function
-    else if(translation >= upper)
+    else if(translation >= upperThreshold)
     {
         digitalWrite(enablerTop, HIGH);
         digitalWrite(enablerBottom, HIGH);
@@ -107,8 +107,8 @@ void Motor_Driver::reverse()
 }
 
 
-void Motor_Driver::speedControl()
+void Motor_Driver::speedControl(int translation)
 {
-    delayTime = map(abs(this->translation), 0, 512, 500,1);
+    delayTime = map(abs(translation), 0, 512, 500,1);
 }
 
