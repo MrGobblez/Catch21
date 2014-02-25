@@ -15,7 +15,6 @@ void Motor_Driver::movePlatform(int translation)
     {
         digitalWrite(enablerTop, LOW);
         digitalWrite(enablerBottom, LOW);
-        delay(10);  // Ask Øystein why. I don't think we need it
     }
 
     //Forward range: upper->512: enable motor, call forward function
@@ -37,23 +36,23 @@ void Motor_Driver::movePlatform(int translation)
 
 void Motor_Driver::setPins(byte positiveTop, byte negativeTop, byte positiveBottom, byte negativeBottom, byte enablerTop, byte enablerBottom)
 {
-    positiveTop = this->positiveTop;
-    negativeTop = this->negativeTop;
-    positiveBottom = this->positiveBottom;
-    negativeBottom = this->negativeBottom;
-    enablerTop = this->enablerTop;
-    enablerBottom = this->enablerBottom;
+    this->positiveTop = positiveTop;
+    this->negativeTop = negativeTop;
+    this->positiveBottom = positiveBottom;
+    this->negativeBottom = negativeBottom;
+    this->enablerTop = enablerTop;
+    this->enablerBottom = enablerBottom;
 }
 
 
 void Motor_Driver::initialize()
 {
-    positiveTop = 9;    //1st pole of coil A
-    negativeTop = 10;   //2nd(inversed) pole of coil A
-    positiveBottom = 11;   //1st pole of coil B
-    negativeBottom = 12;   //2nd(inversed) pole of coil B
-    enablerTop = 6;     //Pin to provide 5V to bridge A logic circuit
-    enablerBottom = 7;     //Pin to provide 5V to bridge B logic circuit
+    positiveTop = 6;    //1st pole of coil A
+    negativeTop = 7;   //2nd(inversed) pole of coil A
+    positiveBottom = 8;   //1st pole of coil B
+    negativeBottom = 11;   //2nd(inversed) pole of coil B
+    enablerTop = 12;     //Pin to provide 5V to bridge A logic circuit
+    enablerBottom = 13;     //Pin to provide 5V to bridge B logic circuit
     pinMode(positiveTop,OUTPUT);
     pinMode(negativeTop,OUTPUT);
     pinMode(positiveBottom,OUTPUT);
@@ -64,6 +63,10 @@ void Motor_Driver::initialize()
     //Initial state of bridges - OFF:
     digitalWrite(enablerTop, LOW);
     digitalWrite(enablerBottom, LOW);
+
+    // setting Threshold
+    upperThreshold = 64;
+    lowerThreshold = 64;
 }
 
 
@@ -81,8 +84,8 @@ void Motor_Driver::forward()
     digitalWrite(positiveBottom,LOW);
     delay(delayTime);
 
-    digitalWrite(negativeBottom,HIGH); // Change ?
-    digitalWrite(negativeTop,LOW);  // Bytte plass?
+    digitalWrite(negativeTop,LOW);
+    digitalWrite(negativeBottom,HIGH);
     delay(delayTime);
 }
 
@@ -102,7 +105,7 @@ void Motor_Driver::reverse()
     delay(delayTime);
 
     digitalWrite(positiveTop,HIGH);
-    digitalWrite(positiveTop,LOW);
+    digitalWrite(positiveBottom,LOW);
     delay(delayTime);
 }
 
