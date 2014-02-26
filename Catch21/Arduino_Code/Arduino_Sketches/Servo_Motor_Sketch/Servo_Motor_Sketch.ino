@@ -76,6 +76,11 @@ void loop()
     YLS = ps2Controller.Analog(PSS_LY);
     XRS = ps2Controller.Analog(PSS_RX);
     
+    // noise filter
+    if (XRS < 15)
+    {
+      XRS = 0;
+    }
     
     //Check for controller input to servo, if stick is in relaxed/middle position (+/- 5% to remove noise), run:
     if (XLS > 116 && XLS < 140)
@@ -104,7 +109,7 @@ void loop()
     }
     
     // Check for controller input to motor
-    motorDriver.movePlatform(map(XRS, 0, 255, -512, 511));  
+    motorDriver.movePlatform(map(XRS, 0, 255, -511, 511));  
     
   }
   
