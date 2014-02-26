@@ -108,7 +108,7 @@ void loop()
     }
   
     // Check for controller input to motor
-    motorDriver.movePlatform(map(XRS, 0, 255, -512, 512));  
+    motorDriver.movePlatform(map(XRS, 0, 255, -512, 511));  
     delay(50);
   }
   
