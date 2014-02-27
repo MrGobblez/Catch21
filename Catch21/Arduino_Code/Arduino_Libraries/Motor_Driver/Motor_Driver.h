@@ -27,8 +27,8 @@ private:
     byte enablerBottom;
 
     // Defining off zone
-    byte upperThreshold;
-    byte lowerThreshold;
+    int upperThreshold;
+    int lowerThreshold;
 
     // Variables
     byte delayTime;

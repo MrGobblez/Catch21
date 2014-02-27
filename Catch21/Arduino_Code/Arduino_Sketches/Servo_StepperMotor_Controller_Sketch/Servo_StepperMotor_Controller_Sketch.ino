@@ -1,4 +1,4 @@
-#include <Motor_Driver.h>
+#include <Stepper.h>
 #include <Servo.h>
 
 // Add servo files to Arduino library and include the header here.
@@ -7,7 +7,6 @@
 
 PS2X ps2Controller;  // Playstation Controller class
 Rig_Servo rigServo;  // Servo driver class name
-Motor_Driver motorDriver;
 
 // Servo variables
 byte stickTiltValue = 128;
@@ -19,6 +18,16 @@ byte type = 0;      // For checking Playstation Controller Type
 byte XLS = 0;      // X-axis, Left stick
 byte YLS = 0;     // Y-axis, Left stick
 byte XRS = 0;    // X-axis, Right stick
+int mappedXRS = 0;
+
+// Motor Driver enabler pins
+byte in1Pin = 6;
+byte in2Pin = 7;
+byte in3Pin = 8;
+byte in4Pin = 11;
+byte enablerA = 12;
+byte enablerB = 13;
+Stepper motor(200, in1Pin, in2Pin, in3Pin, in4Pin);
 
 void setup()
 {
@@ -30,7 +39,7 @@ void setup()
   rigServo.setPanPin(9);
   
   // Setup motorDriver pins(posT,negT,posB,negB,enT,enB);
-  motorDriver.setPins(6,7,8,11,12,13);
+  // motorDriver.setPins(6,7,8,11,12,13);
   
   // Playstation controller setup.
   error = ps2Controller.config_gamepad(2,4,3,5, true, true);   	//setup pins and settings:  GamePad(clock, command, attention, data, Pressures?, Rumble?) check for error
@@ -58,7 +67,15 @@ void setup()
        break;
    }
   // Playstation Controller setup completed.
-   
+
+  // Setter Motor settings 
+  pinMode(enablerA, OUTPUT);
+  pinMode(enablerB, OUTPUT);
+  pinMode(in1Pin, OUTPUT);
+  pinMode(in2Pin, OUTPUT);
+  pinMode(in3Pin, OUTPUT);
+  pinMode(in4Pin, OUTPUT);
+  motor.setSpeed(300);
 }
 
 void loop()
@@ -77,7 +94,7 @@ void loop()
     XRS = ps2Controller.Analog(PSS_RX);
     
     // noise filter
-    if (XRS < 15)
+    if (XRS < 5)
     {
       XRS = 0;
     }
@@ -108,9 +125,22 @@ void loop()
       rigServo.tiltServoPosition(stickTiltValue);
     }
     
-    // Check for controller input to motor
-    motorDriver.movePlatform(map(XRS, 0, 255, -511, 511));  
-    
+    // Send controller input to motor
+    mappedXRS = XRS -128;
+    mappedXRS = map(mappedXRS, -128, 127, -150, 150);
+    if (mappedXRS < 6 && mappedXRS > -6)
+    {
+      digitalWrite(enablerA, LOW);
+      digitalWrite(enablerB, LOW);
+    }
+    else
+    {
+      digitalWrite(enablerA, HIGH);
+      digitalWrite(enablerB, HIGH);
+      motor.step(mappedXRS);
+    }
+  
+  
   }
   
 }

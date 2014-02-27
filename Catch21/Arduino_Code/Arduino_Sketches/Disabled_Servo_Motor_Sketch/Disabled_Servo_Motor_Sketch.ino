@@ -72,8 +72,8 @@ void loop()
   {
     // Read stick values
     ps2Controller.read_gamepad(false, 0);
-    XLS = ps2Controller.Analog(PSS_LX);
-    YLS = ps2Controller.Analog(PSS_LY);
+   // XLS = ps2Controller.Analog(PSS_LX);
+   // YLS = ps2Controller.Analog(PSS_LY);
     XRS = ps2Controller.Analog(PSS_RX);
     
     // noise filter
@@ -83,30 +83,30 @@ void loop()
     }
     
     //Check for controller input to servo, if stick is in relaxed/middle position (+/- 5% to remove noise), run:
-    if (XLS > 116 && XLS < 140)
-    {
-      rigServo.panServoToDefaultPosition();
-    }
+    //if (XLS > 116 && XLS < 140)
+    //{
+   //   rigServo.panServoToDefaultPosition();
+   // }
     
     //If the stick is not in relaxed/middle position, run:
-    else
-    {
-      stickPanValue = map(XLS, 0, 255, 50, 142);
-      rigServo.panServoPosition(stickPanValue);
-    }
+   // else
+    //{
+     // stickPanValue = map(XLS, 0, 255, 50, 142);
+     // rigServo.panServoPosition(stickPanValue);
+    //}
     
     //Check for controller input to servo, if stick is in relaxed/middle position (+/- 5% to remove noise), run:
-    if (YLS > 116 && YLS < 140)
-    {
-      rigServo.tiltServoToDefaultPosition();
-    }
+   // if (YLS > 116 && YLS < 140)
+   // {
+   //   rigServo.tiltServoToDefaultPosition();
+   // }
     
     //If the stick is not in relaxed/middle position, run:
-    else
-    {
-      stickTiltValue = map(YLS, 0, 255, 70, 120);
-      rigServo.tiltServoPosition(stickTiltValue);
-    }
+    //else
+    //{
+    //  stickTiltValue = map(YLS, 0, 255, 70, 120);
+    //  rigServo.tiltServoPosition(stickTiltValue);
+    //}
     
     // Check for controller input to motor
     motorDriver.movePlatform(map(XRS, 0, 255, -511, 511));  
