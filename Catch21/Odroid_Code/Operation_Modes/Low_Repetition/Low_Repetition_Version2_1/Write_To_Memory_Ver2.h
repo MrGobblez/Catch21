@@ -7,7 +7,7 @@ class Write_To_Memory_Ver2
         Write_To_Memory_Ver2();
        ~Write_To_Memory_Ver2();
 
-        void write(bool showCapturedStream);
+        void write(bool showCapturing);
 };
 
 #endif // WRITE_TO_MEMORY_VER2_H

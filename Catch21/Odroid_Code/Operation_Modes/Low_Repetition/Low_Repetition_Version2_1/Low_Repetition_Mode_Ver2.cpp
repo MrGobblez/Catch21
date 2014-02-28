@@ -57,7 +57,11 @@
                 } //
 
                 memoWrite.write(this->getWindow());
-                cv::destroyWindow("Key Controls");
+                if(window == false)
+                {
+
+                    cv::destroyWindow("Key Controls");
+                }
                 memoRead.read(speed);
 
                 break;
