@@ -108,7 +108,7 @@ void loop()
     //If the stick is not in relaxed/middle position, run:
     else
     {
-      stickPanValue = map(XLS, 0, 255, 50, 142);
+      stickPanValue = map(XLS, 255, 0, 50, 142);
       rigServo.panServoPosition(stickPanValue);
     }
     
@@ -121,13 +121,13 @@ void loop()
     //If the stick is not in relaxed/middle position, run:
     else
     {
-      stickTiltValue = map(YLS, 0, 255, 70, 120);
+      stickTiltValue = map(YLS, 255, 0, 70, 120);
       rigServo.tiltServoPosition(stickTiltValue);
     }
     
     // Send controller input to motor
     mappedXRS = XRS -128;
-    mappedXRS = map(mappedXRS, -128, 127, -150, 150);
+    mappedXRS = map(mappedXRS, 127, -128, -150, 150);
     if (mappedXRS < 6 && mappedXRS > -6)
     {
       digitalWrite(enablerA, LOW);
