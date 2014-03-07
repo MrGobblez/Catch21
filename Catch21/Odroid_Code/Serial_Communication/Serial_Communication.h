@@ -15,13 +15,14 @@
 class Serial_Communication
 {
 	public:
-	Serial_Communication(String portID);
+	Serial_Communication(char portID[]);
 	void sendData(int direction, int speed);
 	
 	private:
-	void initialize(String portID);
+	void initialize(char portID[]);
 	int fd;
-  	char buf[6] = "00000.";
+  	char buf[];
   	struct termios toptions;
+};
 
 #endif

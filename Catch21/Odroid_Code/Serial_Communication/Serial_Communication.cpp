@@ -1,6 +1,6 @@
 #include "Serial_Communication.h"
 
-Serial_Communication::Serial_Communication(String portID)
+Serial_Communication::Serial_Communication(char portID[])
 {
 	initialize(portID);
 }
@@ -21,7 +21,7 @@ void Serial_Communication::sendData(int direction, int speed)
 	write(fd, buf, 6);
 }
 
-void Serial_Communication::initialize(String portID)
+void Serial_Communication::initialize(char portID[])
 {
 	/* open serial port */
 	fd = open(portID, O_RDWR | O_NOCTTY);
