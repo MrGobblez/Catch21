@@ -16,7 +16,7 @@ class Serial_Communication
 {
 	public:
 	Serial_Communication(String portID);
-	void sendData(int data);
+	void sendData(int direction, int speed);
 	
 	private:
 	void initialize(String portID);
