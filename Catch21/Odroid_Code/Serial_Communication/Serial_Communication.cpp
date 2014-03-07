@@ -8,7 +8,16 @@ Serial_Communication::Serial_Communication(String portID)
 void Serial_Communication::sendData(int direction, int speed)
 {
 	// converting int to charbuffer and sending the data over serial.	
-	sprintf (buf, "%d%d.", direction, speed);
+	if(direction < -1)
+	{
+		sprintf (buf, "%d%d.", direction, speed);
+	}
+
+	else
+	{
+		sprintf (buf, "0%d%d.", direction, speed);
+	}
+
 	write(fd, buf, 6);
 }
 
