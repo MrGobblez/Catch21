@@ -8,16 +8,21 @@ class Color_Recognition
 {
 	public:
 	Color_Recognition();
-	void runDetection();
+	int getUserPosition();
 	void stopDetection();
 
 	private:
 	//FUNCTIONS
+	void runDetection();
 	IplImage* getThresholdedImage(IplImage* img);
 	void initialize();
 
 	//VARIABLES
 	CvCapture* capture;
+	int posX;
+	int posY;
+	int lastX;
+	int lastY;
 };
 
 #endif
