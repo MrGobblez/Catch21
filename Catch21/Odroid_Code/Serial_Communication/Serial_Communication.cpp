@@ -5,10 +5,10 @@ Serial_Communication::Serial_Communication(String portID)
 	initialize(portID);
 }
 
-void Serial_Communication::sendData(int data)
+void Serial_Communication::sendData(int direction, int speed)
 {
 	// converting int to charbuffer and sending the data over serial.	
-	sprintf (buf, "%d.", data);
+	sprintf (buf, "%d%d.", direction, speed);
 	write(fd, buf, 6);
 }
 
