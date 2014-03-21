@@ -8,7 +8,8 @@ class Color_Recognition
 {
 	public:
 	Color_Recognition();
-	int getUserPosition();
+	int getUserDirection();
+	int getUserSpeed();
 	void stopDetection();
 
 	private:
@@ -23,6 +24,8 @@ class Color_Recognition
 	int posY;
 	int lastX;
 	int lastY;
+	int direction;
+	int speed;
 };
 
 #endif

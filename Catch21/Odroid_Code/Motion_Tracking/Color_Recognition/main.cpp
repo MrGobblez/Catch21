@@ -5,19 +5,21 @@ int main()
 	Color_Recognition test;
 	int c;
 	int direction;
+	int speed;
 
 	while(true)
 	{
-		direction = test.getUserPosition();
+		direction = test.getUserDirection();
+		speed = test.getUserSpeed();
 
 		if(direction == 1)
 		{
-			printf("Move camera left!");
+			printf("Move camera left with speed %d \n", speed);
 		}
 
 		else if(direction == -1)
 		{
-			printf("Move camera right!");
+			printf("Move camera right with speed %d \n", speed);
 		}
 
 		else
