@@ -28,7 +28,7 @@ int main()
 		else
 		{
 			serial.sendData(direction, speed);
-			printf("Stand still.");
+			printf("Stand still. \n");
 		}
 		// Wait for a keypress
         	c = cvWaitKey(10);
