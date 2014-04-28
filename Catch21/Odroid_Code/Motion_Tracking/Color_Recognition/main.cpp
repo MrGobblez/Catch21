@@ -14,6 +14,7 @@ int main()
 		speed = test.getUserSpeed();
 		serial.sendData(direction, speed);
 
+		printf("%d\n", direction);
 		// Wait for a keypress
         	c = cvWaitKey(10);
 		if(c!=-1)
