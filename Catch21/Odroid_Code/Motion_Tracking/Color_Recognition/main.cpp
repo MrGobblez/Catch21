@@ -9,12 +9,17 @@ int main()
 	int speed;
 
 	while(true)
-	{
-		direction = test.getUserDirection();
-		speed = test.getUserSpeed();
-		serial.sendData(direction, speed);
-
-		printf("%d\n", direction);
+	{	
+		// Limits serial communication
+		if (direction != test.getUserDirection() || speed != test.getUserSpeed())
+		{	
+			direction = test.getUserDirection();
+			speed = test.getUserSpeed();
+			serial.sendData(direction, speed);
+			// Debug - Prints variables sendt to Arduino
+			printf("%d,%d\n", direction, speed);
+		}
+		
 		// Wait for a keypress
         	c = cvWaitKey(10);
 		if(c!=-1)
