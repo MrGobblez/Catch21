@@ -4,7 +4,7 @@ Controll::Controll()
 {
     cvNamedWindow("video");
     cvNamedWindow("thresh");
-    cvResizeWindow("video", 800, 600);
+    cvResizeWindow("video", 640, 480);
     processReady = false;
     counterOrg = 0;
     counterProcessed = 0;
@@ -15,6 +15,14 @@ Controll::Controll()
 void Controll::inputImage(IplImage *imgIn)
 {
     cvShowImage("video", imgIn);
+    if (processReady) 
+    {
+        processReady = false;
+        emit image(imgIn);
+    }
+
+    emit requestImage();
+
     // see how much time has elapsed
     time(&end);
 
@@ -26,13 +34,6 @@ void Controll::inputImage(IplImage *imgIn)
 
     // will print out Inf until sec is greater than 0
     printf("FPS Org stream = %.2f\n", fpsOrg);
-
-    if (processReady)
-    {
-        processReady = false;
-        emit image(imgIn);
-    }
-    emit requestImage();
 
 }
 
