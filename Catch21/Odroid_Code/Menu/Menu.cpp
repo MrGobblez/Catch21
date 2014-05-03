@@ -83,7 +83,7 @@ void Menu::inputHandler()
         //      remember to have defaults in the switch to avoid trouble ####
         qDebug() << "char: " << this->decision;
         qDebug() << " newInput: " << newInput;
-        if (!newInput && (decision = (char) cv::waitKey(1000)))
+        if (!newInput && (decision = (char) cv::waitKey(0)))
         {
             keyInputRunning = true;
             if (decision == '2')
@@ -121,6 +121,7 @@ void Menu::inputHandler()
                     }
                     else
                     {
+                        qDebug() << "Stops recording.";
                         emit stopRecording();
                         setRecording();
                     }
@@ -136,7 +137,7 @@ void Menu::inputHandler()
             }
         }
         keyInputRunning = false;
-        emit requestDataFromFootController();
+        //emit requestDataFromFootController();
     }
 }
 

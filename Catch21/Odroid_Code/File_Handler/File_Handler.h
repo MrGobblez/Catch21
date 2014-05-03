@@ -13,6 +13,7 @@ public slots:
     void writeImage(cv::Mat imageIn);
 signals:
     void showFrame(cv::Mat frame);
+    void readyToWrite();
 private:
     void createFile();
 

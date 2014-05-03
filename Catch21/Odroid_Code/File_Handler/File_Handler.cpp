@@ -3,6 +3,7 @@
 File_Handler::File_Handler()
 {
     resolution = cv::Size((int)640, (int)480);
+    emit readyToWrite();
 }
 
 void File_Handler::readFromFile()
@@ -30,6 +31,8 @@ void File_Handler::readFromFile()
         delay = 33;
     }
 
+    qDebug() << frameRate;
+    qDebug() << delay;
     // Play the video in a loop till it ends
     while(char(cv::waitKey(1)) != 'q' && outFile.isOpened())
     {
@@ -61,7 +64,10 @@ void File_Handler::writeImage(cv::Mat imageIn)
         createFile();
         // Add error handling!
     }
+
+    qDebug() << "_";
     inFile << imageIn;
+    emit readyToWrite();
 }
 
 void File_Handler::createFile()

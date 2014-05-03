@@ -6,8 +6,8 @@
 #include "Motion_Tracking/Color_Recognition/Process.h"
 #include "Motion_Tracking/Color_Recognition/Tracking.h"
 #include "Serial_Communication/Serial_Communication.h"
-#include "Menu/Menu.h"
-//#include "Operation_Modes/Low_Repetition/Low_Repetition_Version3/Menu.h"
+//#include "Menu/Menu.h"
+#include "Operation_Modes/Low_Repetition/Low_Repetition_Version3/Menu.h"
 #include "File_Handler/File_Handler.h"
 #include "GUI/Window_Handler/Window_Handler.h"
 
@@ -19,8 +19,8 @@ int main()
     Control *controller = new Control();
     Process *processer = new Process();
     Tracking *tracker = new Tracking();
-    Serial_Communication *serial = new Serial_Communication("/dev/ttyUSB0");// #### For testing with only one arduino
-//    Serial_Communication *serial = new Serial_Communication("/dev/ttyUSB0", "/dev/ttyUSB1");
+    //Serial_Communication *serial = new Serial_Communication("/dev/ttyUSB0");// #### For testing with only one arduino
+    Serial_Communication *serial = new Serial_Communication("/dev/ttyUSB0", "/dev/ttyUSB1");
     File_Handler *file_Handler = new File_Handler();
     Window_Handler *window_Handler = new Window_Handler();
     Menu *menu = new Menu();
@@ -36,7 +36,7 @@ int main()
     tracker->moveToThread(t3);
     serial->moveToThread(t3);
     controller->moveToThread(t4);
-//    file_Handler->moveToThread(t1); // #### Bug in filehandler, works only in main/gui thread, most likely due to cv::waitKey's dependency on cv::nameWindow.
+    file_Handler->moveToThread(t1); // #### Bug in filehandler, works only in main/gui thread, most likely due to cv::waitKey's dependency on cv::nameWindow.
                                       //      Move cancel playback to Menu ####
 
 
@@ -49,7 +49,8 @@ int main()
     QObject::connect(menu, SIGNAL(stopRecording()), controller, SLOT(stopRecording()));
     QObject::connect(menu, SIGNAL(displayMenu(cv::Mat)), window_Handler, SLOT(drawImage(cv::Mat)));
     QObject::connect(file_Handler, SIGNAL(showFrame(cv::Mat)), window_Handler, SLOT(drawImage(cv::Mat)));
-    QObject::connect(menu, SIGNAL(requestDataFromFootController()), serial, SLOT(receiveDataFromFootControllerLoop()));
+    QObject::connect(file_Handler, SIGNAL(readyToWrite()), controller, SLOT(fileHandlerReadyToWrite()));
+    //QObject::connect(menu, SIGNAL(requestDataFromFootController()), serial, SLOT(receiveDataFromFootControllerLoop()));
 
     //Thread 1
     QObject::connect(t1, SIGNAL(started()), camera, SLOT(captureImage()));
@@ -61,10 +62,11 @@ int main()
     QObject::connect(processer, SIGNAL(readyForWork()), controller, SLOT(processerReady()));
 
     //Thread 3
-    QObject::connect(tracker, SIGNAL(directionAndSpeed(int,int)), serial, SLOT(sendData(int,int)));
-    QObject::connect(serial, SIGNAL(fromFootController(char)), menu, SLOT(giveInput(char)));
+    QObject::connect(tracker, SIGNAL(directionAndSpeed(int,int)), serial, SLOT(sendDataToControlUnit(int,int)));
+    //QObject::connect(serial, SIGNAL(fromFootController(char)), menu, SLOT(giveInput(char)));
 
     //Thread 4
+    QObject::connect(t4, SIGNAL(started()), controller, SLOT(fileHandlerReadyToWrite()));
     QObject::connect(controller, SIGNAL(imageToShow(cv::Mat)), processer, SLOT(processImage(cv::Mat)));
     QObject::connect(controller, SIGNAL(requestImage()), camera, SLOT(captureImage()));
     QObject::connect(controller, SIGNAL(imageToRecord(cv::Mat)), file_Handler, SLOT(writeImage(cv::Mat)));
@@ -77,6 +79,7 @@ int main()
     t3->start();
     t4->start();
 
-    menu->inputHandler();
+    menu->menu();
+    //menu->inputHandler();
     return 0;
 }

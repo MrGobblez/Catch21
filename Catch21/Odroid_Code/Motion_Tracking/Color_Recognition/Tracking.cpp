@@ -23,7 +23,7 @@ void Tracking::position(int posX, int posY)
         }
 
 
-        //GOING LEFT OF PICTURE
+        //GOING RIGHT OF PICTURE
     if (posX < 250 && posX >= 245)
         {
             this->speed = 20;
@@ -109,8 +109,8 @@ void Tracking::position(int posX, int posY)
             this->speed = 600;
         }
 
-        //GOING RIGHT OF PICTURE
-    if (posX > 390 && posX <= 395)
+        //GOING LEFT OF PICTURE
+    else if (posX > 390 && posX <= 395)
         {
             this->speed = 20;
         }
@@ -200,6 +200,6 @@ void Tracking::position(int posX, int posY)
         {
             this->speed = 0;
         }
-    //qDebug() << "tracker" << direction << speed << QThread::currentThreadId();
+    qDebug() << "direction: " << direction << "speed: " << speed;
     emit directionAndSpeed(direction,speed);
 }

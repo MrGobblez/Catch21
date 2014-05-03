@@ -26,6 +26,7 @@ public slots:
     void processerReady();
     void startRecording(bool showWindow);
     void stopRecording();
+    void fileHandlerReadyToWrite();
 private:
     cv::Vector<cv::Mat>imageBuffer; // create buffer to hold images
     int counter;
@@ -34,6 +35,7 @@ private:
     bool processReady;
     bool recording;
     bool showImage;
+    bool readyToWrite;
 
     //start and end times
     time_t start, end;

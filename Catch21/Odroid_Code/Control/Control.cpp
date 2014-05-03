@@ -11,13 +11,15 @@ Control::Control()
     counter = 0;
     delay = 0;
     recording = false;
-    showImage = false;
+    showImage = true;
+    readyToWrite = false;
 }
 
 void Control::inputImage(cv::Mat imgIn)
 {
     //Add new frame to buffer
-    imageBuffer[counter] = imgIn;
+    imageBuffer[counter] = imgIn.clone();
+    qDebug() << "showImage: " << showImage << "processReady: " << processReady << "Recording: " << recording;
 
     //If stream is to be shown, send an image
     if (showImage)
@@ -33,8 +35,9 @@ void Control::inputImage(cv::Mat imgIn)
     }
 
     //If recording video, pass a frame to be written to file
-    if (recording)
+    if (recording && readyToWrite)
     {
+        readyToWrite = false;
         emit imageToRecord(imgIn);
     }
 
@@ -57,6 +60,7 @@ void Control::inputImage(cv::Mat imgIn)
     sec = difftime (end, start);
 
     fpsOrg = counterOrg / sec;
+    qDebug() << "Calling for new image: " << fpsOrg;
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
@@ -127,14 +131,19 @@ void Control::startRecording(bool showWindow)
 {
     showImage = showWindow;
     recording = true;
-    emit requestImage();
 }
 
 //Stop writing files to file and show the recorded stream in the window.
 void Control::stopRecording()
 {
+    qDebug() << "In stopRecording()";
     // file lock?
     recording = false;
     showImage = false;
     emit startPlayback();
+}
+
+void Control::fileHandlerReadyToWrite()
+{
+    readyToWrite = true;
 }
