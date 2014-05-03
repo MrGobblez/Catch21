@@ -1,6 +1,6 @@
-#include "Controll.h"
+#include "Control.h"
 
-Controll::Controll()
+Control::Control()
 {
     processReady = false;
     counterOrg = 0;
@@ -14,7 +14,7 @@ Controll::Controll()
     showImage = false;
 }
 
-void Controll::inputImage(cv::Mat imgIn)
+void Control::inputImage(cv::Mat imgIn)
 {
     //Add new frame to buffer
     imageBuffer[counter] = imgIn;
@@ -61,7 +61,7 @@ void Controll::inputImage(cv::Mat imgIn)
 }
 
 //This whole function is to debug processed images
-void Controll::processedImage(cv::Mat imgIn)
+void Control::processedImage(cv::Mat imgIn)
 {
     qDebug() << "About to show thresh image...";
     cv::imshow("thresh", imgIn);  // move to gui obj by emit
@@ -79,7 +79,7 @@ void Controll::processedImage(cv::Mat imgIn)
 }
 
 //Increase video delay by 15 frames.
-void Controll::increaseDelay()
+void Control::increaseDelay()
 {
     if(this->delay < 584)
     {
@@ -95,7 +95,7 @@ void Controll::increaseDelay()
 }
 
 //Decrease video delay by 15 frames.
-void Controll::decreaseDelay()
+void Control::decreaseDelay()
 {
     if(this->delay > 15)
     {
@@ -111,19 +111,19 @@ void Controll::decreaseDelay()
 }
 
 //Specify video delay.
-void Controll::setDelay(int timeshift)
+void Control::setDelay(int timeshift)
 {
     this->delay = timeshift;
 }
 
 //Set Process object ready for new frame.
-void Controll::processerReady()
+void Control::processerReady()
 {
     processReady = true;
 }
 
 //Start recording, causing frames to be written to file and a window to display frames from buffer.
-void Controll::startRecording(bool showWindow)
+void Control::startRecording(bool showWindow)
 {
     showImage = showWindow;
     recording = true;
@@ -131,7 +131,7 @@ void Controll::startRecording(bool showWindow)
 }
 
 //Stop writing files to file and show the recorded stream in the window.
-void Controll::stopRecording()
+void Control::stopRecording()
 {
     // file lock?
     recording = false;

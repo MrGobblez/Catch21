@@ -1,16 +1,16 @@
-#ifndef CONTROLL_H
-#define CONTROLL_H
+#ifndef CONTROL_H
+#define CONTROL_H
 
 #include <QtCore>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv/cv.h>
 #include <time.h> // for fps calculation, debug, remove in release.
 
-class Controll : public QObject
+class Control : public QObject
 {
     Q_OBJECT
 public:
-    Controll();
+    Control();
 signals:
     void imageToShow(cv::Mat ingOut);
     void imageToProcess(cv::Mat imgOut);
