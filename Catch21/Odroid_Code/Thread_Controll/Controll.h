@@ -4,6 +4,7 @@
 #include <QtCore>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv/cv.h>
+#include <time.h>
 
 class Controll : public QObject
 {
@@ -19,6 +20,14 @@ public slots:
     void processerReady();
 private:
     bool processReady;
+    // start and end times
+    time_t start, end;
+    // fps calculated using number of frames / seconds
+    double fpsOrg, fpsProcessed;
+    // frame counter
+    int counterOrg, counterProcessed;
+    // floating point seconds elapsed since start
+    double sec;
 };
 
 #endif // CONTROLL_H
