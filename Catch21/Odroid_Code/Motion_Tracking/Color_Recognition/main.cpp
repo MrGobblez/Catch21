@@ -9,27 +9,17 @@ int main()
 	int speed;
 
 	while(true)
-	{
-		direction = test.getUserDirection();
-		speed = test.getUserSpeed();
-
-		if(direction == 1)
-		{
+	{	
+		// Limits serial communication
+		if (direction != test.getUserDirection() || speed != test.getUserSpeed())
+		{	
+			direction = test.getUserDirection();
+			speed = test.getUserSpeed();
 			serial.sendData(direction, speed);
-			printf("Move camera left with speed %d \n", speed);
+			// Debug - Prints variables sendt to Arduino
+			printf("%d,%d\n", direction, speed);
 		}
-
-		else if(direction == -1)
-		{
-			serial.sendData(direction, speed);
-			printf("Move camera right with speed %d \n", speed);
-		}
-
-		else
-		{
-			serial.sendData(direction, speed);
-			printf("Stand still. \n");
-		}
+		
 		// Wait for a keypress
         	c = cvWaitKey(10);
 		if(c!=-1)

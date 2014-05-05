@@ -12,12 +12,12 @@ int Color_Recognition::getUserDirection()
 
 	if(posX < 150)
 	{
-		this->direction = 1;
+		this->direction = -1;
 	}
 
 	else if (posX > 490)
 	{
-		this->direction = -1;
+		this->direction = 1;
 	}
 
 	else
@@ -33,53 +33,53 @@ int Color_Recognition::getUserSpeed()
 	//GOING LEFT OF PICTURE
 	if(posX < 160 && posX > 140)
 	{
-		this->speed = 100;
+		this->speed = 150;
 	}
 
 	else if (posX < 140 && posX > 120)
 	{
-		this->speed = 140;
+		this->speed = 200;
 	}
 
 	else if (posX < 120 && posX > 80)
 	{
-		this->speed = 180;
+		this->speed = 300;
 	}
 
 	else if (posX < 80 && posX > 40)
 	{
-		this->speed = 250;
+		this->speed = 540;
 	}
 
 	else if (posX < 40)
 	{
-		this->speed = 300;
+		this->speed = 600;
 	}
 
 	//GOING RIGHT OF PICTURE
 	else if (posX > 480 && posX < 500)
 	{
-		this->speed = 0;
+		this->speed = 150;
 	}
 
 	else if (posX > 500 && posX < 520)
 	{
-		this->speed = 140;
+		this->speed = 200;
 	}
 
 	else if (posX > 520 && posX < 560)
 	{
-		this->speed = 180;
+		this->speed = 300;
 	}
 
 	else if (posX > 560 && posX < 600)
 	{
-		this->speed = 250;
+		this->speed = 540;
 	}
 
 	else if (posX > 600)
 	{
-		this->speed = 300;
+		this->speed = 600;
 	}
 
 	//IN THE MIDDLE OF THE PICTURE
@@ -142,7 +142,9 @@ IplImage* Color_Recognition::getThresholdedImage(IplImage* img)
    	cvCvtColor(img, imgHSV, CV_BGR2HSV);
 
    	IplImage* imgThreshed = cvCreateImage(cvGetSize(img), 8, 1);
-	cvInRangeS(imgHSV, cvScalar(10, 130, 40), cvScalar(20, 230, 200), imgThreshed);
+	cvInRangeS(imgHSV, cvScalar(1, 130, 30), cvScalar(15, 255, 250), imgThreshed);
+	cvErode(imgThreshed, imgThreshed, 0, 2);
+	// cvDilate(img, img, 0, 2);
 
 	cvReleaseImage(&imgHSV);
     	return imgThreshed;
