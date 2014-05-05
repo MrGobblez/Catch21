@@ -29,5 +29,5 @@ void Controll::processedImage(IplImage *imgIn)
 void Controll::processerReady()
 {
     processReady = true;
-    qDebug() << "processer Ready" << QThread::currentThreadId();
+    //qDebug() << "processer Ready" << QThread::currentThreadId();
 }

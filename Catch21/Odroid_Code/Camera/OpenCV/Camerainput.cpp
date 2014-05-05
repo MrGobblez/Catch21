@@ -19,6 +19,6 @@ CameraInput::CameraInput()
 void CameraInput::captureImage()
 {
     frame = cvQueryFrame(capture);
-    qDebug() << "capture" << QThread::currentThreadId();
+    //qDebug() << "capture" << QThread::currentThreadId();
     emit capturedImage(frame);
 }
