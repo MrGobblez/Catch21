@@ -18,8 +18,8 @@ void Serial_Communication::sendData(int direction, int speed)
 		sprintf (buf, "0%d%d.", direction, speed);
 	}
 
+    	qDebug() << "Serial, data sent" << QThread::currentThreadId();
 	write(fd, buf, 6);
-    qDebug() << "Serial, data sent" << QThread::currentThreadId();
 }
 
 void Serial_Communication::initialize(char portID[])
