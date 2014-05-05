@@ -11,14 +11,18 @@
 #include <errno.h>
 #include <sys/ioctl.h>
 #include <iostream>
+#include <QtCore>
 
-class Serial_Communication
+class Serial_Communication : public QObject
 {
-	public:
+    Q_OBJECT
+public:
 	Serial_Communication(char portID[]);
+
+public slots:
 	void sendData(int direction, int speed);
 	
-	private:
+private:
 	void initialize(char portID[]);
 	int fd;
   	char buf[];
