@@ -4,8 +4,8 @@
 #include <opencv2/core/core.hpp>
 #include <iostream>
 #include <boost/thread.hpp>
-#include <Write_To_Memory.h>
-#include <Read_From_Memory.h>
+#include "Write_To_Memory.h"
+#include "Read_From_Memory.h"
 
 class Mode
 {
