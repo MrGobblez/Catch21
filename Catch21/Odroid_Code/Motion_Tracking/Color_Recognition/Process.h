@@ -5,11 +5,11 @@
 #include <opencv/cv.h>
 #include "opencv2/highgui/highgui.hpp"
 
-class process : public QObject
+class Process : public QObject
 {
     Q_OBJECT
 public:
-    process();
+    Process();
 public slots:
     void processImage(IplImage *img);
 signals:

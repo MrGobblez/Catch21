@@ -19,6 +19,7 @@ void Serial_Communication::sendData(int direction, int speed)
 	}
 
 	write(fd, buf, 6);
+    qDebug() << "Serial, data sent" << QThread::currentThreadId();
 }
 
 void Serial_Communication::initialize(char portID[])

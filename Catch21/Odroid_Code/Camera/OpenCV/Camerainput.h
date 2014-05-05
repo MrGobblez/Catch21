@@ -5,11 +5,11 @@
 #include <opencv/cv.h>
 #include <opencv2/highgui/highgui.hpp>
 
-class cameraInput : public QObject
+class CameraInput : public QObject
 {
     Q_OBJECT
 public:
-    cameraInput();
+    CameraInput();
 signals:
     void capturedImage(IplImage *img);
 public slots:

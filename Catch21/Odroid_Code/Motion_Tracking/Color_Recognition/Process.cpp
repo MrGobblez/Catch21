@@ -1,10 +1,10 @@
-#include "process.h"
+#include "Process.h"
 
-process::process()
+Process::Process()
 {
 }
 
-void process::processImage(IplImage *img)
+void Process::processImage(IplImage *img)
 {
     IplImage* imgHSV = cvCreateImage(cvGetSize(img), 8, 3);
     cvCvtColor(img, imgHSV, CV_BGR2HSV);
@@ -31,7 +31,7 @@ void process::processImage(IplImage *img)
     posY = moment01/area;
 
     delete moments;
-    //emit (posXposY(posX,posY));
+    emit (posXposY(posX,posY));
     emit (readyForWork());
     emit (processedImage(imgThresh));
 }

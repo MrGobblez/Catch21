@@ -1,6 +1,6 @@
-#include "controll.h"
+#include "Controll.h"
 
-controll::controll()
+Controll::Controll()
 {
     cvNamedWindow("video");
     cvNamedWindow("thresh");
@@ -8,7 +8,7 @@ controll::controll()
     processReady = false;
 }
 
-void controll::inputImage(IplImage *imgIn)
+void Controll::inputImage(IplImage *imgIn)
 {
     cvShowImage("video", imgIn);
     if (processReady)
@@ -20,13 +20,13 @@ void controll::inputImage(IplImage *imgIn)
 
 }
 
-void controll::processedImage(IplImage *imgIn)
+void Controll::processedImage(IplImage *imgIn)
 {
     cvShowImage("thresh", imgIn);
     cvReleaseImage(&imgIn);
 }
 
-void controll::processerReady()
+void Controll::processerReady()
 {
     processReady = true;
     qDebug() << "processer Ready" << QThread::currentThreadId();

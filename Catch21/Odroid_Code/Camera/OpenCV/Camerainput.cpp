@@ -1,6 +1,6 @@
-#include "camerainput.h"
+#include "Camerainput.h"
 
-cameraInput::cameraInput()
+CameraInput::CameraInput()
 {
     // Initialize capturing live feed from the camera
     capture = cvCaptureFromCAM(0);
@@ -16,7 +16,7 @@ cameraInput::cameraInput()
      qDebug() << "Capure =" << capture << QThread::currentThreadId();
 }
 
-void cameraInput::captureImage()
+void CameraInput::captureImage()
 {
     frame = cvQueryFrame(capture);
     qDebug() << "capture" << QThread::currentThreadId();

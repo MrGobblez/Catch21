@@ -5,11 +5,11 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv/cv.h>
 
-class controll : public QObject
+class Controll : public QObject
 {
     Q_OBJECT
 public:
-    controll();
+    Controll();
 signals:
     void image(IplImage *imgOut);
     void requestImage();
