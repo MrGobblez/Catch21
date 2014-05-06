@@ -1,6 +1,5 @@
 #include <iostream>
 #include "Mode.h"
-#include <boost/thread.hpp>
 
 
 int main()

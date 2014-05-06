@@ -3,7 +3,6 @@
 
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/core/core.hpp>
-#include <boost/thread.hpp>
 
 class Read_From_Memory
 {

@@ -1,7 +1,6 @@
 #ifndef WRITE_TO_MEMORY_H
 #define WRITE_TO_MEMORY_H
 #include <opencv2/highgui/highgui.hpp>
-#include <boost/thread.hpp>
 
 class Write_To_Memory
 {
