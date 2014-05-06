@@ -38,6 +38,7 @@ int main()
     QObject::connect(tracker, SIGNAL(directionAndSpeed(int,int)), serial, SLOT(sendData(int,int)));
     QObject::connect(processer, SIGNAL(readyForWork()), troller, SLOT(processerReady()));
     QObject::connect(processer, SIGNAL(processedImage(IplImage*)), troller, SLOT(processedImage(IplImage*)));
+    // Need to add finish/clean up stuff for terminating threads.
 
     // Starting Threads
     t1->start();
@@ -46,11 +47,10 @@ int main()
 
     // wait for key to exit
     while (true) {
-
-    // Wait for a keypress
-         c = cvWaitKey(10);
+         c = cvWaitKey(1);
         if(c!=-1)
         {
+            // Add thread termination before breaking the loop.
             // If pressed, break out of the loop
             break;
         }
