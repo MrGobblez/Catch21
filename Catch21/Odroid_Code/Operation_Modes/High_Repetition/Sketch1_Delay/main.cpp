@@ -1,37 +1,38 @@
 #include "opencv2/highgui/highgui.hpp"
 #include <iostream>
 
-using namespace cv;
-using namespace std;
+//!! Based on the code example from http://opencv-srf.blogspot.no/2011/09/capturing-images-videos.html !!
+
 
 int main()
 {
-    VideoCapture cap(0); // open the video camera no. 0
-    Vector <Mat> imgBuf (900);
+    cv::VideoCapture cap(0); // open the video camera no. 0
+    std::Vector <Mat> imgBuf (900);
     int i=0;
     int j=0;
 
-    namedWindow("Buffer",CV_WINDOW_AUTOSIZE); //create a window
-
+    cv::namedWindow("Buffer",CV_WINDOW_AUTOSIZE); // create a window
+    cv::Mat frame;
     while (1)
     {
-        Mat frame;
-        bool bSuccess = cap.read(frame); // read a new frame from video
+
+        // read a new frame from video
+        cap >> frame;
         frame.copyTo(imgBuf[i]); // store images from camera in buffer
         i++;
 
         if(i > 60)
         {
-            imshow("Buffer", imgBuf[j]);
+            cv::imshow("Buffer", imgBuf[j]); // show the frame in "Buffer" window
             j++;
         }
 
-       // imshow("Buffer", frame); //show the frame in "Buffer" window
 
 
-          if (waitKey(30) == 27) //wait for 'esc' key press for 30ms. If 'esc' key is pressed, break loop
+
+          if (cv::waitKey(30) == 27) // wait for 'esc' key press for 30ms. If 'esc' key is pressed, break loop
           {
-             cout << "esc key is pressed by user" << endl;
+             std::cout << "esc key is pressed by user" << std::endl;
              break;
           }
      } //end while
