@@ -2,8 +2,6 @@
 
 Tracking::Tracking()
 {
-    this->oldDirection = 0;
-    this->oldSpeed = 0;
 }
 
 void Tracking::position(int posX, int posY)
@@ -82,12 +80,5 @@ void Tracking::position(int posX, int posY)
             this->speed = 0;
         }
     //qDebug() << "tracker" << direction << speed << QThread::currentThreadId();
-    if (this->direction != this->oldDirection || this->speed != this->oldSpeed)
-    {
-        emit directionAndSpeed(direction,speed);
-    }
-    else
-    {
-        // qDebug() << "skipped, old == new";
-    }
+    emit directionAndSpeed(direction,speed);
 }

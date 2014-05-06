@@ -18,8 +18,6 @@ signals:
 private:
     int direction;
     int speed;
-    int oldDirection;
-    int oldSpeed;
 };
 
 #endif // TRACKING_H

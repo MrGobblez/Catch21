@@ -25,6 +25,8 @@ public slots:
 private:
 	void initialize(char portID[]);
 	int fd;
+    int oldDirection;
+    int oldSpeed;
   	char buf[10];
   	struct termios toptions;
 };

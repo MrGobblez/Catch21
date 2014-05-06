@@ -7,19 +7,31 @@ Serial_Communication::Serial_Communication(char portID[])
 
 void Serial_Communication::sendData(int direction, int speed)
 {
-	// converting int to charbuffer and sending the data over serial.	
-	if(direction <= -1)
-	{
-		sprintf (buf, "%d%d.", direction, speed);
-	}
+    if (direction != this->oldDirection || speed != this->oldSpeed)
+    {
+        // Updates vars
+        this->oldDirection = direction;
+        this->oldSpeed = speed;
 
-	else
-	{
-		sprintf (buf, "0%d%d.", direction, speed);
-	}
+        // converting int to charbuffer and sending the data over serial.
+        if(direction <= -1)
+        {
+            sprintf (buf, "%d%d.", direction, speed);
+        }
 
-    	qDebug() << "Serial, data sent" << QThread::currentThreadId();
-	write(fd, buf, 6);
+        else
+        {
+            sprintf (buf, "0%d%d.", direction, speed);
+        }
+
+        // Sends data
+        write(fd, buf, 6);
+    }
+
+    else
+    {
+         qDebug() << "skipped, old == new";
+    }
 }
 
 void Serial_Communication::initialize(char portID[])
@@ -27,9 +39,6 @@ void Serial_Communication::initialize(char portID[])
 	/* open serial port */
 	fd = open(portID, O_RDWR | O_NOCTTY);
 	printf("fd opened as %i\n", fd);
-
-	/* wait for the Arduino to reboot * Removed the reboot with capacitor between gnd and rst pins. Remove to reflash!
-	usleep(3500000);*/
 
 	/* get current serial port settings */
 	tcgetattr(fd, &toptions);

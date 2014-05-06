@@ -20,9 +20,13 @@
 *.exe
 *.out
 *.app
+*Multithreaded_Color*.*
 
 # Qt Creator Files
-*.pro
+#*.pro
 *.pro.*
-main.cpp
+#main.cpp
 Catch21-build*
+
+#Makefile
+*Makefile*.*
