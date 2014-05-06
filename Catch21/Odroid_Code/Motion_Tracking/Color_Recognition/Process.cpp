@@ -1,28 +1,26 @@
-#include "Process.h"
+#include "process.h"
 
-Process::Process()
+process::process()
 {
 }
 
-void Process::processImage(IplImage *img)
+void process::processImage(Mat img)
 {
-    IplImage* imgHSV = cvCreateImage(cvGetSize(img), 8, 3);
-    cvCvtColor(img, imgHSV, CV_BGR2HSV);
+    Mat imgHSV = img;
+    cvtColor(img, imgHSV, CV_BGR2HSV);
 
-    IplImage* imgThresh = cvCreateImage(cvGetSize(img), 8, 1);
-    cvInRangeS(imgHSV, cvScalar(1, 130, 30), cvScalar(15, 255, 250), imgThresh);
-    cvErode(imgThresh, imgThresh, 0, 2);
-
-    cvReleaseImage(&imgHSV);
+    Mat imgThresh = img;
+    inRange(imgHSV, CvScalar(1, 130, 30), CvScalar(15, 255, 250), imgThresh);
+    erode(imgThresh, imgThresh, 0, 2);
 
     // Calculate the moments to estimate the position of the object
-    CvMoments *moments = (CvMoments*)malloc(sizeof(CvMoments));
-    cvMoments(imgThresh, moments, 1);
+    moments *moment = (CvMoments*)malloc(sizeof(CvMoments));
+    moments(imgThresh, moment, 1);
 
     // The actual moment values
-    double moment10 = cvGetSpatialMoment(moments, 1, 0);
-    double moment01 = cvGetSpatialMoment(moments, 0, 1);
-    double area = cvGetCentralMoment(moments, 0, 0);
+    double moment10 = cvGetSpatialMoment(moment, 1, 0);
+    double moment01 = cvGetSpatialMoment(moment, 0, 1);
+    double area = cvGetCentralMoment(moment, 0, 0);
 
     posX = 0;
     posY = 0;
@@ -31,7 +29,11 @@ void Process::processImage(IplImage *img)
     posY = moment01/area;
 
     delete moments;
-    emit (posXposY(posX,posY));
+    //emit (posXposY(posX,posY));
     emit (readyForWork());
     emit (processedImage(imgThresh));
+}
+
+void process::processedImage(Mat img)
+{
 }

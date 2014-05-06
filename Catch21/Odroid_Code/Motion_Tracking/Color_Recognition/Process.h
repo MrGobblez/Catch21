@@ -5,17 +5,17 @@
 #include <opencv/cv.h>
 #include "opencv2/highgui/highgui.hpp"
 
-class Process : public QObject
+class process : public QObject
 {
     Q_OBJECT
 public:
-    Process();
+    process();
 public slots:
-    void processImage(IplImage *img);
+    void processImage(Mat img);
 signals:
     void posXposY(int posX, int posY);
     void readyForWork();
-    void processedImage(IplImage *img);
+    void processedImage(Mat img);
 private:
     int posX, posY;
 };
