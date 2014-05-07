@@ -10,13 +10,13 @@ class CameraInput : public QObject
 public:
     CameraInput();
 signals:
-    void capturedImage(cv::Mat *frame);
+    void capturedImage(cv::Mat);
 public slots:
     void captureImage();
 private:
     //VARIABLES
+    cv::VideoCapture capture;
     cv::Mat frame;
-    cv::VideoCapture cap;
 };
 
 #endif // CAMERAINPUT_H

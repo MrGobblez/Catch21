@@ -2,9 +2,9 @@
 
 Controll::Controll()
 {
-    cvNamedWindow("video");
-    cvNamedWindow("thresh");
-    cvResizeWindow("video", 640, 480);
+    cv::namedWindow("video");
+    cv::namedWindow("thresh");
+    cv::resizeWindow("video", 640, 480);
     processReady = false;
     counterOrg = 0;
     counterProcessed = 0;
@@ -12,9 +12,9 @@ Controll::Controll()
     time(&start);
 }
 
-void Controll::inputImage(IplImage *imgIn)
+void Controll::inputImage(cv::Mat imgIn)
 {
-    cvShowImage("video", imgIn);
+    cv::imshow("video", imgIn);
     if (processReady) 
     {
         processReady = false;
@@ -37,10 +37,10 @@ void Controll::inputImage(IplImage *imgIn)
 
 }
 
-void Controll::processedImage(IplImage *imgIn)
+void Controll::processedImage(cv::Mat imgIn)
 {
-    cvShowImage("thresh", imgIn);
-    cvReleaseImage(&imgIn);
+    qDebug() << "About to show thresh image...";
+    cv::imshow("thresh", imgIn);
     // see how much time has elapsed
     time(&end);
 

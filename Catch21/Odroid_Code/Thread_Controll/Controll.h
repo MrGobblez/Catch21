@@ -12,11 +12,11 @@ class Controll : public QObject
 public:
     Controll();
 signals:
-    void image(IplImage *imgOut);
+    void image(cv::Mat imgOut);
     void requestImage();
 public slots:
-    void inputImage(IplImage *imgIn);
-    void processedImage(IplImage *imgIn);
+    void inputImage(cv::Mat imgIn);
+    void processedImage(cv::Mat imgIn);
     void processerReady();
 private:
     bool processReady;

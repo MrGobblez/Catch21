@@ -3,20 +3,25 @@
 CameraInput::CameraInput()
 {
     // Initialize capturing live feed from the camera
-    cap.open(0);
+    capture.open(0);
+    capture.set(CV_CAP_PROP_FRAME_WIDTH, 640);
+    capture.set(CV_CAP_PROP_FRAME_HEIGHT, 480);
 
-    // Check if the capture was opened
-    if(!cap.isOpened())
-    {
-        qDebug() << "Capture could not be opened Succesfully";
-        return;
-    }
-    qDebug() << "Capure =" << QThread::currentThreadId();
+     // Couldn't get a device? Throw an error and quit
+    if(!capture.isOpened())
+     {
+        qDebug() << "Capture could not be opened successfully.";
+     }
+     qDebug() << "Capure =" << QThread::currentThreadId();
 }
 
 void CameraInput::captureImage()
 {
-    cap >> frame;
+    capture >> frame;
+
+    if(!frame.empty())
+    {
+        emit capturedImage(frame);
+    }
     //qDebug() << "capture" << QThread::currentThreadId();
-    emit capturedImage(&frame);
 }
