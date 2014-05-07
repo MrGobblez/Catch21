@@ -2,7 +2,6 @@
 #define CAMERAINPUT_H
 
 #include <QtCore>
-#include <opencv/cv.h>
 #include <opencv2/highgui/highgui.hpp>
 
 class CameraInput : public QObject
@@ -11,13 +10,13 @@ class CameraInput : public QObject
 public:
     CameraInput();
 signals:
-    void capturedImage(IplImage *img);
+    void capturedImage(cv::Mat);
 public slots:
     void captureImage();
 private:
     //VARIABLES
-    CvCapture *capture;
-    IplImage *frame;
+    cv::VideoCapture capture;
+    cv::Mat frame;
 };
 
 #endif // CAMERAINPUT_H

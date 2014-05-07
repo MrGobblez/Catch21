@@ -1,5 +1,6 @@
 #include <QtCore>
 #include <QCoreApplication>
+#include <QMetaType>
 #include "Camera/OpenCV/Camerainput.h"
 #include "Thread_Controll/Controll.h"
 #include "Motion_Tracking/Color_Recognition/Process.h"
@@ -7,7 +8,7 @@
 #include "Serial_Communication/Serial_Communication.h"
 
 
-
+Q_DECLARE_METATYPE(cv::Mat)
 int main()
 {
     int c;
@@ -29,15 +30,16 @@ int main()
     serial->moveToThread(t3);
 
     // Connections
+    qRegisterMetaType<cv::Mat>("cv::Mat");
     QObject::connect(t1, SIGNAL(started()), camera, SLOT(captureImage()));
-    QObject::connect(camera, SIGNAL(capturedImage(IplImage*)), troller, SLOT(inputImage(IplImage*)));
+    QObject::connect(camera, SIGNAL(capturedImage(cv::Mat)), troller, SLOT(inputImage(cv::Mat)));
     QObject::connect(t2, SIGNAL(started()), troller, SLOT(processerReady()));
-    QObject::connect(troller, SIGNAL(image(IplImage*)), processer, SLOT(processImage(IplImage*)));
+    QObject::connect(troller, SIGNAL(image(cv::Mat)), processer, SLOT(processImage(cv::Mat)));
     QObject::connect(troller, SIGNAL(requestImage()), camera, SLOT(captureImage()));
     QObject::connect(processer, SIGNAL(posXposY(int,int)), tracker, SLOT(position(int,int)));
     QObject::connect(tracker, SIGNAL(directionAndSpeed(int,int)), serial, SLOT(sendData(int,int)));
     QObject::connect(processer, SIGNAL(readyForWork()), troller, SLOT(processerReady()));
-    QObject::connect(processer, SIGNAL(processedImage(IplImage*)), troller, SLOT(processedImage(IplImage*)));
+    QObject::connect(processer, SIGNAL(processedImage(cv::Mat)), troller, SLOT(processedImage(cv::Mat)));
     // Need to add finish/clean up stuff for terminating threads.
 
     // Starting Threads
