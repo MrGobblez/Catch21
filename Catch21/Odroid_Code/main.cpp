@@ -6,7 +6,7 @@
 #include "Motion_Tracking/Color_Recognition/Process.h"
 #include "Motion_Tracking/Color_Recognition/Tracking.h"
 #include "Serial_Communication/Serial_Communication.h"
-
+#include "Operation_Modes/Low_Repetition/Low_Repetition_Version3/Low_Repetiton.h"
 
 Q_DECLARE_METATYPE(cv::Mat)
 int main()
@@ -19,6 +19,7 @@ int main()
     Process *processer = new Process();
     Tracking *tracker = new Tracking();
     Serial_Communication *serial = new Serial_Communication("/dev/ttyUSB0");
+    Low_Repetiton low_Repetiton;
 
     // Threads
     QThread *t1 = new QThread;
@@ -54,6 +55,7 @@ int main()
     t3->start();
 
     // wait for key to exit
+    /*
     while (true) {
          c = cvWaitKey(1);
         if(c!=-1)
@@ -62,6 +64,7 @@ int main()
             // If pressed, break out of the loop
             break;
         }
-    }
+    }*/
+    low_Repetiton.menu();
     return 0;
 }
