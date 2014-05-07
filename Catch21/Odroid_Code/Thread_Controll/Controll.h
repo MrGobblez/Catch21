@@ -19,6 +19,8 @@ public slots:
     void processedImage(cv::Mat imgIn);
     void processerReady();
 private:
+    cv::Vector<cv::Mat>imageBuffer; // create buffer to hold images
+    int counter;
     bool processReady;
     // start and end times
     time_t start, end;

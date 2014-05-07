@@ -10,15 +10,24 @@ Controll::Controll()
     counterProcessed = 0;
     // start the clock
     time(&start);
+    imageBuffer = cv::Vector<cv::Mat>(600);
+    counter = 0;
 }
 
 void Controll::inputImage(cv::Mat imgIn)
 {
-    cv::imshow("video", imgIn);
+    imageBuffer[counter] = imgIn;
+
+    cv::imshow("video", imageBuffer[counter]); //Denne henter frame fra lowrep eller highrep
     if (processReady) 
     {
         processReady = false;
         emit image(imgIn);
+    }
+    ++counter;
+    if(counter == 600) //Check if buffer is full, if yes, start to fill it from the start.
+    {
+        counter = 0;
     }
 
     emit requestImage();
