@@ -36,10 +36,16 @@ int main()
     QObject::connect(t2, SIGNAL(started()), troller, SLOT(processerReady()));
     QObject::connect(troller, SIGNAL(image(cv::Mat)), processer, SLOT(processImage(cv::Mat)));
     QObject::connect(troller, SIGNAL(requestImage()), camera, SLOT(captureImage()));
+    // Camera
+    QObject::connect(t1, SIGNAL(started()), camera, SLOT(captureImage()));
+    QObject::connect(troller, SIGNAL(requestImage()), camera, SLOT(captureImage()));
+    // Processer
+    QObject::connect(t2, SIGNAL(started()), troller, SLOT(processerReady()));
     QObject::connect(processer, SIGNAL(posXposY(int,int)), tracker, SLOT(position(int,int)));
-    QObject::connect(tracker, SIGNAL(directionAndSpeed(int,int)), serial, SLOT(sendData(int,int)));
     QObject::connect(processer, SIGNAL(readyForWork()), troller, SLOT(processerReady()));
     QObject::connect(processer, SIGNAL(processedImage(cv::Mat)), troller, SLOT(processedImage(cv::Mat)));
+    // Serial Communication
+    QObject::connect(tracker, SIGNAL(directionAndSpeed(int,int)), serial, SLOT(sendData(int,int)));
     // Need to add finish/clean up stuff for terminating threads.
 
     // Starting Threads

@@ -7,7 +7,7 @@
 int main()
 {
     cv::VideoCapture cap(0); // open the video camera no. 0
-    std::Vector <Mat> imgBuf (900);
+    cv::Vector <cv::Mat> imgBuf (900);
     int i=0;
     int j=0;
 
@@ -17,20 +17,19 @@ int main()
     {
 
         // read a new frame from video
+
         cap >> frame;
         frame.copyTo(imgBuf[i]); // store images from camera in buffer
         i++;
 
-        if(i > 60)
+        if(i > 30) //
         {
             cv::imshow("Buffer", imgBuf[j]); // show the frame in "Buffer" window
             j++;
         }
 
 
-
-
-          if (cv::waitKey(30) == 27) // wait for 'esc' key press for 30ms. If 'esc' key is pressed, break loop
+          if (cv::waitKey(1) == 27) // wait for 'esc' key press for 30ms. If 'esc' key is pressed, break loop
           {
              std::cout << "esc key is pressed by user" << std::endl;
              break;
