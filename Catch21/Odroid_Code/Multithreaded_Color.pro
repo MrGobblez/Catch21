@@ -15,7 +15,8 @@ SOURCES += main.cpp \
     Thread_Controll/Controll.cpp \
     Motion_Tracking/Color_Recognition/Tracking.cpp \
     Serial_Communication/Serial_Communication.cpp \
-    Operation_Modes/Low_Repetition/Low_Repetition_Version3/Low_Repetiton.cpp
+    Operation_Modes/Low_Repetition/Low_Repetition_Version3/Low_Repetiton.cpp \
+    File_Handler/File_Handler.cpp
 
 HEADERS += \
     Camera/OpenCV/Camerainput.h \
@@ -23,5 +24,6 @@ HEADERS += \
     Thread_Controll/Controll.h \
     Motion_Tracking/Color_Recognition/Tracking.h \
     Serial_Communication/Serial_Communication.h \
-    Operation_Modes/Low_Repetition/Low_Repetition_Version3/Low_Repetiton.h
+    Operation_Modes/Low_Repetition/Low_Repetition_Version3/Low_Repetiton.h \
+    File_Handler/File_Handler.h
 
