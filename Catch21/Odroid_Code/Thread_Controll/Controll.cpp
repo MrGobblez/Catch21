@@ -19,7 +19,7 @@ void Controll::inputImage(cv::Mat imgIn)
 {
     imageBuffer[counter] = imgIn;
 
-    //cv::imshow("video", imageBuffer[counter]); //Denne henter frame fra lowrep eller highrep
+    cv::imshow("video", imageBuffer[counter]); //Denne henter frame fra lowrep eller highrep
     if (processReady) 
     {
         processReady = false;
@@ -54,7 +54,7 @@ void Controll::inputImage(cv::Mat imgIn)
 void Controll::processedImage(cv::Mat imgIn)
 {
     qDebug() << "About to show thresh image...";
-   // cv::imshow("thresh", imgIn);  // move to gui obj by emit
+    cv::imshow("thresh", imgIn);  // move to gui obj by emit
     // see how much time has elapsed
     time(&end);
 
