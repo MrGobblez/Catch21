@@ -7,6 +7,7 @@
 #include "Motion_Tracking/Color_Recognition/Tracking.h"
 #include "Serial_Communication/Serial_Communication.h"
 #include "Operation_Modes/Low_Repetition/Low_Repetition_Version3/Low_Repetiton.h"
+#include "File_Handler/File_Handler.h"
 
 Q_DECLARE_METATYPE(cv::Mat)
 int main()
@@ -18,15 +19,22 @@ int main()
     Tracking *tracker = new Tracking();
     Serial_Communication *serial = new Serial_Communication("/dev/ttyUSB0");
     Low_Repetiton *low_Repetiton = new Low_Repetiton();
+    // This is for testing purposes!
+    FileHandler *file_Reader = new FileHandler();
+    FileHandler *file_Writer = new FileHandler();
+
 
     // Threads
     QThread *t1 = new QThread;
     QThread *t2 = new QThread;
     QThread *t3 = new QThread;
+    QThread *t4 = new QThread;
     camera->moveToThread(t1);
     processer->moveToThread(t2);
     tracker->moveToThread(t3);
     serial->moveToThread(t3);
+    file_Writer->moveToThread(t4);
+
 
     // Connections
     qRegisterMetaType<cv::Mat>("cv::Mat");
@@ -48,13 +56,17 @@ int main()
     // Low Repetition
     QObject::connect(low_Repetiton, SIGNAL(startRecording(bool)), troller, SLOT(startRecording(bool)));
     QObject::connect(low_Repetiton, SIGNAL(stopRecording()), troller, SLOT(stopRecording()));
+    // File Handler
+    QObject::connect(troller, SIGNAL(imageToRecord(cv::Mat)), file_Writer, SLOT(writeImage(cv::Mat)));
+    QObject::connect(troller, SIGNAL(startPlayback()), file_Reader, SLOT(readFromFile()));
 
     // Need to add finish/clean up stuff for terminating threads.
 
     // Starting Threads
     t1->start();
-    t2->start();
+    //t2->start();
     t3->start();
+    t4->start();
 
     low_Repetiton->menu();
     return 0;

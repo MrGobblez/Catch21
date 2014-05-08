@@ -15,6 +15,7 @@ signals:
     void image(cv::Mat imgOut);
     void imageToRecord(cv::Mat imgOut);
     void requestImage();
+    void startPlayback();
 public slots:
     void inputImage(cv::Mat imgIn);
     void processedImage(cv::Mat imgIn);

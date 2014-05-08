@@ -47,7 +47,7 @@ void Controll::inputImage(cv::Mat imgIn)
     fpsOrg = counterOrg / sec;
 
     // will print out Inf until sec is greater than 0
-    printf("FPS Org stream = %.2f\n", fpsOrg);
+     printf("FPS Org stream = %.2f\n", fpsOrg);
 
 }
 
@@ -83,5 +83,7 @@ void Controll::startRecording(bool showWindow)
 
 void Controll::stopRecording()
 {
-
+    // file lock?
+    recording = false;
+    emit startPlayback();
 }

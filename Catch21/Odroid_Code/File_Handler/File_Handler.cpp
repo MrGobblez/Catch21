@@ -7,6 +7,7 @@ FileHandler::FileHandler()
 
 void FileHandler::readFromFile()
 {
+    // inFile.release(); does not need, but if not used the same file will all data
     // Create a Video Capture object to read from a video file
     outFile.open("output.mpg");
 
@@ -17,11 +18,14 @@ void FileHandler::readFromFile()
         return;
     }
 
-    // Get the framerate
+    // Get the framerate ****BUG! returns 0!
     frameRate = outFile.get(CV_CAP_PROP_FPS);
 
     // The delay between each frame in ms corresponds to video frame rate
     delay = 1000/frameRate;
+
+    // frameRate == 0! codec bug? Sets delay for 30 fps...
+    delay = 33;
 
     cv::namedWindow("Video from file");
 
@@ -41,13 +45,14 @@ void FileHandler::readFromFile()
         cv::imshow("Video from file",frame);
 
         // Introduce an artificial delay between the refreshing of each frame
-        if(cv::waitKey(delay)>= 0)
+        if(char(cv::waitKey(delay)) == ' ')
         {
              qDebug() << "!!!Manually Stopped!!!";
              break;
         }
 
     }
+    outFile.release();
 }
 
 void FileHandler::writeImage(cv::Mat imageIn)
@@ -65,7 +70,7 @@ void FileHandler::createFile()
 {
 
     // Create a video writer object and initialize it at 30 fps and correct resolution
-    inFile.open("output.mpg",CV_FOURCC('M','P','E','G'),30,resolution);
+    inFile.open("output.mpg",CV_FOURCC('M','J','P','G'),30,resolution);
 
     // Check if the file were created
     if(!inFile.isOpened())

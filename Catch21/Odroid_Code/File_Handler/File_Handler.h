@@ -8,8 +8,8 @@ class FileHandler : public QObject
     Q_OBJECT
 public:
     FileHandler();
-    void readFromFile();
 public slots:
+    void readFromFile();
     void writeImage(cv::Mat imageIn);
 private:
     void createFile();

@@ -36,8 +36,9 @@ void Low_Repetiton::menu()
             {
                 cv::destroyWindow("Key Controls");
             }
-            // memoRead.read(speed);
+
             // Need to wait unti playback is finished
+            cv::waitKey(0); // press key to continiue
 
             break;
 
