@@ -27,9 +27,11 @@ void Low_Repetiton::menu()
             }
 
             // Start write here use emit to start process in bg
-            // memoWrite.write(window);
+            emit startRecording(window);
 
-            // cv::waitKey(0) press key to stop recording and start playback.
+            cv::waitKey(0); //press key to stop recording and start playback.
+            emit stopRecording();
+
             if(window == false)
             {
                 cv::destroyWindow("Key Controls");

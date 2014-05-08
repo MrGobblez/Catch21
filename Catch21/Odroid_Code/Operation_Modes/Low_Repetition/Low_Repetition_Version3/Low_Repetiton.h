@@ -1,14 +1,18 @@
 #ifndef LOW_REPETITON_H
 #define LOW_REPETITON_H
+#include <QtCore>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
-class Low_Repetiton
+class Low_Repetiton : public QObject
 {
+    Q_OBJECT
 public:
     Low_Repetiton();
     void menu(); // control functions for recording video
-
+signals:
+    void startRecording(bool showWindow);
+    void stopRecording();
 private:
     void setWindow(); // toggle window to on/off
     void startWindow(); // window that shows the keycommands

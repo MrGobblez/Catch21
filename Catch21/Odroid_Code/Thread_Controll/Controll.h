@@ -13,15 +13,19 @@ public:
     Controll();
 signals:
     void image(cv::Mat imgOut);
+    void imageToRecord(cv::Mat imgOut);
     void requestImage();
 public slots:
     void inputImage(cv::Mat imgIn);
     void processedImage(cv::Mat imgIn);
     void processerReady();
+    void startRecording(bool showWindow);
+    void stopRecording();
 private:
     cv::Vector<cv::Mat>imageBuffer; // create buffer to hold images
     int counter;
     bool processReady;
+    bool recording;
     // start and end times
     time_t start, end;
     // fps calculated using number of frames / seconds

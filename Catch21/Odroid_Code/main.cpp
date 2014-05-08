@@ -11,15 +11,13 @@
 Q_DECLARE_METATYPE(cv::Mat)
 int main()
 {
-    int c;
-
     // Objects
     CameraInput *camera = new CameraInput();
     Controll *troller = new Controll();
     Process *processer = new Process();
     Tracking *tracker = new Tracking();
     Serial_Communication *serial = new Serial_Communication("/dev/ttyUSB0");
-    Low_Repetiton low_Repetiton;
+    Low_Repetiton *low_Repetiton = new Low_Repetiton();
 
     // Threads
     QThread *t1 = new QThread;
@@ -32,9 +30,9 @@ int main()
 
     // Connections
     qRegisterMetaType<cv::Mat>("cv::Mat");
-    QObject::connect(t1, SIGNAL(started()), camera, SLOT(captureImage()));
+    //QObject::connect(t1, SIGNAL(started()), camera, SLOT(captureImage()));
     QObject::connect(camera, SIGNAL(capturedImage(cv::Mat)), troller, SLOT(inputImage(cv::Mat)));
-    QObject::connect(t2, SIGNAL(started()), troller, SLOT(processerReady()));
+    //QObject::connect(t2, SIGNAL(started()), troller, SLOT(processerReady()));
     QObject::connect(troller, SIGNAL(image(cv::Mat)), processer, SLOT(processImage(cv::Mat)));
     QObject::connect(troller, SIGNAL(requestImage()), camera, SLOT(captureImage()));
     // Camera
@@ -47,6 +45,10 @@ int main()
     QObject::connect(processer, SIGNAL(processedImage(cv::Mat)), troller, SLOT(processedImage(cv::Mat)));
     // Serial Communication
     QObject::connect(tracker, SIGNAL(directionAndSpeed(int,int)), serial, SLOT(sendData(int,int)));
+    // Low Repetition
+    QObject::connect(low_Repetiton, SIGNAL(startRecording(bool)), troller, SLOT(startRecording(bool)));
+    QObject::connect(low_Repetiton, SIGNAL(stopRecording()), troller, SLOT(stopRecording()));
+
     // Need to add finish/clean up stuff for terminating threads.
 
     // Starting Threads
@@ -54,17 +56,6 @@ int main()
     t2->start();
     t3->start();
 
-    // wait for key to exit
-    /*
-    while (true) {
-         c = cvWaitKey(1);
-        if(c!=-1)
-        {
-            // Add thread termination before breaking the loop.
-            // If pressed, break out of the loop
-            break;
-        }
-    }*/
-    low_Repetiton.menu();
+    low_Repetiton->menu();
     return 0;
 }
