@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
        // Create a window to show the frames
 
        // Play the video in a loop till it ends
-       while(true)
+       while(char(cv::waitKey(1)) != 'q' && capture.isOpened())
        {
 
            capture >> frame;
