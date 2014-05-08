@@ -4,7 +4,7 @@
 #include <QtCore>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv/cv.h>
-#include <time.h>
+#include <time.h> // for fps calculation, debug, remove in release.
 
 class Controll : public QObject
 {
