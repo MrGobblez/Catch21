@@ -8,6 +8,7 @@
 #include "Serial_Communication/Serial_Communication.h"
 #include "Operation_Modes/Low_Repetition/Low_Repetition_Version3/Low_Repetiton.h"
 #include "File_Handler/File_Handler.h"
+#include "GUI/Window_Handler/Window_Handler.h"
 
 Q_DECLARE_METATYPE(cv::Mat)
 int main()
@@ -20,8 +21,8 @@ int main()
     Serial_Communication *serial = new Serial_Communication("/dev/ttyUSB0");
     Low_Repetiton *low_Repetiton = new Low_Repetiton();
     // This is for testing purposes!
-    FileHandler *file_Reader = new FileHandler();
-    FileHandler *file_Writer = new FileHandler();
+    FileHandler *file_Handler = new FileHandler();
+    Window_Handler *window_Handler = new Window_Handler();
 
 
     // Threads
@@ -33,7 +34,8 @@ int main()
     processer->moveToThread(t2);
     tracker->moveToThread(t3);
     serial->moveToThread(t3);
-    file_Writer->moveToThread(t4);
+    troller->moveToThread(t4);
+//    file_Handler->moveToThread(t1);
 
 
     // Connections
@@ -41,7 +43,7 @@ int main()
     //QObject::connect(t1, SIGNAL(started()), camera, SLOT(captureImage()));
     QObject::connect(camera, SIGNAL(capturedImage(cv::Mat)), troller, SLOT(inputImage(cv::Mat)));
     //QObject::connect(t2, SIGNAL(started()), troller, SLOT(processerReady()));
-    QObject::connect(troller, SIGNAL(image(cv::Mat)), processer, SLOT(processImage(cv::Mat)));
+    QObject::connect(troller, SIGNAL(imageToShow(cv::Mat)), processer, SLOT(processImage(cv::Mat)));
     QObject::connect(troller, SIGNAL(requestImage()), camera, SLOT(captureImage()));
     // Camera
     QObject::connect(t1, SIGNAL(started()), camera, SLOT(captureImage()));
@@ -57,9 +59,12 @@ int main()
     QObject::connect(low_Repetiton, SIGNAL(startRecording(bool)), troller, SLOT(startRecording(bool)));
     QObject::connect(low_Repetiton, SIGNAL(stopRecording()), troller, SLOT(stopRecording()));
     // File Handler
-    QObject::connect(troller, SIGNAL(imageToRecord(cv::Mat)), file_Writer, SLOT(writeImage(cv::Mat)));
-    QObject::connect(troller, SIGNAL(startPlayback()), file_Reader, SLOT(readFromFile()));
-
+    QObject::connect(troller, SIGNAL(imageToRecord(cv::Mat)), file_Handler, SLOT(writeImage(cv::Mat)));
+    QObject::connect(troller, SIGNAL(startPlayback()), file_Handler, SLOT(readFromFile()));
+    // Window Handler
+    QObject::connect(troller, SIGNAL(imageToShow(cv::Mat)), window_Handler, SLOT(drawImage(cv::Mat)));
+    QObject::connect(low_Repetiton, SIGNAL(displayMenu(cv::Mat)), window_Handler, SLOT(drawImage(cv::Mat)));
+    QObject::connect(file_Handler, SIGNAL(showFrame(cv::Mat)), window_Handler, SLOT(drawImage(cv::Mat)));
     // Need to add finish/clean up stuff for terminating threads.
 
     // Starting Threads

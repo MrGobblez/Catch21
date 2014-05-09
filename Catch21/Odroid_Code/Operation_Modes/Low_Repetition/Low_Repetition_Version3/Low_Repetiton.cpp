@@ -21,23 +21,17 @@ void Low_Repetiton::menu()
             break;
 
             case ' ': // start recording
-            if( window == true) // destroys keybinds window when realtime window is to be shown
-            {
-                cv::destroyWindow("Key Controls");
-            }
 
-            // Start write here use emit to start process in bg
             emit startRecording(window);
+            if (!window)
+            {
+                recNoWindow();
+            }
 
             cv::waitKey(0); //press key to stop recording and start playback.
             emit stopRecording();
 
-            if(window == false)
-            {
-                cv::destroyWindow("Key Controls");
-            }
-
-            // Need to wait unti playback is finished
+            // Need to wait unti playback is finished ** Needs better solution!
             cv::waitKey(0); // press key to continiue
 
             break;
@@ -63,16 +57,17 @@ void Low_Repetiton::setWindow()
 
 void Low_Repetiton::startWindow()
 {
-    cv::Mat image;
-    image = cv::imread("./catch21.jpg", CV_LOAD_IMAGE_COLOR); // read image file
-
-    // Use emit to gui class!
-    cv::namedWindow("Key Controls", cv::WINDOW_AUTOSIZE); // window to display image
-    cvMoveWindow("Key Controls",0,0);
-    cv::imshow("Key Controls", image);
+    menuImg = cv::imread("./catch21.jpg", CV_LOAD_IMAGE_COLOR); // read image file
+    emit displayMenu(menuImg);
 }
 
 void Low_Repetiton::setSpeed()
 {
     speed = !speed;
+}
+
+void Low_Repetiton::recNoWindow()
+{
+    menuImg = cv::imread("./rec.jpg", CV_LOAD_IMAGE_COLOR); // read image file
+    emit displayMenu(menuImg);
 }

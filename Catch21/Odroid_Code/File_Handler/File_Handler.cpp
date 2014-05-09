@@ -7,7 +7,7 @@ FileHandler::FileHandler()
 
 void FileHandler::readFromFile()
 {
-    // inFile.release(); does not need, but if not used the same file will all data
+    // inFile.release(); does not need, but if not used the same file will contain all data
     // Create a Video Capture object to read from a video file
     outFile.open("output.mpg");
 
@@ -27,12 +27,10 @@ void FileHandler::readFromFile()
     // frameRate == 0! codec bug? Sets delay for 30 fps...
     delay = 33;
 
-    cv::namedWindow("Video from file");
-
     // Play the video in a loop till it ends
     while(char(cv::waitKey(1)) != 'q' && outFile.isOpened())
     {
-        cv::Mat frame;
+        qDebug() << "starting while";
         outFile >> frame;
 
         // Check if the video is over
@@ -42,16 +40,18 @@ void FileHandler::readFromFile()
             break;
         }
 
-        cv::imshow("Video from file",frame);
-
-        // Introduce an artificial delay between the refreshing of each frame
+        emit showFrame(frame);
+        qDebug() << "emitted";
+        // Introduce an artificial delay between the refreshing of each frame to keep correct frame rate
         if(char(cv::waitKey(delay)) == ' ')
         {
              qDebug() << "!!!Manually Stopped!!!";
              break;
         }
+        qDebug() << "waited " << outFile.isOpened();
 
     }
+    qDebug() << "while done";
     outFile.release();
 }
 
