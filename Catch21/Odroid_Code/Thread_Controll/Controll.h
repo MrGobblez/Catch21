@@ -17,10 +17,14 @@ signals:
 public slots:
     void inputImage(cv::Mat imgIn);
     void processedImage(cv::Mat imgIn);
+    void increaseDelay();
+    void decreaseDelay();
+    void setDelay(int timeshift);
     void processerReady();
 private:
     cv::Vector<cv::Mat>imageBuffer; // create buffer to hold images
     int counter;
+    int delay;
     bool processReady;
     // start and end times
     time_t start, end;

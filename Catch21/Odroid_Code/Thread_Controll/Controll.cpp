@@ -12,6 +12,7 @@ Controll::Controll()
     time(&start);
     imageBuffer = cv::Vector<cv::Mat>(600);
     counter = 0;
+    delay = 0;
 }
 
 void Controll::inputImage(cv::Mat imgIn)
@@ -61,6 +62,41 @@ void Controll::processedImage(cv::Mat imgIn)
 
     // will print out Inf until sec is greater than 0
     printf("FPS processed stream = %.2f\n", fpsProcessed);
+}
+
+void Controll::increaseDelay()
+{
+    if(this->delay < 584)
+    {
+        delay += 15;
+    }
+
+    else
+    {
+        int temp = 0;
+        temp = (this->delay+15)-599;
+        this->delay = temp;
+    }
+}
+
+void Controll::decreaseDelay()
+{
+    if(this->delay > 15)
+    {
+        delay -= 15;
+    }
+
+    else
+    {
+        int temp = 0;
+        temp = 599 - (this->delay-15);
+        this->delay = temp;
+    }
+}
+
+void Controll::setDelay(int timeshift)
+{
+    this->delay = timeshift;
 }
 
 void Controll::processerReady()
