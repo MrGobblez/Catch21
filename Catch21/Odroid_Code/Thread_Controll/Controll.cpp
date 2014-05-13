@@ -2,9 +2,6 @@
 
 Controll::Controll()
 {
-    cv::namedWindow("video");
-    cv::namedWindow("thresh");
-    cv::resizeWindow("video", 640, 480);
     processReady = false;
     counterOrg = 0;
     counterProcessed = 0;
@@ -13,18 +10,31 @@ Controll::Controll()
     imageBuffer = cv::Vector<cv::Mat>(600);
     counter = 0;
     delay = 0;
+    recording = false;
+    showImage = false;
 }
 
 void Controll::inputImage(cv::Mat imgIn)
 {
     imageBuffer[counter] = imgIn;
 
-    cv::imshow("video", imageBuffer[counter]); //Denne henter frame fra lowrep eller highrep
+    //cv::imshow("video", imageBuffer[counter]); //Denne henter frame fra lowrep eller highrep
+    if (showImage)
+    {
+        emit imageToShow(imgIn);
+    }
+
     if (processReady) 
     {
         processReady = false;
-        emit image(imgIn);
+        emit imageToProcess(imgIn);
     }
+
+    if (recording)
+    {
+        emit imageToRecord(imgIn);
+    }
+
     ++counter;
     if(counter == 600) //Check if buffer is full, if yes, start to fill it from the start.
     {
@@ -43,14 +53,14 @@ void Controll::inputImage(cv::Mat imgIn)
     fpsOrg = counterOrg / sec;
 
     // will print out Inf until sec is greater than 0
-    printf("FPS Org stream = %.2f\n", fpsOrg);
+//     printf("FPS Org stream = %.2f\n", fpsOrg);
 
 }
 
 void Controll::processedImage(cv::Mat imgIn)
 {
     qDebug() << "About to show thresh image...";
-    cv::imshow("thresh", imgIn);
+    cv::imshow("thresh", imgIn);  // move to gui obj by emit
     // see how much time has elapsed
     time(&end);
 
@@ -103,4 +113,19 @@ void Controll::processerReady()
 {
     processReady = true;
     //qDebug() << "processer Ready" << QThread::currentThreadId();
+}
+
+void Controll::startRecording(bool showWindow)
+{
+    showImage = showWindow;
+    recording = true;
+    emit requestImage();
+}
+
+void Controll::stopRecording()
+{
+    // file lock?
+    recording = false;
+    showImage = false;
+    emit startPlayback();
 }
