@@ -1,12 +1,12 @@
-#include "Low_Repetiton.h"
+#include "Menu.h"
 
-Low_Repetiton::Low_Repetiton()
+Menu::Menu()
 {
     window = true;
     speed = true;
 }
 
-void Low_Repetiton::menu()
+void Menu::menu()
 {
     while( true )
     {
@@ -50,23 +50,23 @@ void Low_Repetiton::menu()
     } // end while loop
 }
 
-void Low_Repetiton::setWindow()
+void Menu::setWindow()
 {
     window = !window;
 }
 
-void Low_Repetiton::startWindow()
+void Menu::startWindow()
 {
     menuImg = cv::imread("./catch21.jpg", CV_LOAD_IMAGE_COLOR); // read image file
     emit displayMenu(menuImg);
 }
 
-void Low_Repetiton::setSpeed()
+void Menu::setSpeed()
 {
     speed = !speed;
 }
 
-void Low_Repetiton::recNoWindow()
+void Menu::recNoWindow()
 {
     menuImg = cv::imread("./rec.jpg", CV_LOAD_IMAGE_COLOR); // read image file
     emit displayMenu(menuImg);

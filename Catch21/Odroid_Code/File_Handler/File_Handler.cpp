@@ -1,11 +1,11 @@
 #include "File_Handler.h"
 
-FileHandler::FileHandler()
+File_Handler::File_Handler()
 {
     resolution = cv::Size((int)640, (int)480);
 }
 
-void FileHandler::readFromFile()
+void File_Handler::readFromFile()
 {
     // inFile.release(); does not need, but if not used the same file will contain all data
     // Create a Video Capture object to read from a video file
@@ -55,7 +55,7 @@ void FileHandler::readFromFile()
     outFile.release();
 }
 
-void FileHandler::writeImage(cv::Mat imageIn)
+void File_Handler::writeImage(cv::Mat imageIn)
 {
     // Checks if file exists, if not create
     if(!inFile.isOpened())
@@ -66,7 +66,7 @@ void FileHandler::writeImage(cv::Mat imageIn)
     inFile << imageIn;
 }
 
-void FileHandler::createFile()
+void File_Handler::createFile()
 {
 
     // Create a video writer object and initialize it at 30 fps and correct resolution

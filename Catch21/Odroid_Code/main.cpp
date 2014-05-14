@@ -6,7 +6,7 @@
 #include "Motion_Tracking/Color_Recognition/Process.h"
 #include "Motion_Tracking/Color_Recognition/Tracking.h"
 #include "Serial_Communication/Serial_Communication.h"
-#include "Operation_Modes/Low_Repetition/Low_Repetition_Version3/Low_Repetiton.h"
+#include "Operation_Modes/Low_Repetition/Low_Repetition_Version3/Menu.h"
 #include "File_Handler/File_Handler.h"
 #include "GUI/Window_Handler/Window_Handler.h"
 
@@ -15,13 +15,13 @@ int main()
 {
     // Objects
     CameraInput *camera = new CameraInput();
-    Controll *troller = new Controll();
+    Controll *controller = new Controll();
     Process *processer = new Process();
     Tracking *tracker = new Tracking();
     Serial_Communication *serial = new Serial_Communication("/dev/ttyUSB0");
-    Low_Repetiton *low_Repetiton = new Low_Repetiton();
+    Menu *menu = new Menu();
     // This is for testing purposes!
-    FileHandler *file_Handler = new FileHandler();
+    File_Handler *file_Handler = new File_Handler();
     Window_Handler *window_Handler = new Window_Handler();
 
 
@@ -34,36 +34,36 @@ int main()
     processer->moveToThread(t2);
     tracker->moveToThread(t3);
     serial->moveToThread(t3);
-    troller->moveToThread(t4);
+    controller->moveToThread(t4);
 //    file_Handler->moveToThread(t1);
 
 
     // Connections
     qRegisterMetaType<cv::Mat>("cv::Mat");
     //QObject::connect(t1, SIGNAL(started()), camera, SLOT(captureImage()));
-    QObject::connect(camera, SIGNAL(capturedImage(cv::Mat)), troller, SLOT(inputImage(cv::Mat)));
+    QObject::connect(camera, SIGNAL(capturedImage(cv::Mat)), controller, SLOT(inputImage(cv::Mat)));
     //QObject::connect(t2, SIGNAL(started()), troller, SLOT(processerReady()));
-    QObject::connect(troller, SIGNAL(imageToShow(cv::Mat)), processer, SLOT(processImage(cv::Mat)));
-    QObject::connect(troller, SIGNAL(requestImage()), camera, SLOT(captureImage()));
+    QObject::connect(controller, SIGNAL(imageToShow(cv::Mat)), processer, SLOT(processImage(cv::Mat)));
+    QObject::connect(controller, SIGNAL(requestImage()), camera, SLOT(captureImage()));
     // Camera
     QObject::connect(t1, SIGNAL(started()), camera, SLOT(captureImage()));
-    QObject::connect(troller, SIGNAL(requestImage()), camera, SLOT(captureImage()));
+    QObject::connect(controller, SIGNAL(requestImage()), camera, SLOT(captureImage()));
     // Processer
-    QObject::connect(t2, SIGNAL(started()), troller, SLOT(processerReady()));
+    QObject::connect(t2, SIGNAL(started()), controller, SLOT(processerReady()));
     QObject::connect(processer, SIGNAL(posXposY(int,int)), tracker, SLOT(position(int,int)));
-    QObject::connect(processer, SIGNAL(readyForWork()), troller, SLOT(processerReady()));
-    QObject::connect(processer, SIGNAL(processedImage(cv::Mat)), troller, SLOT(processedImage(cv::Mat)));
+    QObject::connect(processer, SIGNAL(readyForWork()), controller, SLOT(processerReady()));
+    QObject::connect(processer, SIGNAL(processedImage(cv::Mat)), controller, SLOT(processedImage(cv::Mat)));
     // Serial Communication
     QObject::connect(tracker, SIGNAL(directionAndSpeed(int,int)), serial, SLOT(sendData(int,int)));
     // Low Repetition
-    QObject::connect(low_Repetiton, SIGNAL(startRecording(bool)), troller, SLOT(startRecording(bool)));
-    QObject::connect(low_Repetiton, SIGNAL(stopRecording()), troller, SLOT(stopRecording()));
+    QObject::connect(menu, SIGNAL(startRecording(bool)), controller, SLOT(startRecording(bool)));
+    QObject::connect(menu, SIGNAL(stopRecording()), controller, SLOT(stopRecording()));
     // File Handler
-    QObject::connect(troller, SIGNAL(imageToRecord(cv::Mat)), file_Handler, SLOT(writeImage(cv::Mat)));
-    QObject::connect(troller, SIGNAL(startPlayback()), file_Handler, SLOT(readFromFile()));
+    QObject::connect(controller, SIGNAL(imageToRecord(cv::Mat)), file_Handler, SLOT(writeImage(cv::Mat)));
+    QObject::connect(controller, SIGNAL(startPlayback()), file_Handler, SLOT(readFromFile()));
     // Window Handler
-    QObject::connect(troller, SIGNAL(imageToShow(cv::Mat)), window_Handler, SLOT(drawImage(cv::Mat)));
-    QObject::connect(low_Repetiton, SIGNAL(displayMenu(cv::Mat)), window_Handler, SLOT(drawImage(cv::Mat)));
+    QObject::connect(controller, SIGNAL(imageToShow(cv::Mat)), window_Handler, SLOT(drawImage(cv::Mat)));
+    QObject::connect(menu, SIGNAL(displayMenu(cv::Mat)), window_Handler, SLOT(drawImage(cv::Mat)));
     QObject::connect(file_Handler, SIGNAL(showFrame(cv::Mat)), window_Handler, SLOT(drawImage(cv::Mat)));
     // Need to add finish/clean up stuff for terminating threads.
 
@@ -73,6 +73,6 @@ int main()
     t3->start();
     t4->start();
 
-    low_Repetiton->menu();
+    menu->menu();
     return 0;
 }

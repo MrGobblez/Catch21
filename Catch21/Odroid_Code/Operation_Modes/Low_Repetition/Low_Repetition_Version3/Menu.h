@@ -4,11 +4,11 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
-class Low_Repetiton : public QObject
+class Menu : public QObject
 {
     Q_OBJECT
 public:
-    Low_Repetiton();
+    Menu();
     void menu(); // control functions for recording video
 signals:
     void startRecording(bool showWindow);

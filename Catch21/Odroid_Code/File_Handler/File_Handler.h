@@ -3,11 +3,11 @@
 #include <opencv2/opencv.hpp>
 #include <QtCore>
 
-class FileHandler : public QObject
+class File_Handler : public QObject
 {
     Q_OBJECT
 public:
-    FileHandler();
+    File_Handler();
 public slots:
     void readFromFile();
     void writeImage(cv::Mat imageIn);
