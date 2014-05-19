@@ -15,10 +15,12 @@ signals:
     void showFrame(cv::Mat frame);
 private:
     void createFile();
+
     cv::VideoWriter inFile;
     cv::VideoCapture outFile;
     cv::Size resolution;
     cv::Mat frame;
+
     int delay;
     double frameRate;
 };

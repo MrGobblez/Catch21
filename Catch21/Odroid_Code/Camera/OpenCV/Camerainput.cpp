@@ -17,6 +17,7 @@ CameraInput::CameraInput()
 
 void CameraInput::captureImage()
 {
+    //Extract frame from video stream and save it to frame.
     capture >> frame;
 
     if(!frame.empty())

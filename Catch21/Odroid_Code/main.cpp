@@ -38,38 +38,41 @@ int main()
 //    file_Handler->moveToThread(t1);
 
 
-    // Connections
+    // Connect signals to slots. Whenever a signal is emitted in a function, its corresponding (connected) function will run.
     qRegisterMetaType<cv::Mat>("cv::Mat");
-    //QObject::connect(t1, SIGNAL(started()), camera, SLOT(captureImage()));
-    QObject::connect(camera, SIGNAL(capturedImage(cv::Mat)), controller, SLOT(inputImage(cv::Mat)));
-    //QObject::connect(t2, SIGNAL(started()), troller, SLOT(processerReady()));
-    QObject::connect(controller, SIGNAL(imageToShow(cv::Mat)), processer, SLOT(processImage(cv::Mat)));
-    QObject::connect(controller, SIGNAL(requestImage()), camera, SLOT(captureImage()));
-    // Camera
+
+    //Signals calling from:
+    //Main thread
+    QObject::connect(menu, SIGNAL(startRecording(bool)), controller, SLOT(startRecording(bool)));
+    QObject::connect(menu, SIGNAL(stopRecording()), controller, SLOT(stopRecording()));
+    QObject::connect(menu, SIGNAL(displayMenu(cv::Mat)), window_Handler, SLOT(drawImage(cv::Mat)));
+    QObject::connect(file_Handler, SIGNAL(showFrame(cv::Mat)), window_Handler, SLOT(drawImage(cv::Mat)));
+
+    //Thread 1
     QObject::connect(t1, SIGNAL(started()), camera, SLOT(captureImage()));
-    QObject::connect(controller, SIGNAL(requestImage()), camera, SLOT(captureImage()));
-    // Processer
+    QObject::connect(camera, SIGNAL(capturedImage(cv::Mat)), controller, SLOT(inputImage(cv::Mat)));
+
+    //Thread 2
+    QObject::connect(t2, SIGNAL(started()), troller, SLOT(processerReady()));
     QObject::connect(t2, SIGNAL(started()), controller, SLOT(processerReady()));
+
     QObject::connect(processer, SIGNAL(posXposY(int,int)), tracker, SLOT(position(int,int)));
     QObject::connect(processer, SIGNAL(readyForWork()), controller, SLOT(processerReady()));
     QObject::connect(processer, SIGNAL(processedImage(cv::Mat)), controller, SLOT(processedImage(cv::Mat)));
-    // Serial Communication
+
+    //Thread 3
     QObject::connect(tracker, SIGNAL(directionAndSpeed(int,int)), serial, SLOT(sendData(int,int)));
-    // Low Repetition
-    QObject::connect(menu, SIGNAL(startRecording(bool)), controller, SLOT(startRecording(bool)));
-    QObject::connect(menu, SIGNAL(stopRecording()), controller, SLOT(stopRecording()));
-    // File Handler
+
+    //Thread 4
+    QObject::connect(controller, SIGNAL(imageToShow(cv::Mat)), processer, SLOT(processImage(cv::Mat)));
+    QObject::connect(controller, SIGNAL(requestImage()), camera, SLOT(captureImage()));
     QObject::connect(controller, SIGNAL(imageToRecord(cv::Mat)), file_Handler, SLOT(writeImage(cv::Mat)));
     QObject::connect(controller, SIGNAL(startPlayback()), file_Handler, SLOT(readFromFile()));
-    // Window Handler
     QObject::connect(controller, SIGNAL(imageToShow(cv::Mat)), window_Handler, SLOT(drawImage(cv::Mat)));
-    QObject::connect(menu, SIGNAL(displayMenu(cv::Mat)), window_Handler, SLOT(drawImage(cv::Mat)));
-    QObject::connect(file_Handler, SIGNAL(showFrame(cv::Mat)), window_Handler, SLOT(drawImage(cv::Mat)));
-    // Need to add finish/clean up stuff for terminating threads.
 
     // Starting Threads
     t1->start();
-    //t2->start();
+    t2->start();
     t3->start();
     t4->start();
 

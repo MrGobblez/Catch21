@@ -4,6 +4,7 @@ Tracking::Tracking()
 {
 }
 
+//This whole function just checks the position of the tracked object, then moves the camera in that direction with increasing speed as the object nears the camera edge.
 void Tracking::position(int posX, int posY)
 {
     if(posX < 150)

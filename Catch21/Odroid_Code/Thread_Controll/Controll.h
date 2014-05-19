@@ -30,10 +30,12 @@ private:
     cv::Vector<cv::Mat>imageBuffer; // create buffer to hold images
     int counter;
     int delay;
+
     bool processReady;
     bool recording;
     bool showImage;
-    // start and end times
+
+    //start and end times
     time_t start, end;
     // fps calculated using number of frames / seconds
     double fpsOrg, fpsProcessed;
