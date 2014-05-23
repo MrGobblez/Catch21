@@ -32,8 +32,6 @@ void Process::processImage(cv::Mat img)
     posX = moment10/area;
     posY = moment01/area;
 
-    qDebug() << "Done tampering with picture. Emitting...";
-
     //Send the positions for tracking, the processed image for debugging and set the object ready for more work.
     emit (posXposY(posX,posY));
     emit (processedImage(imgThresh));

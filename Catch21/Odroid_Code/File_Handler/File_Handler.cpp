@@ -24,13 +24,15 @@ void File_Handler::readFromFile()
     // The delay between each frame in ms corresponds to video frame rate
     delay = 1000/frameRate;
 
-    // frameRate == 0! codec bug? Sets delay for 30 fps...
-    delay = 33;
+    // frameRate < 0! codec bug? Sets delay for 30 fps...
+    if (delay < 1)
+    {
+        delay = 33;
+    }
 
     // Play the video in a loop till it ends
     while(char(cv::waitKey(1)) != 'q' && outFile.isOpened())
     {
-        qDebug() << "starting while";
         outFile >> frame;
 
         // Check if the video is over
@@ -41,17 +43,14 @@ void File_Handler::readFromFile()
         }
 
         emit showFrame(frame);
-        qDebug() << "emitted";
         // Introduce an artificial delay between the refreshing of each frame to keep correct frame rate
         if(char(cv::waitKey(delay)) == ' ')
         {
              qDebug() << "!!!Manually Stopped!!!";
              break;
         }
-        qDebug() << "waited " << outFile.isOpened();
 
     }
-    qDebug() << "while done";
     outFile.release();
 }
 

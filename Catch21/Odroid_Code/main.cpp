@@ -20,7 +20,6 @@ int main()
     Tracking *tracker = new Tracking();
     Serial_Communication *serial = new Serial_Communication("/dev/ttyUSB0", "/dev/ttyUSB1");
     Menu *menu = new Menu();
-    // This is for testing purposes!
     File_Handler *file_Handler = new File_Handler();
     Window_Handler *window_Handler = new Window_Handler();
 
@@ -35,7 +34,7 @@ int main()
     tracker->moveToThread(t3);
     serial->moveToThread(t3);
     controller->moveToThread(t4);
-//    file_Handler->moveToThread(t1);
+//    file_Handler->moveToThread(t1); // #### Bug in filehandler, works only in main/gui thread ####
 
 
     // Connect signals to slots. Whenever a signal is emitted in a function, its corresponding (connected) function will run.
@@ -56,7 +55,6 @@ int main()
     QObject::connect(t2, SIGNAL(started()), controller, SLOT(processerReady()));
     QObject::connect(processer, SIGNAL(posXposY(int,int)), tracker, SLOT(position(int,int)));
     QObject::connect(processer, SIGNAL(readyForWork()), controller, SLOT(processerReady()));
-    QObject::connect(processer, SIGNAL(processedImage(cv::Mat)), controller, SLOT(processedImage(cv::Mat)));
 
     //Thread 3
     QObject::connect(tracker, SIGNAL(directionAndSpeed(int,int)), serial, SLOT(sendData(int,int)));
@@ -70,7 +68,7 @@ int main()
 
     // Starting Threads
     t1->start();
-    //t2->start();  ####   BUG in color recognition!  ####
+    t2->start();
     t3->start();
     t4->start();
 
