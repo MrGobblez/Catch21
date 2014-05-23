@@ -17,17 +17,23 @@ class Serial_Communication : public QObject
 {
     Q_OBJECT
 public:
-	Serial_Communication(char portID[]);
-
+    Serial_Communication(char portID1[], char portID2[]);
+    Serial_Communication(char portID[]);
 public slots:
-	void sendData(int direction, int speed);
+    void sendDataToControlUnit(int direction, int speed);
+    void receiveData();
 	
 private:
 	void initialize(char portID[]);
-	int fd;
+    void setControllerID();
+    int arduinoNumber;
+    int controlUnit;
+    int footController;
+    int fd[2];
     int oldDirection;
     int oldSpeed;
   	char buf[10];
+    char lastReceivedChar;
   	struct termios toptions;
 };
 

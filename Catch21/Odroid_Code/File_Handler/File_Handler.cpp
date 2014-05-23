@@ -9,7 +9,7 @@ void File_Handler::readFromFile()
 {
     // inFile.release(); does not need, but if not used the same file will contain all data
     // Create a Video Capture object to read from a video file
-    outFile.open("output.mpg");
+    outFile.open("video/output.mpg");
 
     //Check if the file was opened properly
     if(!outFile.isOpened())
@@ -70,7 +70,7 @@ void File_Handler::createFile()
 {
 
     // Create a video writer object and initialize it at 30 fps and correct resolution
-    inFile.open("output.mpg",CV_FOURCC('M','J','P','G'),30,resolution);
+    inFile.open("video/output.mpg",CV_FOURCC('M','J','P','G'),30,resolution);
 
     // Check if the file were created
     if(!inFile.isOpened())

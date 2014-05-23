@@ -2,10 +2,18 @@
 
 Serial_Communication::Serial_Communication(char portID[])
 {
+    arduinoNumber = 0;
 	initialize(portID);
 }
 
-void Serial_Communication::sendData(int direction, int speed)
+Serial_Communication::Serial_Communication(char portID1[], char portID2[])
+{
+    arduinoNumber = 0;
+    initialize(portID1);
+    initialize(portID2);
+}
+
+void Serial_Communication::sendDataToControlUnit(int direction, int speed)
 {
     if (direction != this->oldDirection || speed != this->oldSpeed)
     {
@@ -25,7 +33,7 @@ void Serial_Communication::sendData(int direction, int speed)
         }
 
         // Sends data
-        write(fd, buf, 6);
+        write(fd[controlUnit], buf, 6);
     }
 
     else
@@ -34,14 +42,26 @@ void Serial_Communication::sendData(int direction, int speed)
     }
 }
 
+void Serial_Communication::receiveData()
+{
+    // Just the generic function. Needs work.
+    read(fd[arduinoNumber], buf, 10);
+    qDebug() << buf[0];
+    if (buf[0]!='\n')
+    {
+      lastReceivedChar = buf[0];
+    }
+
+}
+
 void Serial_Communication::initialize(char portID[])
 {
 	/* open serial port */
-	fd = open(portID, O_RDWR | O_NOCTTY);
-	printf("fd opened as %i\n", fd);
+    fd[arduinoNumber] = open(portID, O_RDWR | O_NOCTTY);
+    printf("fd[%i] opened as %i\n", arduinoNumber, fd[arduinoNumber]);
 
 	/* get current serial port settings */
-	tcgetattr(fd, &toptions);
+    tcgetattr(fd[arduinoNumber], &toptions);
 	/* set 9600 baud both ways */
 	cfsetispeed(&toptions, B9600);
 	cfsetospeed(&toptions, B9600);
@@ -53,5 +73,36 @@ void Serial_Communication::initialize(char portID[])
 	/* Canonical mode */
 	toptions.c_lflag |= ICANON;
 	/* commit the serial port settings */
-	tcsetattr(fd, TCSANOW, &toptions);
+    tcsetattr(fd[arduinoNumber], TCSANOW, &toptions);
+
+    // Give the correct work to the right Arduino
+    setControllerID();
+
+    // Ready for next Arduino
+    arduinoNumber++;
+}
+
+void Serial_Communication::setControllerID()
+{
+    // Ask for ID
+    write(fd[arduinoNumber], "12345.", 6);
+    receiveData();
+
+    // Set controller ID
+    if (lastReceivedChar == 'F')
+    {
+        footController = arduinoNumber;
+        qDebug() << "Arduino Number " << arduinoNumber << " is the Foot Controller";
+    }
+
+    else if (lastReceivedChar == 'C')
+    {
+        controlUnit = arduinoNumber;
+        qDebug() << "Arduino Number " << arduinoNumber << " is the Control Unit";
+    }
+
+    else
+    {
+        qDebug() << lastReceivedChar << ", unknown ID" ;
+    }
 }

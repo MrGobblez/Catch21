@@ -28,15 +28,15 @@ int main(int argc, char *argv[])
 {
   int fd, n, i;
   char inDigi[1];
-  char buf[64] = "temp text";
+  char buf[10] = "12345.";
   struct termios toptions;
 
   /* open serial port */
   fd = open("/dev/ttyUSB0", O_RDWR | O_NOCTTY);
   printf("fd opened as %i\n", fd);
   
-  /* wait for the Arduino to reboot * Removed the reboot with capacitor between gnd and rst pins. Remove to reflash!
-  usleep(3500000);*/
+  /* wait for the Arduino to reboot * Removed the reboot with capacitor between gnd and rst pins. Remove to reflash!*/
+  usleep(3500000);
   
   /* get current serial port settings */
   tcgetattr(fd, &toptions);
@@ -54,22 +54,24 @@ int main(int argc, char *argv[])
   tcsetattr(fd, TCSANOW, &toptions);
 
   // Takes in a char from keyboard and sends it to the arduino will be removed later when implemented in our main software.
-  std::cout << "Please input a digit to send to the arduino" << std::endl;
-  std::cin >> inDigi[0];
+  //std::cout << "Please input a digit to send to the arduino" << std::endl;
+  //std::cin >> inDigi[0];
   
-  write(fd, inDigi, 1);
+  write(fd, "12345.",6);
   /* Receive string from Arduino will wait until something is transmitted, have tested with delay(1000) on arduino*/
-  n = read(fd, buf, 64);
-  /* insert terminating zero in the string */
-  buf[n] = 0;
+    n = read(fd, buf, 10);
+    buf[n] = 0;
+    if (buf[0]!='\n')
+    {
+        printf("%i bytes read, buffer contains: %s\n", n, buf);
+    }
 
-  printf("%i bytes read, buffer contains: %s\n", n, buf);
 
   // Not needed
   if(DEBUG)
     {
       printf("Printing individual characters in buf as integers...\n\n");
-      for(i=0; i<n; i++)
+      for(i=0; i<10; i++)
 	{
 		printf("Byte %i:%i, ",i+1, (int)buf[i]);
 	}
