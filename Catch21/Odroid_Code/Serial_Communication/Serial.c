@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
   printf("fd opened as %i\n", fd);
   
   /* wait for the Arduino to reboot * Removed the reboot with capacitor between gnd and rst pins. Remove to reflash!*/
-  usleep(3500000);
+  // usleep(3500000);
   
   /* get current serial port settings */
   tcgetattr(fd, &toptions);
@@ -56,15 +56,14 @@ int main(int argc, char *argv[])
   // Takes in a char from keyboard and sends it to the arduino will be removed later when implemented in our main software.
   //std::cout << "Please input a digit to send to the arduino" << std::endl;
   //std::cin >> inDigi[0];
-  
+  write(fd, ".", 1);
   write(fd, "12345.",6);
   /* Receive string from Arduino will wait until something is transmitted, have tested with delay(1000) on arduino*/
     n = read(fd, buf, 10);
     buf[n] = 0;
-    if (buf[0]!='\n')
-    {
+    
         printf("%i bytes read, buffer contains: %s\n", n, buf);
-    }
+    
 
 
   // Not needed

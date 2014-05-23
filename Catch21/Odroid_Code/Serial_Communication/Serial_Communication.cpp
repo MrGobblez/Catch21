@@ -85,6 +85,7 @@ void Serial_Communication::initialize(char portID[])
 void Serial_Communication::setControllerID()
 {
     // Ask for ID
+    write(fd[arduinoNumber], ".", 1);
     write(fd[arduinoNumber], "12345.", 6);
     receiveData();
 
