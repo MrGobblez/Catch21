@@ -28,4 +28,3 @@ HEADERS += \
     File_Handler/File_Handler.h \
     GUI/Window_Handler/Window_Handler.h \
     Menu/Menu.h
-
