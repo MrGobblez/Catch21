@@ -6,7 +6,8 @@
 #include "Motion_Tracking/Color_Recognition/Process.h"
 #include "Motion_Tracking/Color_Recognition/Tracking.h"
 #include "Serial_Communication/Serial_Communication.h"
-#include "Operation_Modes/Low_Repetition/Low_Repetition_Version3/Menu.h"
+#include "Menu/Menu.h"
+//#include "Operation_Modes/Low_Repetition/Low_Repetition_Version3/Menu.h"
 #include "File_Handler/File_Handler.h"
 #include "GUI/Window_Handler/Window_Handler.h"
 
@@ -72,6 +73,6 @@ int main()
     t3->start();
     t4->start();
 
-    menu->menu();
+    menu->inputHandler();
     return 0;
 }
