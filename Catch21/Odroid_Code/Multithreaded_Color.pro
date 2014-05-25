@@ -12,7 +12,7 @@ PKGCONFIG += opencv
 SOURCES += main.cpp \
     Camera/OpenCV/Camerainput.cpp \
     Motion_Tracking/Color_Recognition/Process.cpp \
-    Thread_Controll/Controll.cpp \
+    Control/Control.cpp \
     Motion_Tracking/Color_Recognition/Tracking.cpp \
     Serial_Communication/Serial_Communication.cpp \
     File_Handler/File_Handler.cpp \
@@ -22,7 +22,7 @@ SOURCES += main.cpp \
 HEADERS += \
     Camera/OpenCV/Camerainput.h \
     Motion_Tracking/Color_Recognition/Process.h \
-    Thread_Controll/Controll.h \
+    Control/Control.h \
     Motion_Tracking/Color_Recognition/Tracking.h \
     Serial_Communication/Serial_Communication.h \
     File_Handler/File_Handler.h \

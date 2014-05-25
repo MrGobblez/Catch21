@@ -2,7 +2,7 @@
 #include <QCoreApplication>
 #include <QMetaType>
 #include "Camera/OpenCV/Camerainput.h"
-#include "Thread_Controll/Controll.h"
+#include "Control/Control.h"
 #include "Motion_Tracking/Color_Recognition/Process.h"
 #include "Motion_Tracking/Color_Recognition/Tracking.h"
 #include "Serial_Communication/Serial_Communication.h"
@@ -16,7 +16,7 @@ int main()
 {
     // Objects
     CameraInput *camera = new CameraInput();
-    Controll *controller = new Controll();
+    Control *controller = new Control();
     Process *processer = new Process();
     Tracking *tracker = new Tracking();
     Serial_Communication *serial = new Serial_Communication("/dev/ttyUSB0", "/dev/ttyUSB1");
