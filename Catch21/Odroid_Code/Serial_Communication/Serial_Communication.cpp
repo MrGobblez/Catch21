@@ -3,7 +3,19 @@
 Serial_Communication::Serial_Communication(char portID[])
 {
     arduinoNumber = 0;
-	initialize(portID);
+    sent = false;
+    initialize(portID);
+}
+
+void Serial_Communication::receiveDataFromFootControllerLoop()
+{
+    receiveData(footController);
+    if (lastReceivedChar == 'a' && !sent)
+    {
+        qDebug() << "emitting: " << lastReceivedChar;
+        emit fromFootController(lastReceivedChar);
+        sent = true;
+    }
 }
 
 Serial_Communication::Serial_Communication(char portID1[], char portID2[])
@@ -42,15 +54,17 @@ void Serial_Communication::sendDataToControlUnit(int direction, int speed)
     }
 }
 
-void Serial_Communication::receiveData()
+void Serial_Communication::receiveData(int targetArduino)
 {
-    // Just the generic function. Needs work.
-    read(fd[arduinoNumber], buf, 10);
-    qDebug() << buf[0];
+    read(fd[targetArduino], buf, 10);
+    qDebug() << "buf[0] is :"<< buf[0];
     if (buf[0]!='\n')
     {
       lastReceivedChar = buf[0];
+      sent = false;
     }
+    // Flushing buffer
+    tcflush(fd[targetArduino], TCIOFLUSH);
 
 }
 
@@ -85,9 +99,8 @@ void Serial_Communication::initialize(char portID[])
 void Serial_Communication::setControllerID()
 {
     // Ask for ID
-    //write(fd[arduinoNumber], ".", 1);
     write(fd[arduinoNumber], ".12345.", 7);
-    receiveData();
+    receiveData(arduinoNumber);
 
     // Set controller ID
     if (lastReceivedChar == 'F')

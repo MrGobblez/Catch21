@@ -1,5 +1,5 @@
-#ifndef CONTROLL_H
-#define CONTROLL_H
+#ifndef CONTROL_H
+#define CONTROL_H
 
 #include <QtCore>
 #include <opencv2/highgui/highgui.hpp>

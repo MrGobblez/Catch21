@@ -7,7 +7,7 @@ File_Handler::File_Handler()
 
 void File_Handler::readFromFile()
 {
-    // inFile.release(); does not need, but if not used the same file will contain all data
+    inFile.release(); // Does not need it, but if not used the same file will contain all data
     // Create a Video Capture object to read from a video file
     outFile.open("video/output.mpg");
 
@@ -39,7 +39,8 @@ void File_Handler::readFromFile()
         if(frame.empty())
         {
             qDebug() << "Video from file reached its end...";
-            break;
+            outFile.release();
+            return;
         }
 
         emit showFrame(frame);
@@ -49,9 +50,7 @@ void File_Handler::readFromFile()
              qDebug() << "!!!Manually Stopped!!!";
              break;
         }
-
     }
-    outFile.release();
 }
 
 void File_Handler::writeImage(cv::Mat imageIn)
