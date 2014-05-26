@@ -7,12 +7,12 @@ Tracking::Tracking()
 //This whole function just checks the position of the tracked object, then moves the camera in that direction with increasing speed as the object nears the camera edge.
 void Tracking::position(int posX, int posY)
 {
-    if(posX < 250)
+    if(posX < 300)
         {
             this->direction = -1;
         }
 
-    else if (posX > 390)
+    else if (posX > 340)
         {
             this->direction = 1;
         }
@@ -24,14 +24,29 @@ void Tracking::position(int posX, int posY)
 
 
         //GOING RIGHT OF PICTURE
-    if (posX < 250 && posX >= 245)
+    if (posX < 300 && posX >= 280)
         {
             this->speed = 20;
         }
 
-    else if (posX < 245 && posX >= 240)
+    else if (posX < 280 && posX >= 260)
+        {
+            this->speed = 30;
+        }
+
+    else if (posX < 260 && posX >= 250)
         {
             this->speed = 50;
+        }
+
+    else if (posX < 250 && posX >= 245)
+        {
+            this->speed = 70;
+        }
+
+    else if (posX < 245 && posX >= 240)
+        {
+            this->speed = 80;
         }
 
     else if (posX < 240 && posX >= 235)
@@ -110,14 +125,29 @@ void Tracking::position(int posX, int posY)
         }
 
         //GOING LEFT OF PICTURE
-    else if (posX > 390 && posX <= 395)
+    else if (posX > 340 && posX <= 360)
         {
             this->speed = 20;
         }
 
-    else if (posX > 395 && posX <= 400)
+    else if (posX > 360 && posX <= 380)
+        {
+            this->speed = 30;
+        }
+
+    else if (posX > 380 && posX <= 390)
         {
             this->speed = 50;
+        }
+
+    else if (posX > 390 && posX <= 395)
+        {
+            this->speed = 70;
+        }
+
+    else if (posX > 395 && posX <= 400)
+        {
+            this->speed = 80;
         }
 
     else if (posX > 400 && posX <= 405)
