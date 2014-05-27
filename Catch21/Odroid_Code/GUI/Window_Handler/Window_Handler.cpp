@@ -11,7 +11,7 @@ Window_Handler::Window_Handler()
 //Paint a frame onto the window
 void Window_Handler::drawImage(cv::Mat image)
 {
-    qDebug() << "*";
+//    qDebug() << "*";
     cv::imshow("video", image);
 }
 

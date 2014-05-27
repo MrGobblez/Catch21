@@ -8,9 +8,10 @@ File_Handler::File_Handler()
 
 void File_Handler::readFromFile()
 {
+    qDebug() << "playback";
     inFile.release(); // Does not need it, but if not used the same file will contain all data
     // Create a Video Capture object to read from a video file
-    outFile.open("video/output.mpg");
+    outFile.open("video/output.avi");
 
     //Check if the file was opened properly
     if(!outFile.isOpened())
@@ -23,18 +24,18 @@ void File_Handler::readFromFile()
     frameRate = outFile.get(CV_CAP_PROP_FPS);
 
     // The delay between each frame in ms corresponds to video frame rate
-    delay = 1000/frameRate;
+    delay = 1000000/frameRate;
 
     // frameRate < 0! codec bug? Sets delay for 30 fps...
     if (delay < 1)
     {
-        delay = 33;
+        delay = 33000;
     }
 
     qDebug() << frameRate;
     qDebug() << delay;
     // Play the video in a loop till it ends
-    while(char(cv::waitKey(1)) != 'q' && outFile.isOpened())
+    while(outFile.isOpened())
     {
         outFile >> frame;
 
@@ -42,18 +43,20 @@ void File_Handler::readFromFile()
         if(frame.empty())
         {
             qDebug() << "Video from file reached its end...";
-            outFile.release();
-            return;
+            break;
         }
 
         emit showFrame(frame);
         // Introduce an artificial delay between the refreshing of each frame to keep correct frame rate
-        if(char(cv::waitKey(delay)) == ' ')
-        {
-             qDebug() << "!!!Manually Stopped!!!";
-             break;
-        }
+        usleep(delay);
+
+//        if(char(cv::waitKey(delay)) == ' ')
+//        {
+//             qDebug() << "!!!Manually Stopped!!!";
+//             break;
+//        }
     }
+    outFile.release();
 }
 
 void File_Handler::writeImage(cv::Mat imageIn)
@@ -65,16 +68,16 @@ void File_Handler::writeImage(cv::Mat imageIn)
         // Add error handling!
     }
 
-    qDebug() << "_";
+//    qDebug() << "_";
     inFile << imageIn;
-    emit readyToWrite();
+//    emit readyToWrite();
 }
 
 void File_Handler::createFile()
 {
 
     // Create a video writer object and initialize it at 30 fps and correct resolution
-    inFile.open("video/output.mpg",CV_FOURCC('M','J','P','G'),30,resolution);
+    inFile.open("video/output.avi",CV_FOURCC('D','I','V','X'),30,resolution, true);
 
     // Check if the file were created
     if(!inFile.isOpened())
