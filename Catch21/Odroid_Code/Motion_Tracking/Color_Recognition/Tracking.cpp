@@ -248,6 +248,7 @@ void Tracking::position(int posX, int posY)
         {
             this->speed = 0;
         }
+
     qDebug() << "direction: " << direction << "speed: " << speed;
     emit directionAndSpeed(direction,speed); */
 }

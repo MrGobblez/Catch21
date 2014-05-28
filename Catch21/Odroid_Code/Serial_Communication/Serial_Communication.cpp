@@ -50,7 +50,7 @@ void Serial_Communication::sendDataToControlUnit(int direction, int speed)
 
     else
     {
-         qDebug() << "skipped, old == new";
+//         qDebug() << "skipped, old == new";
     }
 }
 

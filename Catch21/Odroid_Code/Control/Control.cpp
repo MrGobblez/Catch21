@@ -11,7 +11,7 @@ Control::Control()
     counter = 0;
     delay = 0;
     recording = false;
-    showImage = true;
+    showImage = false;
     readyToWrite = false;
 }
 
@@ -19,26 +19,26 @@ void Control::inputImage(cv::Mat imgIn)
 {
     //Add new frame to buffer
     imageBuffer[counter] = imgIn.clone();
-    qDebug() << "showImage: " << showImage << "processReady: " << processReady << "Recording: " << recording;
+//    qDebug() << "showImage: " << showImage << "processReady: " << processReady << "Recording: " << recording;
 
     //If stream is to be shown, send an image
     if (showImage)
     {
-        emit imageToShow(imgIn);
+        emit imageToShow(imageBuffer[counter]);
     }
 
     //If the Process object is ready, pass a new frame for processing
     if (processReady) 
     {
         processReady = false;
-        emit imageToProcess(imgIn);
+        emit imageToProcess(imageBuffer[counter]);
     }
 
     //If recording video, pass a frame to be written to file
-    if (recording && readyToWrite)
+    if (recording)// && readyToWrite)
     {
         readyToWrite = false;
-        emit imageToRecord(imgIn);
+        emit imageToRecord(imageBuffer[counter]);
     }
 
     ++counter;
@@ -51,17 +51,17 @@ void Control::inputImage(cv::Mat imgIn)
     emit requestImage();
 
 
-    /////////////////////////////////////////////////FPS DEBUGING/////////////////////////////////////////////////
-    // see how much time has elapsed
-    time(&end);
+//    /////////////////////////////////////////////////FPS DEBUGING/////////////////////////////////////////////////
+//    // see how much time has elapsed
+//    time(&end);
 
-    // calculate current FPS
-    ++counterOrg;
-    sec = difftime (end, start);
+//    // calculate current FPS
+//    ++counterOrg;
+//    sec = difftime (end, start);
 
-    fpsOrg = counterOrg / sec;
-    qDebug() << "Calling for new image: " << fpsOrg;
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//    fpsOrg = counterOrg / sec;
+//    qDebug() << "Calling for new image: " << fpsOrg;
+//    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 //This whole function is to debug processed images

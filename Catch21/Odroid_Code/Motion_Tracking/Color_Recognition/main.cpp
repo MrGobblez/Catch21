@@ -1,9 +1,9 @@
 #include "Color_Recognition.h"
-#include "../../Serial_Communication/Serial_Communication.h"
+//#include "../../Serial_Communication/Serial_Communication.h"
 int main()
 {
 	Color_Recognition test;
-	Serial_Communication serial("/dev/ttyUSB0");
+//	Serial_Communication serial("/dev/ttyUSB0");
 	int c;
 	int direction;
 	int speed;
@@ -15,7 +15,7 @@ int main()
 		{	
 			direction = test.getUserDirection();
 			speed = test.getUserSpeed();
-			serial.sendData(direction, speed);
+			//serial.sendData(direction, speed);
 			// Debug - Prints variables sendt to Arduino
 			printf("%d,%d\n", direction, speed);
 		}

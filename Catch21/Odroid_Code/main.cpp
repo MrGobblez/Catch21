@@ -31,14 +31,14 @@ int main()
     QThread *t2 = new QThread;
     QThread *t3 = new QThread;
     QThread *t4 = new QThread;
+    QThread *t5 = new QThread;
+
     camera->moveToThread(t1);
     processer->moveToThread(t2);
     tracker->moveToThread(t3);
     serial->moveToThread(t3);
     controller->moveToThread(t4);
-    file_Handler->moveToThread(t1); // #### Bug in filehandler, works only in main/gui thread, most likely due to cv::waitKey's dependency on cv::nameWindow.
-                                      //      Move cancel playback to Menu ####
-
+    file_Handler->moveToThread(t5);
 
     // Connect signals to slots. Whenever a signal is emitted in a function, its corresponding (connected) function will run.
     qRegisterMetaType<cv::Mat>("cv::Mat");
@@ -48,8 +48,6 @@ int main()
     QObject::connect(menu, SIGNAL(startRecording(bool)), controller, SLOT(startRecording(bool)));
     QObject::connect(menu, SIGNAL(stopRecording()), controller, SLOT(stopRecording()));
     QObject::connect(menu, SIGNAL(displayMenu(cv::Mat)), window_Handler, SLOT(drawImage(cv::Mat)));
-    QObject::connect(file_Handler, SIGNAL(showFrame(cv::Mat)), window_Handler, SLOT(drawImage(cv::Mat)));
-    QObject::connect(file_Handler, SIGNAL(readyToWrite()), controller, SLOT(fileHandlerReadyToWrite()));
     //QObject::connect(menu, SIGNAL(requestDataFromFootController()), serial, SLOT(receiveDataFromFootControllerLoop()));
 
     //Thread 1
@@ -57,7 +55,7 @@ int main()
     QObject::connect(camera, SIGNAL(capturedImage(cv::Mat)), controller, SLOT(inputImage(cv::Mat)));
 
     //Thread 2
-    QObject::connect(t2, SIGNAL(started()), controller, SLOT(processerReady()));
+    //QObject::connect(t2, SIGNAL(started()), controller, SLOT(processerReady()));
     QObject::connect(processer, SIGNAL(posXposY(int,int)), tracker, SLOT(position(int,int)));
     QObject::connect(processer, SIGNAL(readyForWork()), controller, SLOT(processerReady()));
 
@@ -73,11 +71,16 @@ int main()
     QObject::connect(controller, SIGNAL(startPlayback()), file_Handler, SLOT(readFromFile()));
     QObject::connect(controller, SIGNAL(imageToShow(cv::Mat)), window_Handler, SLOT(drawImage(cv::Mat)));
 
+    //Thread 5
+    QObject::connect(file_Handler, SIGNAL(showFrame(cv::Mat)), window_Handler, SLOT(drawImage(cv::Mat)));
+    QObject::connect(file_Handler, SIGNAL(readyToWrite()), controller, SLOT(fileHandlerReadyToWrite()));
+
     // Starting Threads
     t1->start();
     t2->start();
     t3->start();
     t4->start();
+    t5->start();
 
     menu->menu();
     //menu->inputHandler();

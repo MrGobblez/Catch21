@@ -2,6 +2,7 @@
 #define FILE_HANDLER_H
 #include <opencv2/opencv.hpp>
 #include <QtCore>
+#include <unistd.h>
 
 class File_Handler : public QObject
 {

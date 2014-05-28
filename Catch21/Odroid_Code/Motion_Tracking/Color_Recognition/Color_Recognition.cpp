@@ -154,6 +154,8 @@ void Color_Recognition::initialize()
 {
 	// Initialize capturing live feed from the camera
     	capture = cvCaptureFromCAM(0);
+        cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT, 800.0);
+        cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH, 600.0);
 
     	// Couldn't get a device? Throw an error and quit
     	if(!capture)
@@ -164,5 +166,5 @@ void Color_Recognition::initialize()
 	// One window for video, one window for debugging purposes. 
     	cvNamedWindow("video");
     	cvNamedWindow("thresh");
-	cvResizeWindow("video", 640, 480);
+	cvResizeWindow("video", 800, 600);
 }
