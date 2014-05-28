@@ -22,8 +22,8 @@ private:
     timespec diff(timespec previous, timespec now);
 
     //Sampling & time control
-    clock_gettime currentTime;
-    clock_gettime lastTime;
+    timespec currentTime;
+    timespec lastTime;
 
     PID pid;
 
@@ -31,7 +31,7 @@ private:
     int userPos;
     int direction;
     unsigned int speed;
-    unsigned int userSpeed;
+    int userSpeed;
 };
 
 #endif // TRACKING_H

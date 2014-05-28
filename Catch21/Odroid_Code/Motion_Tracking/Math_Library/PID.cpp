@@ -4,7 +4,7 @@ PID::PID()
 {
     this->sampleRate = 100000000; //10samples per second.
 
-    this->kp = 0.0;
+    this->kp = 10.5;
     this->ki = 0.0;
     this->kd = 0.0;
 
@@ -21,7 +21,7 @@ double PID::calculate(int desiredSpeed)
 {
     clock_gettime(CLOCK_REALTIME, &currentTime);
     //Is it 0.1 or more seconds since last sample? If yes, calculate.
-    if(diff(lastTime, currentTime) >= sampleRate)
+    if(diff(lastTime, currentTime).tv_nsec >= sampleRate)
     {
         error = desiredSpeed - lastSpeed;
         integral += error*0.1;
@@ -34,6 +34,10 @@ double PID::calculate(int desiredSpeed)
         clock_gettime(CLOCK_REALTIME, &lastTime);
 
         return outputSpeed;
+    }
+    else
+    {
+        return lastSpeed;
     }
 }
 

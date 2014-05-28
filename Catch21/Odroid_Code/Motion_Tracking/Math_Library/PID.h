@@ -2,6 +2,7 @@
 #define PID_H
 
 #include <time.h>
+#include <QtCore>
 
 class PID
 {
@@ -18,8 +19,8 @@ private:
     timespec diff(timespec previous, timespec now);
 
     //Sampling & time control
-    clock_gettime currentTime;
-    clock_gettime lastTime;
+    timespec currentTime;
+    timespec lastTime;
     int sampleRate; //Has to be in nanoseconds!
 
     //Computing variables

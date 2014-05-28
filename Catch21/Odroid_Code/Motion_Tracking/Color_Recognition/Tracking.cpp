@@ -6,6 +6,8 @@ Tracking::Tracking()
 
     clock_gettime(CLOCK_REALTIME, &lastTime);
     clock_gettime(CLOCK_REALTIME, &currentTime);
+
+    lastUserPos = 0;
 }
 
 //This whole function just checks the position of the tracked object, then moves the camera in that direction with increasing speed as the object nears the camera edge.
@@ -17,9 +19,10 @@ void Tracking::position(int posX, int posY)
     //Map user position so that it's from -320 to 320 instead of 0 to 640.
     userPos = posX - 320;
 
-    //Determine current userSpeed
-    userSpeed = (int) ((userPos - lastUserPos)/diff(currentTime, lastTime));
-    lastUserPos = userPos;
+    //Determine current userSpeed, convert pixels/nanosec into pixels/sec
+    int temp;
+    temp = (userPos - lastUserPos);
+    userSpeed = temp/(diff(currentTime, lastTime).tv_nsec);
 
     speed = pid.calculate(userSpeed);
 
@@ -38,6 +41,9 @@ void Tracking::position(int posX, int posY)
             this->direction = 0;
         }
 
+    qDebug() << "userPos: " << userPos << "lastUserPos: " << lastUserPos << "temp" << temp << "movement speed" << userSpeed;
+
+    lastUserPos = userPos;
     clock_gettime(CLOCK_REALTIME, &lastTime);
     emit directionAndSpeed(direction,speed);
     /* OLD TRACKING SOFTWARE
