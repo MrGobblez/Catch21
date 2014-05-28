@@ -2,11 +2,27 @@
 
 Tracking::Tracking()
 {
+    pid = PID();
+
+    clock_gettime(CLOCK_REALTIME, &lastTime);
+    clock_gettime(CLOCK_REALTIME, &currentTime);
 }
 
 //This whole function just checks the position of the tracked object, then moves the camera in that direction with increasing speed as the object nears the camera edge.
 void Tracking::position(int posX, int posY)
 {
+    //What time is it now.
+    clock_gettime(CLOCK_REALTIME, &currentTime);
+
+    //Map user position so that it's from -320 to 320 instead of 0 to 640.
+    userPos = posX - 320;
+
+    //Determine current userSpeed
+    userSpeed = (int) ((userPos - lastUserPos)/diff(currentTime, lastTime));
+    lastUserPos = userPos;
+
+    speed = pid.calculate(userSpeed);
+
     if(posX < 300)
         {
             this->direction = -1;
@@ -22,8 +38,10 @@ void Tracking::position(int posX, int posY)
             this->direction = 0;
         }
 
-
-        //GOING RIGHT OF PICTURE
+    clock_gettime(CLOCK_REALTIME, &lastTime);
+    emit directionAndSpeed(direction,speed);
+    /* OLD TRACKING SOFTWARE
+    //GOING RIGHT OF PICTURE
     if (posX < 300 && posX >= 280)
         {
             this->speed = 20;
@@ -231,5 +249,23 @@ void Tracking::position(int posX, int posY)
             this->speed = 0;
         }
     qDebug() << "direction: " << direction << "speed: " << speed;
-    emit directionAndSpeed(direction,speed);
+    emit directionAndSpeed(direction,speed); */
+}
+
+//Calculates the time since last sample.
+timespec Tracking::diff(timespec previous, timespec now)
+{
+    timespec temp;
+    if ((now.tv_nsec-previous.tv_nsec)<0)
+    {
+        temp.tv_sec = now.tv_sec-previous.tv_sec-1;
+        temp.tv_nsec = 1000000000+now.tv_nsec-previous.tv_nsec;
+    }
+    else
+    {
+        temp.tv_sec = now.tv_sec-previous.tv_sec;
+        temp.tv_nsec = now.tv_nsec-previous.tv_nsec;
+    }
+
+    return temp;
 }

@@ -2,6 +2,8 @@
 #define TRACKING_H
 
 #include <QtCore>
+#include <time.h>
+#include "../Math_Library/PID.h"
 
 class Tracking : public QObject
 {
@@ -16,8 +18,20 @@ signals:
     void directionAndSpeed(int direction, int speed);
 
 private:
+    //Functions
+    timespec diff(timespec previous, timespec now);
+
+    //Sampling & time control
+    clock_gettime currentTime;
+    clock_gettime lastTime;
+
+    PID pid;
+
+    int lastUserPos;
+    int userPos;
     int direction;
-    int speed;
+    unsigned int speed;
+    unsigned int userSpeed;
 };
 
 #endif // TRACKING_H
