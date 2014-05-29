@@ -19,8 +19,8 @@ int main()
     Control *controller = new Control();
     Process *processer = new Process();
     Tracking *tracker = new Tracking();
-//    Serial_Communication *serial = new Serial_Communication("/dev/ttyUSB0", "/dev/ttyUSB1");
-    Serial_Communication *serial = new Serial_Communication("/dev/ttyUSB0");// #### For testing with only one arduino
+    Serial_Communication *serial = new Serial_Communication("/dev/ttyUSB0", "/dev/ttyUSB1");
+//    Serial_Communication *serial = new Serial_Communication("/dev/ttyUSB0");// #### For testing with only one arduino
     File_Handler *file_Handler = new File_Handler();
     Window_Handler *window_Handler = new Window_Handler();
     Menu *menu = new Menu();
@@ -48,24 +48,24 @@ int main()
     QObject::connect(menu, SIGNAL(startRecording(bool)), controller, SLOT(startRecording(bool)));
     QObject::connect(menu, SIGNAL(stopRecording()), controller, SLOT(stopRecording()));
     QObject::connect(menu, SIGNAL(displayMenu(cv::Mat)), window_Handler, SLOT(drawImage(cv::Mat)));
-    //QObject::connect(menu, SIGNAL(requestDataFromFootController()), serial, SLOT(receiveDataFromFootControllerLoop()));
+    QObject::connect(menu, SIGNAL(requestDataFromFootController()), serial, SLOT(receiveDataFromFootControllerLoop()));
 
     //Thread 1
     QObject::connect(t1, SIGNAL(started()), camera, SLOT(captureImage()));
     QObject::connect(camera, SIGNAL(capturedImage(cv::Mat)), controller, SLOT(inputImage(cv::Mat)));
 
     //Thread 2
-    //QObject::connect(t2, SIGNAL(started()), controller, SLOT(processerReady()));
+//    QObject::connect(t2, SIGNAL(started()), controller, SLOT(processerReady()));
     QObject::connect(processer, SIGNAL(posXposY(int,int)), tracker, SLOT(position(int,int)));
     QObject::connect(processer, SIGNAL(readyForWork()), controller, SLOT(processerReady()));
 
     //Thread 3
     QObject::connect(tracker, SIGNAL(directionAndSpeed(int,int)), serial, SLOT(sendDataToControlUnit(int,int)));
-    //QObject::connect(serial, SIGNAL(fromFootController(char)), menu, SLOT(giveInput(char)));
+    QObject::connect(serial, SIGNAL(fromFootController(char)), menu, SLOT(giveInput(char)));
 
     //Thread 4
     QObject::connect(t4, SIGNAL(started()), controller, SLOT(fileHandlerReadyToWrite()));
-    QObject::connect(controller, SIGNAL(imageToShow(cv::Mat)), processer, SLOT(processImage(cv::Mat)));
+    QObject::connect(controller, SIGNAL(imageToProcess(cv::Mat)), processer, SLOT(processImage(cv::Mat)));
     QObject::connect(controller, SIGNAL(requestImage()), camera, SLOT(captureImage()));
     QObject::connect(controller, SIGNAL(imageToRecord(cv::Mat)), file_Handler, SLOT(writeImage(cv::Mat)));
     QObject::connect(controller, SIGNAL(startPlayback()), file_Handler, SLOT(readFromFile()));

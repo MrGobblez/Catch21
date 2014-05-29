@@ -24,7 +24,7 @@ void Control::inputImage(cv::Mat imgIn)
     //If stream is to be shown, send an image
     if (showImage)
     {
-        emit imageToShow(imageBuffer[counter]);
+//        emit imageToShow(imageBuffer[counter]);
     }
 
     //If the Process object is ready, pass a new frame for processing
