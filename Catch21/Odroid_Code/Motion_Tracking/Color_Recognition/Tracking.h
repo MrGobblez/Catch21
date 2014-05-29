@@ -30,8 +30,8 @@ private:
     int lastUserPos;
     int userPos;
     int direction;
-    unsigned int speed;
-    int userSpeed;
+    double speed;
+    double userSpeed;
 };
 
 #endif // TRACKING_H
