@@ -6,8 +6,8 @@
 #include "Motion_Tracking/Color_Recognition/Process.h"
 #include "Motion_Tracking/Color_Recognition/Tracking.h"
 #include "Serial_Communication/Serial_Communication.h"
-//#include "Menu/Menu.h"
-#include "Operation_Modes/Low_Repetition/Low_Repetition_Version3/Menu.h"
+#include "Menu/Menu.h"
+//#include "Operation_Modes/Low_Repetition/Low_Repetition_Version3/Menu.h"
 #include "File_Handler/File_Handler.h"
 #include "GUI/Window_Handler/Window_Handler.h"
 
@@ -74,6 +74,7 @@ int main()
     //Thread 5
     QObject::connect(file_Handler, SIGNAL(showFrame(cv::Mat)), window_Handler, SLOT(drawImage(cv::Mat)));
     QObject::connect(file_Handler, SIGNAL(readyToWrite()), controller, SLOT(fileHandlerReadyToWrite()));
+    QObject::connect(file_Handler, SIGNAL(timeout()), file_Handler, SLOT(playVideo()));
 
     // Starting Threads
     t1->start();
@@ -82,7 +83,7 @@ int main()
     t4->start();
     t5->start();
 
-    menu->menu();
-    //menu->inputHandler();
+//    menu->menu();
+    menu->inputHandler();
     return 0;
 }

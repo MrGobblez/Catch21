@@ -71,7 +71,7 @@ void Serial_Communication::receiveData(int targetArduino)
 void Serial_Communication::initialize(char portID[])
 {
 	/* open serial port */
-    fd[arduinoNumber] = open(portID, O_RDWR | O_NOCTTY);
+    fd[arduinoNumber] = open(portID, O_RDWR | O_NOCTTY | O_NONBLOCK);
     printf("fd[%i] opened as %i\n", arduinoNumber, fd[arduinoNumber]);
 
 	/* get current serial port settings */
@@ -84,8 +84,8 @@ void Serial_Communication::initialize(char portID[])
 	toptions.c_cflag &= ~CSTOPB;
 	toptions.c_cflag &= ~CSIZE;
 	toptions.c_cflag |= CS8;
-	/* Canonical mode */
-	toptions.c_lflag |= ICANON;
+    /* Canonical mode */
+    toptions.c_lflag |= ICANON;
 	/* commit the serial port settings */
     tcsetattr(fd[arduinoNumber], TCSANOW, &toptions);
 

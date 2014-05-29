@@ -4,7 +4,7 @@
 #include <QtCore>
 #include <unistd.h>
 
-class File_Handler : public QObject
+class File_Handler : public QTimer
 {
     Q_OBJECT
 public:
@@ -12,6 +12,8 @@ public:
 public slots:
     void readFromFile();
     void writeImage(cv::Mat imageIn);
+    void toggleSlowMotion();
+    void playVideo();
 signals:
     void showFrame(cv::Mat frame);
     void readyToWrite();
