@@ -18,9 +18,9 @@ SOURCES += main.cpp \
     Serial_Communication/Serial_Communication.cpp \
     File_Handler/File_Handler.cpp \
     GUI/Window_Handler/Window_Handler.cpp \
-    Operation_Modes/Low_Repetition/Low_Repetition_Version3/Menu.cpp \
+#    Operation_Modes/Low_Repetition/Low_Repetition_Version3/Menu.cpp \
+    Menu/Menu.cpp \
     Motion_Tracking/Math_Library/PID.cpp
-    #Menu/Menu.cpp
 
 HEADERS += \
     Camera/OpenCV/Camerainput.h \
@@ -30,6 +30,6 @@ HEADERS += \
     Serial_Communication/Serial_Communication.h \
     File_Handler/File_Handler.h \
     GUI/Window_Handler/Window_Handler.h \
-    Operation_Modes/Low_Repetition/Low_Repetition_Version3/Menu.h \
+#    Operation_Modes/Low_Repetition/Low_Repetition_Version3/Menu.h \
+    Menu/Menu.h \
     Motion_Tracking/Math_Library/PID.h
-    #Menu/Menu.h

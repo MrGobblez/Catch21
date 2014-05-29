@@ -56,9 +56,9 @@ void Serial_Communication::sendDataToControlUnit(int direction, int speed)
 
 void Serial_Communication::receiveData(int targetArduino)
 {
-    read(fd[targetArduino], buf, 10);
-    qDebug() << "buf[0] is :"<< buf[0];
-    if (buf[0]!='\n')
+    bytesRead = read(fd[targetArduino], buf, 10);
+//    qDebug() << "bytesRead :"<< bytesRead;
+    if (bytesRead >= 0)
     {
       lastReceivedChar = buf[0];
       sent = false;
@@ -71,8 +71,9 @@ void Serial_Communication::receiveData(int targetArduino)
 void Serial_Communication::initialize(char portID[])
 {
 	/* open serial port */
-    fd[arduinoNumber] = open(portID, O_RDWR | O_NOCTTY);
+    fd[arduinoNumber] = open(portID, O_RDWR | O_NOCTTY | O_NONBLOCK);
     printf("fd[%i] opened as %i\n", arduinoNumber, fd[arduinoNumber]);
+    usleep(3500000);
 
 	/* get current serial port settings */
     tcgetattr(fd[arduinoNumber], &toptions);
@@ -84,8 +85,8 @@ void Serial_Communication::initialize(char portID[])
 	toptions.c_cflag &= ~CSTOPB;
 	toptions.c_cflag &= ~CSIZE;
 	toptions.c_cflag |= CS8;
-	/* Canonical mode */
-	toptions.c_lflag |= ICANON;
+    /* Canonical mode */
+    toptions.c_lflag |= ICANON;
 	/* commit the serial port settings */
     tcsetattr(fd[arduinoNumber], TCSANOW, &toptions);
 
@@ -100,6 +101,7 @@ void Serial_Communication::setControllerID()
 {
     // Ask for ID
     write(fd[arduinoNumber], ".12345.", 7);
+    usleep(100000);
     receiveData(arduinoNumber);
 
     // Set controller ID

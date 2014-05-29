@@ -10,6 +10,7 @@ void File_Handler::readFromFile()
 {
     qDebug() << "playback";
     inFile.release(); // Does not need it, but if not used the same file will contain all data
+
     // Create a Video Capture object to read from a video file
     outFile.open("video/output.avi");
 
@@ -24,39 +25,17 @@ void File_Handler::readFromFile()
     frameRate = outFile.get(CV_CAP_PROP_FPS);
 
     // The delay between each frame in ms corresponds to video frame rate
-    delay = 1000000/frameRate;
+    delay = 1000/frameRate;
 
     // frameRate < 0! codec bug? Sets delay for 30 fps...
     if (delay < 1)
     {
-        delay = 33000;
+        delay = 33;
     }
 
     qDebug() << frameRate;
     qDebug() << delay;
-    // Play the video in a loop till it ends
-    while(outFile.isOpened())
-    {
-        outFile >> frame;
-
-        // Check if the video is over
-        if(frame.empty())
-        {
-            qDebug() << "Video from file reached its end...";
-            break;
-        }
-
-        emit showFrame(frame);
-        // Introduce an artificial delay between the refreshing of each frame to keep correct frame rate
-        usleep(delay);
-
-//        if(char(cv::waitKey(delay)) == ' ')
-//        {
-//             qDebug() << "!!!Manually Stopped!!!";
-//             break;
-//        }
-    }
-    outFile.release();
+    start(delay);
 }
 
 void File_Handler::writeImage(cv::Mat imageIn)
@@ -68,20 +47,62 @@ void File_Handler::writeImage(cv::Mat imageIn)
         // Add error handling!
     }
 
-//    qDebug() << "_";
     inFile << imageIn;
-//    emit readyToWrite();
+}
+
+void File_Handler::toggleSlowMotion()
+{
+    // Toggles between normal speed (30fps) and half speed (15fps)
+    qDebug() << "toggleSlowMotion";
+    if (delay < 40)
+    {
+        delay = 66;
+    }
+
+    else if (delay > 40)
+    {
+        delay = 33;
+    }
+    setInterval(delay);
 }
 
 void File_Handler::createFile()
 {
 
     // Create a video writer object and initialize it at 30 fps and correct resolution
+    // Use CV_FOURCC('D','I','V','X') for Odroid until a faster codec is found
     inFile.open("video/output.avi",CV_FOURCC('D','I','V','X'),30,resolution, true);
 
     // Check if the file were created
     if(!inFile.isOpened())
     {
         qDebug() << "File could not be created";
+    }
+}
+
+void File_Handler::playVideo()
+{
+    // Checks if the file is open and plays it with the use of Qtimer
+    if (outFile.isOpened())
+    {
+        outFile >> frame;
+
+        // Check if the video is over
+        if(frame.empty())
+        {
+            qDebug() << "Video from file reached its end...";
+            outFile.release();
+            stop();
+        }
+
+        else
+        {
+            emit showFrame(frame);
+        }
+    }
+
+    else
+    {
+        qDebug() << "No open file!";
     }
 }

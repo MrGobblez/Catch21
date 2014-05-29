@@ -81,9 +81,9 @@ void Menu::inputHandler()
         // Check for new input or key press
         // #### BUG: this will make 'decision' turn into sonething strange if 'newInput' is false and cv::waitKey times out,
         //      remember to have defaults in the switch to avoid trouble ####
-        qDebug() << "char: " << this->decision;
-        qDebug() << " newInput: " << newInput;
-        if (!newInput && (decision = (char) cv::waitKey(0)))
+//        qDebug() << "char: " << this->decision;
+//        qDebug() << " newInput: " << newInput;
+        if (!newInput && (decision = (char) cv::waitKey(100)))
         {
             keyInputRunning = true;
             if (decision == '2')
@@ -137,7 +137,7 @@ void Menu::inputHandler()
             }
         }
         keyInputRunning = false;
-        //emit requestDataFromFootController();
+        emit requestDataFromFootController();
     }
 }
 

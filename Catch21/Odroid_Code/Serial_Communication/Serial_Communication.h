@@ -37,6 +37,7 @@ private:
     int fd[2];
     int oldDirection;
     int oldSpeed;
+    int bytesRead;
   	char buf[10];
     char lastReceivedChar;
   	struct termios toptions;
