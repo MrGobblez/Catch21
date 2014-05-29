@@ -12,7 +12,7 @@ public:
 
 public:
     //PID calculations
-    double calculate(int desiredSpeed);
+    double calculate(double desiredSpeed);
 
 private:
     //Functions
@@ -36,8 +36,8 @@ private:
 
 
     //Evaluated variables
-    int lastSpeed;
-    int outputSpeed;
+    double lastSpeed;
+    double outputSpeed;
 };
 
 #endif

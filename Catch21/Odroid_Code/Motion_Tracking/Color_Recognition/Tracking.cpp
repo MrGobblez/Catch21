@@ -13,6 +13,11 @@ Tracking::Tracking()
 //This whole function just checks the position of the tracked object, then moves the camera in that direction with increasing speed as the object nears the camera edge.
 void Tracking::position(int posX, int posY)
 {
+    //In case posX is totally wrong for one reason or another.
+    if(posX > 640 || posX < -0)
+    {
+        posX = 320;
+    }
     //What time is it now.
     clock_gettime(CLOCK_REALTIME, &currentTime);
 
@@ -20,9 +25,10 @@ void Tracking::position(int posX, int posY)
     userPos = posX - 320;
 
     //Determine current userSpeed, convert pixels/nanosec into pixels/sec
-    int temp;
+    double temp;
     temp = (userPos - lastUserPos);
-    userSpeed = temp/(diff(currentTime, lastTime).tv_nsec);
+    userSpeed = temp/diff(currentTime, lastTime).tv_nsec;
+    userSpeed *= 1000000000;
 
     speed = pid.calculate(userSpeed);
 
@@ -45,7 +51,7 @@ void Tracking::position(int posX, int posY)
 
     lastUserPos = userPos;
     clock_gettime(CLOCK_REALTIME, &lastTime);
-    emit directionAndSpeed(direction,speed);
+    emit directionAndSpeed(direction,(int) speed);
     /* OLD TRACKING SOFTWARE
     //GOING RIGHT OF PICTURE
     if (posX < 300 && posX >= 280)

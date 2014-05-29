@@ -12,20 +12,23 @@ PID::PID()
     clock_gettime(CLOCK_REALTIME, &currentTime);
 
     this->lastError = 0.0;
+    this->error = 0.0;
     this->integral = 0.0;
 
     this->lastSpeed = 0.0;
 }
 
-double PID::calculate(int desiredSpeed)
+double PID::calculate(double desiredSpeed)
 {
+    qDebug() << "desiredSpeed: " << desiredSpeed;
     clock_gettime(CLOCK_REALTIME, &currentTime);
+    int time = diff(lastTime, currentTime).tv_nsec;
     //Is it 0.1 or more seconds since last sample? If yes, calculate.
-    if(diff(lastTime, currentTime).tv_nsec >= sampleRate)
+    if(time >= sampleRate)
     {
         error = desiredSpeed - lastSpeed;
-        integral += error*0.1;
-        derivative = (error - lastError)/0.1;
+        integral += error*time;
+        derivative = (error - lastError)/time;
 
         outputSpeed = (int) ((kp*error) +(ki*integral) + (kd*derivative));
 
