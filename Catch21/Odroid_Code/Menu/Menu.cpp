@@ -4,7 +4,6 @@ Menu::Menu()
 {
     // Set default options and show Low Rep menu
     window = true;
-    speed = true;
     newInput = false;
     lowRepetition = true;
     recording = false;
@@ -159,7 +158,7 @@ void Menu::lowRep()
 
 void Menu::setSpeed()
 {
-    speed = !speed;
+    emit toggleSlowMotion();
 }
 
 void Menu::setRecording()

@@ -19,6 +19,7 @@ signals:
     void stopRecording();
     void displayMenu(cv::Mat menu);
     void requestDataFromFootController();
+    void toggleSlowMotion();
 
 public slots:
     void giveInput(char input);
@@ -31,7 +32,6 @@ private:
     void setRecording();
     void recNoWindow();
     bool window; // if true film is to be recorded with window showing rt
-    bool speed; // toogles normal or slowmotion
     bool newInput; // true if unused input from foot controller
     bool lowRepetition; // mode toggler
     bool recording; // keeps track of recording in low rep
