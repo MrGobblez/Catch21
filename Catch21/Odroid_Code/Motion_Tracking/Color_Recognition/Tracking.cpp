@@ -32,26 +32,26 @@ void Tracking::position(int posX, int posY)
 
     speed = pid.calculate(userSpeed);
 
-    if(posX < 300)
-        {
-            this->direction = -1;
-        }
-
-    else if (posX > 340)
-        {
-            this->direction = 1;
-        }
-
-    else
+    if(posX > 300 && posX < 340)
         {
             this->direction = 0;
         }
 
-    qDebug() << "userPos: " << userPos << "lastUserPos: " << lastUserPos << "temp" << temp << "movement speed" << userSpeed;
+    else if (userSpeed > 0)
+        {
+            this->direction = -1;
+        }
+
+    else
+        {
+            this->direction = 1;
+        }
+
+//    qDebug() << "userPos: " << userPos << "lastUserPos: " << lastUserPos << "temp" << temp << "movement speed" << userSpeed;
 
     lastUserPos = userPos;
     clock_gettime(CLOCK_REALTIME, &lastTime);
-    emit directionAndSpeed(direction,(int) speed);
+    emit directionAndSpeed(direction,(unsigned int) speed);
     /* OLD TRACKING SOFTWARE
     //GOING RIGHT OF PICTURE
     if (posX < 300 && posX >= 280)

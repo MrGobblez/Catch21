@@ -4,7 +4,7 @@ PID::PID()
 {
     this->sampleRate = 100000000; //10samples per second.
 
-    this->kp = 10.5;
+    this->kp = 0.2;
     this->ki = 0.0;
     this->kd = 0.0;
 
@@ -16,21 +16,24 @@ PID::PID()
     this->integral = 0.0;
 
     this->lastSpeed = 0.0;
+    this->outputSpeed = 0.0;
 }
 
 double PID::calculate(double desiredSpeed)
 {
-    qDebug() << "desiredSpeed: " << desiredSpeed;
     clock_gettime(CLOCK_REALTIME, &currentTime);
-    int time = diff(lastTime, currentTime).tv_nsec;
+    double time = diff(lastTime, currentTime).tv_nsec;
     //Is it 0.1 or more seconds since last sample? If yes, calculate.
     if(time >= sampleRate)
     {
+        //Convert from nsec to sec.
+        time /= 1000000000;
         error = desiredSpeed - lastSpeed;
         integral += error*time;
         derivative = (error - lastError)/time;
 
-        outputSpeed = (int) ((kp*error) +(ki*integral) + (kd*derivative));
+        outputSpeed = (kp*error) +(ki*integral) + (kd*derivative);
+        qDebug() << "error: " << error << " desiredSpeed: " << desiredSpeed << " lastSpeed: " << lastSpeed << " outputSpeed" << outputSpeed;
 
         lastError = error;
         lastSpeed = outputSpeed;
