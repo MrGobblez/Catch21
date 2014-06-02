@@ -36,12 +36,28 @@ void Serial_Communication::sendDataToControlUnit(int direction, int speed)
         // converting int to charbuffer and sending the data over serial.
         if(direction <= -1)
         {
-            sprintf (buf, "%d%d.", direction, speed);
+            if (speed < 100)
+            {
+                sprintf (buf, "%d0%d.", direction, speed);
+            }
+
+            else
+            {
+                sprintf (buf, "%d%d.", direction, speed);
+            }
         }
 
         else
         {
-            sprintf (buf, "0%d%d.", direction, speed);
+            if (speed < 100)
+            {
+                sprintf (buf, "0%d0%d.", direction, speed);
+            }
+
+            else
+            {
+                sprintf (buf, "0%d%d.", direction, speed);
+            }
         }
 
         // Sends data

@@ -33,7 +33,7 @@ double PID::calculate(double desiredSpeed)
         derivative = (error - lastError)/time;
 
         outputSpeed = (kp*error) +(ki*integral) + (kd*derivative);
-        qDebug() << "error: " << error << " desiredSpeed: " << desiredSpeed << " lastSpeed: " << lastSpeed << " outputSpeed" << outputSpeed;
+        //qDebug() << "error: " << error << " desiredSpeed: " << desiredSpeed << " lastSpeed: " << lastSpeed << " outputSpeed" << outputSpeed;
 
         lastError = error;
         lastSpeed = outputSpeed;
