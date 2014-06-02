@@ -17,25 +17,30 @@ signals:
     void imageToRecord(cv::Mat imgOut);
     void requestImage();
     void startPlayback();
+
 public slots:
     void inputImage(cv::Mat imgIn);
     void processedImage(cv::Mat imgIn);
+    void startDelayMode();
     void increaseDelay();
     void decreaseDelay();
-    void setDelay(int timeshift);
+    void calculateTimeshift();
     void processerReady();
     void startRecording(bool showWindow);
     void stopRecording();
     void fileHandlerReadyToWrite();
+
 private:
     cv::Vector<cv::Mat>imageBuffer; // create buffer to hold images
     int counter;
     int delay;
+    int delayedFrame;
 
     bool processReady;
     bool recording;
     bool showImage;
     bool readyToWrite;
+    bool delayMode;
 
     //start and end times
     time_t start, end;

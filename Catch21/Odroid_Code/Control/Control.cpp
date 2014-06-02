@@ -13,6 +13,7 @@ Control::Control()
     recording = false;
     showImage = false;
     readyToWrite = false;
+    delayMode = false;
 }
 
 void Control::inputImage(cv::Mat imgIn)
@@ -21,10 +22,24 @@ void Control::inputImage(cv::Mat imgIn)
     imageBuffer[counter] = imgIn.clone();
 //    qDebug() << "showImage: " << showImage << "processReady: " << processReady << "Recording: " << recording;
 
+    // Calculate delayedFrame
+    if (delayMode)
+    {
+        calculateTimeshift();
+    }
+
     //If stream is to be shown, send an image
     if (showImage)
     {
-//        emit imageToShow(imageBuffer[counter]);
+        if (delayMode)
+        {
+            emit imageToShow(imageBuffer[delayedFrame]);
+        }
+
+        else
+        {
+            emit imageToShow(imageBuffer[counter]);
+        }
     }
 
     //If the Process object is ready, pass a new frame for processing
@@ -47,7 +62,11 @@ void Control::inputImage(cv::Mat imgIn)
         counter = 0;
     }
 
-    //Ask for a new frame
+    qDebug() << "delay is: " << delay;
+    // Add stuff for checking if the Delay mode is just started, and wait before enabling the imageToShow();
+    // Crashes if given a possition in the buffer with no frame!
+
+    // Ask for a new frame
     emit requestImage();
 
 
@@ -82,6 +101,13 @@ void Control::processedImage(cv::Mat imgIn)
     printf("FPS processed stream = %.2f\n", fpsProcessed);
 }
 
+void Control::startDelayMode()
+{
+    // Adjust setting to enable delay mode
+    delayMode = true;
+    showImage = true;
+}
+
 //Increase video delay by 15 frames.
 void Control::increaseDelay()
 {
@@ -92,9 +118,7 @@ void Control::increaseDelay()
 
     else
     {
-        int temp = 0;
-        temp = (this->delay+15)-599;
-        this->delay = temp;
+        qDebug() << "Max delay reached!";
     }
 }
 
@@ -108,16 +132,17 @@ void Control::decreaseDelay()
 
     else
     {
-        int temp = 0;
-        temp = 599 - (this->delay-15);
-        this->delay = temp;
+        qDebug() << "No delay!";
     }
 }
 
-//Specify video delay.
-void Control::setDelay(int timeshift)
+void Control::calculateTimeshift()
 {
-    this->delay = timeshift;
+    delayedFrame = counter - delay;
+    if (delayedFrame < 0)
+    {
+        delayedFrame = delayedFrame + 599;
+    }
 }
 
 //Set Process object ready for new frame.

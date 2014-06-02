@@ -20,6 +20,9 @@ signals:
     void displayMenu(cv::Mat menu);
     void requestDataFromFootController();
     void toggleSlowMotion();
+    void increaseDelay();
+    void decreaseDelay();
+    void startHighRep();
 
 public slots:
     void giveInput(char input);
@@ -31,11 +34,13 @@ private:
     void setSpeed();
     void setRecording();
     void recNoWindow();
+    void highRepetitionTogle();
     bool window; // if true film is to be recorded with window showing rt
     bool newInput; // true if unused input from foot controller
     bool lowRepetition; // mode toggler
     bool recording; // keeps track of recording in low rep
     bool keyInputRunning; // block foot controller
+    bool highRepetitionRunning;
     char decision; // holds the key pressed that makes the decision in recording/playback video control
     cv::Mat menuImg;
 

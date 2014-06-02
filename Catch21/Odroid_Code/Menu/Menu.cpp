@@ -7,6 +7,7 @@ Menu::Menu()
     newInput = false;
     lowRepetition = true;
     recording = false;
+    highRepetitionRunning = false;
 }
 
 void Menu::giveInput(char input)
@@ -89,6 +90,8 @@ void Menu::inputHandler()
             {
                 // Change mode
                 changeMode();
+                highRepetitionRunning = false;
+                qDebug() << "Mode switch";
 
             }
             else if (lowRepetition)
@@ -132,7 +135,35 @@ void Menu::inputHandler()
             else
             {
                 // High Rep Menu goes here
-
+                switch (decision)
+                {
+                case 'q':
+                    return;
+                    break;
+                case 'w':
+                    break;
+                case 'a':
+                    qDebug() << "a";
+                    if (!highRepetitionRunning)
+                    {
+                        emit startHighRep();
+                    }
+                    else
+                    {
+                        qDebug() << "High rep is allready running!";
+                    }
+                    break;
+                case 's':
+                    break;
+                case 'd':
+                    emit decreaseDelay();
+                    break;
+                case '1':
+                    emit increaseDelay();
+                    break;
+                default:
+                    break;
+                }
             }
         }
         keyInputRunning = false;
@@ -170,4 +201,9 @@ void Menu::recNoWindow()
 {
     menuImg = cv::imread("./rec.jpg", CV_LOAD_IMAGE_COLOR); // read image file
     emit displayMenu(menuImg);
+}
+
+void Menu::highRepetitionTogle()
+{
+    highRepetitionRunning = !highRepetitionRunning;
 }

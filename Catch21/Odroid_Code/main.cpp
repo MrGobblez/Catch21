@@ -19,8 +19,8 @@ int main()
     Control *controller = new Control();
     Process *processer = new Process();
     Tracking *tracker = new Tracking();
-    Serial_Communication *serial = new Serial_Communication("/dev/ttyUSB0", "/dev/ttyUSB1");
-//    Serial_Communication *serial = new Serial_Communication("/dev/ttyUSB0");// #### For testing with only one arduino
+//    Serial_Communication *serial = new Serial_Communication("/dev/ttyUSB0", "/dev/ttyUSB1");
+    Serial_Communication *serial = new Serial_Communication("/dev/ttyUSB0");// #### For testing with only one arduino
     File_Handler *file_Handler = new File_Handler();
     Window_Handler *window_Handler = new Window_Handler();
     Menu *menu = new Menu();
@@ -49,6 +49,9 @@ int main()
     QObject::connect(menu, SIGNAL(stopRecording()), controller, SLOT(stopRecording()));
     QObject::connect(menu, SIGNAL(displayMenu(cv::Mat)), window_Handler, SLOT(drawImage(cv::Mat)));
     QObject::connect(menu, SIGNAL(requestDataFromFootController()), serial, SLOT(receiveDataFromFootControllerLoop()));
+    QObject::connect(menu, SIGNAL(startHighRep()), controller, SLOT(startDelayMode()));
+    QObject::connect(menu, SIGNAL(decreaseDelay()), controller, SLOT(decreaseDelay()));
+    QObject::connect(menu, SIGNAL(increaseDelay()), controller, SLOT(increaseDelay()));
 
     //Thread 1
     QObject::connect(t1, SIGNAL(started()), camera, SLOT(captureImage()));
