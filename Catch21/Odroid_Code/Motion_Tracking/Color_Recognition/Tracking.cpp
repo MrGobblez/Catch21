@@ -13,7 +13,7 @@ Tracking::Tracking()
 //This whole function just checks the position of the tracked object, then moves the camera in that direction with increasing speed as the object nears the camera edge.
 void Tracking::position(int posX, int posY)
 {
-    /*//In case posX is totally wrong for one reason or another.
+    //In case posX is totally wrong for one reason or another.
     if(posX > 640 || posX < -0)
     {
         posX = 320;
@@ -25,34 +25,37 @@ void Tracking::position(int posX, int posY)
     userPos = posX - 320;
 
     //Determine current userSpeed, convert pixels/nanosec into pixels/sec
-    double temp;
+    /*double temp;
     temp = (userPos - lastUserPos);
     userSpeed = temp/diff(currentTime, lastTime).tv_nsec;
     userSpeed *= 1000000000;
 
     speed = pid.calculate(userSpeed);
     speed = 10*speed;
-    unsigned int finalSpeed = speed;
-    if(posX > 280 && posX < 360)
-        {
-            this->direction = 0;
-        }
+    unsigned int finalSpeed = speed;*/
 
-    else if (userSpeed > 0)
+    speed = pid.calculate(userPos);
+    if(speed < 0)
         {
             this->direction = -1;
         }
 
-    else
+    else if (speed > 0)
         {
             this->direction = 1;
         }
 
-    //qDebug() << "userPos: " << userPos << "lastUserPos: " << lastUserPos << "temp" << temp << "movement speed" << userSpeed;
-    qDebug() << "direction: " << direction << "speed: " << finalSpeed;
+    else
+        {
+            this->direction = 0;
+        }
+
     lastUserPos = userPos;
     clock_gettime(CLOCK_REALTIME, &lastTime);
-    emit directionAndSpeed(direction,(unsigned int) finalSpeed);*/
+    double finalspeed = abs(speed);
+    emit directionAndSpeed(direction,(unsigned int) finalspeed);
+
+    /*
     // OLD TRACKING SOFTWARE
     if(posX > 280 && posX < 360)
         {
@@ -278,7 +281,7 @@ void Tracking::position(int posX, int posY)
         }
 
     qDebug() << "direction: " << direction << "speed: " << speed;
-    emit directionAndSpeed(direction,speed);
+    emit directionAndSpeed(direction,speed); */
 }
 
 //Calculates the time since last sample.

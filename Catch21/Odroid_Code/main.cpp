@@ -11,7 +11,7 @@
 #include "File_Handler/File_Handler.h"
 #include "GUI/Window_Handler/Window_Handler.h"
 
-Q_DECLARE_METATYPE(cv::Mat)
+Q_DECLARE_METATYPE(cv::Mat);
 int main()
 {
     // Objects
@@ -58,7 +58,7 @@ int main()
     QObject::connect(camera, SIGNAL(capturedImage(cv::Mat)), controller, SLOT(inputImage(cv::Mat)));
 
     //Thread 2
-//    QObject::connect(t2, SIGNAL(started()), controller, SLOT(processerReady()));
+    QObject::connect(t2, SIGNAL(started()), controller, SLOT(processerReady()));
     QObject::connect(processer, SIGNAL(posXposY(int,int)), tracker, SLOT(position(int,int)));
     QObject::connect(processer, SIGNAL(readyForWork()), controller, SLOT(processerReady()));
 

@@ -3,6 +3,7 @@
 
 #include <QtCore>
 #include <time.h>
+#include <stdlib.h>
 #include "../Math_Library/PID.h"
 
 class Tracking : public QObject
