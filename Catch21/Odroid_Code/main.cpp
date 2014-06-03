@@ -52,6 +52,8 @@ int main()
     QObject::connect(menu, SIGNAL(startHighRep()), controller, SLOT(startDelayMode()));
     QObject::connect(menu, SIGNAL(decreaseDelay()), controller, SLOT(decreaseDelay()));
     QObject::connect(menu, SIGNAL(increaseDelay()), controller, SLOT(increaseDelay()));
+    QObject::connect(menu, SIGNAL(modeSwitch()), controller, SLOT(endMode()));
+    QObject::connect(menu, SIGNAL(startPlayback()), file_Handler, SLOT(readFromFile()));
 
     //Thread 1
     QObject::connect(t1, SIGNAL(started()), camera, SLOT(captureImage()));
@@ -71,7 +73,6 @@ int main()
     QObject::connect(controller, SIGNAL(imageToProcess(cv::Mat)), processer, SLOT(processImage(cv::Mat)));
     QObject::connect(controller, SIGNAL(requestImage()), camera, SLOT(captureImage()));
     QObject::connect(controller, SIGNAL(imageToRecord(cv::Mat)), file_Handler, SLOT(writeImage(cv::Mat)));
-    QObject::connect(controller, SIGNAL(startPlayback()), file_Handler, SLOT(readFromFile()));
     QObject::connect(controller, SIGNAL(imageToShow(cv::Mat)), window_Handler, SLOT(drawImage(cv::Mat)));
 
     //Thread 5

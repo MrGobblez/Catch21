@@ -16,12 +16,12 @@ signals:
     void imageToProcess(cv::Mat imgOut);
     void imageToRecord(cv::Mat imgOut);
     void requestImage();
-    void startPlayback();
 
 public slots:
     void inputImage(cv::Mat imgIn);
     void processedImage(cv::Mat imgIn);
     void startDelayMode();
+    void endMode();
     void increaseDelay();
     void decreaseDelay();
     void calculateTimeshift();
@@ -32,6 +32,7 @@ public slots:
     void toggleTracking();
 
 private:
+    void stop();
     cv::Vector<cv::Mat>imageBuffer; // create buffer to hold images
     int counter;
     int delay;

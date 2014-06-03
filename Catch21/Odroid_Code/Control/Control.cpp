@@ -9,7 +9,7 @@ Control::Control()
     time(&start);
     imageBuffer = cv::Vector<cv::Mat>(600);
     counter = 0;
-    delay = 0;
+    delay = 150;        // Default 5s. delay
     recording = false;
     showImage = false;
     readyToWrite = false;
@@ -63,6 +63,12 @@ void Control::inputImage(cv::Mat imgIn)
         counter = 0;
     }
 
+    // Chek if there are frames in the buffer before trying to show them!
+    if (delayMode && counter > 150)
+    {
+        showImage = true;
+    }
+
 //    qDebug() << "delay is: " << delay;
     // Add stuff for checking if the Delay mode is just started, and wait before enabling the imageToShow();
     // Crashes if given a possition in the buffer with no frame!
@@ -106,7 +112,11 @@ void Control::startDelayMode()
 {
     // Adjust setting to enable delay mode
     delayMode = true;
-    showImage = true;
+}
+
+void Control::endMode()
+{
+    stop();
 }
 
 //Increase video delay by 15 frames.
@@ -163,10 +173,7 @@ void Control::startRecording(bool showWindow)
 void Control::stopRecording()
 {
     qDebug() << "In stopRecording()";
-    // file lock?
-    recording = false;
-    showImage = false;
-    emit startPlayback();
+    stop();
 }
 
 void Control::fileHandlerReadyToWrite()
@@ -177,4 +184,11 @@ void Control::fileHandlerReadyToWrite()
 void Control::toggleTracking()
 {
     tracking = !tracking;
+}
+
+void Control::stop()
+{
+    recording = false;
+    showImage = false;
+    delayMode = false;
 }

@@ -122,6 +122,7 @@ void Menu::inputHandler()
                     {
                         qDebug() << "Stops recording.";
                         emit stopRecording();
+                        emit startPlayback();
                         setRecording();
                     }
                     break;
@@ -180,6 +181,12 @@ void Menu::inputHandler()
 void Menu::changeMode()
 {
     lowRepetition = !lowRepetition;
+    // Stops the current mode
+    emit modeSwitch();
+    if (!lowRepetition)
+    {
+        highRep();
+    }
 }
 
 void Menu::setWindow()
@@ -190,6 +197,12 @@ void Menu::setWindow()
 void Menu::lowRep()
 {
     menuImg = cv::imread("./catch21.jpg", CV_LOAD_IMAGE_COLOR); // read image file
+    emit displayMenu(menuImg);
+}
+
+void Menu::highRep()
+{
+    menuImg = cv::imread("./Menu/delayMode.jpg", CV_LOAD_IMAGE_COLOR); // read image file
     emit displayMenu(menuImg);
 }
 

@@ -17,12 +17,14 @@ public:
 signals:
     void startRecording(bool showWindow);
     void stopRecording();
+    void startPlayback();
     void displayMenu(cv::Mat menu);
     void requestDataFromFootController();
     void toggleSlowMotion();
     void increaseDelay();
     void decreaseDelay();
     void startHighRep();
+    void modeSwitch();
 
 public slots:
     void giveInput(char input);
@@ -31,6 +33,7 @@ private:
     void changeMode();
     void setWindow(); // toggle window to on/off
     void lowRep(); // window that shows the keycommands
+    void highRep();
     void setSpeed();
     void setRecording();
     void recNoWindow();
