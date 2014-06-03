@@ -23,6 +23,7 @@ public:
 public slots:
     void sendDataToControlUnit(int direction, int speed);
     void receiveDataFromFootControllerLoop();
+    void stopMotor();
 	
 signals:
     void fromFootController(char fromFootController);

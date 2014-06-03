@@ -21,6 +21,7 @@ signals:
     void displayMenu(cv::Mat menu);
     void requestDataFromFootController();
     void toggleSlowMotion();
+    void toggleTracking();
     void increaseDelay();
     void decreaseDelay();
     void startHighRep();
@@ -28,6 +29,7 @@ signals:
 
 public slots:
     void giveInput(char input);
+    void returnToLowRep();
 
 private:
     void changeMode();

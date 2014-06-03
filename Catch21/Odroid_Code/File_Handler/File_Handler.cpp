@@ -93,6 +93,7 @@ void File_Handler::playVideo()
             qDebug() << "Video from file reached its end...";
             outFile.release();
             stop();
+            emit playbackEnded();
         }
 
         else

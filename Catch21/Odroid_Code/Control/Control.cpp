@@ -184,6 +184,10 @@ void Control::fileHandlerReadyToWrite()
 void Control::toggleTracking()
 {
     tracking = !tracking;
+    if (!tracking)
+    {
+        emit stopMotor();
+    }
 }
 
 void Control::stop()

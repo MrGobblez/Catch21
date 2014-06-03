@@ -18,6 +18,11 @@ void Serial_Communication::receiveDataFromFootControllerLoop()
     }
 }
 
+void Serial_Communication::stopMotor()
+{
+    sendDataToControlUnit(00, 000);
+}
+
 Serial_Communication::Serial_Communication(char portID1[], char portID2[])
 {
     arduinoNumber = 0;

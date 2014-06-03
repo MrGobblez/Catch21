@@ -17,6 +17,7 @@ public slots:
 signals:
     void showFrame(cv::Mat frame);
     void readyToWrite();
+    void playbackEnded();
 private:
     void createFile();
 

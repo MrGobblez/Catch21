@@ -24,6 +24,8 @@ void Menu::giveInput(char input)
         {
             // Change mode
             changeMode();
+            highRepetitionRunning = false;
+            qDebug() << "Mode switch";
 
         }
         else if (lowRepetition)
@@ -39,7 +41,6 @@ void Menu::giveInput(char input)
                 setWindow();
                 break;
             case 'a':
-
                 qDebug() << "foot rec: " << recording;
                 if (!recording)
                 {
@@ -53,24 +54,69 @@ void Menu::giveInput(char input)
                 }
                 else
                 {
+                    qDebug() << "Stops recording.";
                     emit stopRecording();
+                    emit startPlayback();
                     setRecording();
                 }
                 break;
             case 's':
                 setSpeed();
                 break;
+            case 'd':
+                // Replay goes here
+                emit startPlayback();
+                break;
+            case '1':
+                // Tracking goes here
+                toggleTracking();
+                break;
             default:
                 break;
             }
         }
+
         else
         {
             // High Rep Menu goes here
-
+            switch (decision)
+            {
+            case 'q':
+                return;
+                break;
+            case 'w':
+                break;
+            case 'a':
+                qDebug() << "a";
+                if (!highRepetitionRunning)
+                {
+                    emit startHighRep();
+                }
+                else
+                {
+                    qDebug() << "High rep is allready running!";
+                }
+                break;
+            case 's':
+                emit decreaseDelay();
+                break;
+            case 'd':
+                emit increaseDelay();
+                break;
+            case '1':
+                emit toggleTracking();
+                break;
+            default:
+                break;
+            }
         }
     }
 
+}
+
+void Menu::returnToLowRep()
+{
+    lowRep();
 }
 
 void Menu::inputHandler()
@@ -83,7 +129,7 @@ void Menu::inputHandler()
         //      remember to have defaults in the switch to avoid trouble ####
 //        qDebug() << "char: " << this->decision;
 //        qDebug() << " newInput: " << newInput;
-        if (!newInput && (decision = (char) cv::waitKey(100)))
+        if (!newInput && (decision = (char) cv::waitKey(200)))
         {
             keyInputRunning = true;
             if (decision == '2')
@@ -130,9 +176,12 @@ void Menu::inputHandler()
                     setSpeed();
                     break;
                 case 'd':
+                    // Replay goes here
+                    emit startPlayback();
                     break;
                 case '1':
                     // Tracking goes here
+                    toggleTracking();
                     break;
                 default:
                     break;
@@ -166,7 +215,7 @@ void Menu::inputHandler()
                     emit increaseDelay();
                     break;
                 case '1':
-                    // Tracking goes here
+                    emit toggleTracking();
                     break;
                 default:
                     break;
@@ -187,16 +236,21 @@ void Menu::changeMode()
     {
         highRep();
     }
+
+    else
+    {
+        lowRep();
+    }
 }
 
 void Menu::setWindow()
 {
-    window = !window;
+    this->window = !this->window;
 }
 
 void Menu::lowRep()
 {
-    menuImg = cv::imread("./catch21.jpg", CV_LOAD_IMAGE_COLOR); // read image file
+    menuImg = cv::imread("./Menu/replayMode.jpg", CV_LOAD_IMAGE_COLOR); // read image file
     emit displayMenu(menuImg);
 }
 
@@ -213,12 +267,12 @@ void Menu::setSpeed()
 
 void Menu::setRecording()
 {
-    recording = !recording;
+    this->recording = !this->recording;
 }
 
 void Menu::recNoWindow()
 {
-    menuImg = cv::imread("./rec.jpg", CV_LOAD_IMAGE_COLOR); // read image file
+    menuImg = cv::imread("./Menu/recording.jpg", CV_LOAD_IMAGE_COLOR); // read image file
     emit displayMenu(menuImg);
 }
 

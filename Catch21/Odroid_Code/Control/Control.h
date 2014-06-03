@@ -16,6 +16,7 @@ signals:
     void imageToProcess(cv::Mat imgOut);
     void imageToRecord(cv::Mat imgOut);
     void requestImage();
+    void stopMotor();
 
 public slots:
     void inputImage(cv::Mat imgIn);
