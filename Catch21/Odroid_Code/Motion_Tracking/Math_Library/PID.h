@@ -12,7 +12,7 @@ public:
 
 public:
     //PID calculations
-    double calculate(double desiredSpeed);
+    double calculate(double userPosition);
 
 private:
     //Functions
@@ -25,7 +25,7 @@ private:
 
     //Computing variables
     double derivative;
-    double lastError;
+    double lastUserPos;
     double integral;
     double error;
 

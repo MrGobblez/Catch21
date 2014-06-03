@@ -4,14 +4,14 @@ PID::PID()
 {
     this->sampleRate = 100000000; //10samples per second.
 
-    this->kp = 0.2;
+    this->kp = 1.5;
     this->ki = 0.0;
-    this->kd = 0.0;
+    this->kd = 0.3;
 
     clock_gettime(CLOCK_REALTIME, &lastTime);
     clock_gettime(CLOCK_REALTIME, &currentTime);
 
-    this->lastError = 0.0;
+    this->lastUserPos = 0.0;
     this->error = 0.0;
     this->integral = 0.0;
 
@@ -19,7 +19,7 @@ PID::PID()
     this->outputSpeed = 0.0;
 }
 
-double PID::calculate(double desiredSpeed)
+double PID::calculate(double userPosition)
 {
     clock_gettime(CLOCK_REALTIME, &currentTime);
     double time = diff(lastTime, currentTime).tv_nsec;
@@ -28,18 +28,41 @@ double PID::calculate(double desiredSpeed)
     {
         //Convert from nsec to sec.
         time /= 1000000000;
-        error = desiredSpeed - lastSpeed;
-        integral += error*time;
-        derivative = (error - lastError)/time;
+        error = userPosition;
+        integral = integral + (error - lastUserPos);
+        derivative = (error - lastUserPos)/time;
 
         outputSpeed = (kp*error) +(ki*integral) + (kd*derivative);
-        //qDebug() << "error: " << error << " desiredSpeed: " << desiredSpeed << " lastSpeed: " << lastSpeed << " outputSpeed" << outputSpeed;
+//        qDebug () << "error: " << error << " lastUserPos: " << lastUserPos;
+//        qDebug() << "userPos: " << userPosition<< " integral: " << integral << " derivative: " << derivative << " outputSpeed" << outputSpeed;
 
-        lastError = error;
+        lastUserPos = error;
         lastSpeed = outputSpeed;
         clock_gettime(CLOCK_REALTIME, &lastTime);
 
+        //FILTER FOR REMOVING NOISE/SPIKES
+        if (outputSpeed < 12 && outputSpeed > 0)
+        {
+            outputSpeed = 0;
+        }
+
+        else if (outputSpeed > -12 && outputSpeed < 0)
+        {
+            outputSpeed = 0;
+        }
+
+        if (outputSpeed > 600)
+        {
+            outputSpeed = 600;
+        }
+
+        else if (outputSpeed < -600)
+        {
+            outputSpeed = -600;
+        }
+
         return outputSpeed;
+
     }
     else
     {

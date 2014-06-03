@@ -62,7 +62,7 @@ void Control::inputImage(cv::Mat imgIn)
         counter = 0;
     }
 
-    qDebug() << "delay is: " << delay;
+//    qDebug() << "delay is: " << delay;
     // Add stuff for checking if the Delay mode is just started, and wait before enabling the imageToShow();
     // Crashes if given a possition in the buffer with no frame!
 
