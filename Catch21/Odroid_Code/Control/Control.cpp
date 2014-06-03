@@ -14,6 +14,7 @@ Control::Control()
     showImage = false;
     readyToWrite = false;
     delayMode = false;
+    tracking = false;
 }
 
 void Control::inputImage(cv::Mat imgIn)
@@ -43,7 +44,7 @@ void Control::inputImage(cv::Mat imgIn)
     }
 
     //If the Process object is ready, pass a new frame for processing
-    if (processReady) 
+    if (processReady && tracking)
     {
         processReady = false;
         emit imageToProcess(imageBuffer[counter]);
@@ -171,4 +172,9 @@ void Control::stopRecording()
 void Control::fileHandlerReadyToWrite()
 {
     readyToWrite = true;
+}
+
+void Control::toggleTracking()
+{
+    tracking = !tracking;
 }

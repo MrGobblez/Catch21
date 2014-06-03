@@ -38,9 +38,6 @@ void Menu::giveInput(char input)
             case 'w':
                 setWindow();
                 break;
-            case 's':
-                setSpeed();
-                break;
             case 'a':
 
                 qDebug() << "foot rec: " << recording;
@@ -59,6 +56,9 @@ void Menu::giveInput(char input)
                     emit stopRecording();
                     setRecording();
                 }
+                break;
+            case 's':
+                setSpeed();
                 break;
             default:
                 break;
@@ -106,9 +106,6 @@ void Menu::inputHandler()
                 case 'w':
                     setWindow();
                     break;
-                case 's':
-                    setSpeed();
-                    break;
                 case 'a':
                     qDebug() << "key rec: " << recording;
                     if (!recording)
@@ -127,6 +124,14 @@ void Menu::inputHandler()
                         emit stopRecording();
                         setRecording();
                     }
+                    break;
+                case 's':
+                    setSpeed();
+                    break;
+                case 'd':
+                    break;
+                case '1':
+                    // Tracking goes here
                     break;
                 default:
                     break;
@@ -154,12 +159,13 @@ void Menu::inputHandler()
                     }
                     break;
                 case 's':
-                    break;
-                case 'd':
                     emit decreaseDelay();
                     break;
-                case '1':
+                case 'd':
                     emit increaseDelay();
+                    break;
+                case '1':
+                    // Tracking goes here
                     break;
                 default:
                     break;

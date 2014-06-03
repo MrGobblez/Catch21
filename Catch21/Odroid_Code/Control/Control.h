@@ -29,6 +29,7 @@ public slots:
     void startRecording(bool showWindow);
     void stopRecording();
     void fileHandlerReadyToWrite();
+    void toggleTracking();
 
 private:
     cv::Vector<cv::Mat>imageBuffer; // create buffer to hold images
@@ -41,6 +42,7 @@ private:
     bool showImage;
     bool readyToWrite;
     bool delayMode;
+    bool tracking;
 
     //start and end times
     time_t start, end;
