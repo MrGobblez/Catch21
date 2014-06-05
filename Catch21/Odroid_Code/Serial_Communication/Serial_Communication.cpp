@@ -10,7 +10,7 @@ Serial_Communication::Serial_Communication(char portID[])
 void Serial_Communication::receiveDataFromFootControllerLoop()
 {
     receiveData(footController);
-    if ((lastReceivedChar == 'w' || lastReceivedChar == 'a' || lastReceivedChar == 's' || lastReceivedChar == 'd') && !sent)
+    if ((lastReceivedChar == 'w' || lastReceivedChar == 'a' || lastReceivedChar == 's' || lastReceivedChar == 'd' || lastReceivedChar == '1' || lastReceivedChar == '2') && !sent)
     {
         qDebug() << "emitting: " << lastReceivedChar;
         emit fromFootController(lastReceivedChar);

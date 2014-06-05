@@ -14,6 +14,7 @@ void Menu::giveInput(char input)
 {
     this->decision = input;
     this->newInput = true;
+    qDebug() << input;
 
     // Not a good fix, if going with two seperate menus we need mutex or there will be chaos
     // Added something like kind of mutex, for testing
@@ -69,7 +70,8 @@ void Menu::giveInput(char input)
                 break;
             case '1':
                 // Tracking goes here
-                toggleTracking();
+                qDebug() << "toggleTracking";
+                emit toggleTracking();
                 break;
             default:
                 break;
@@ -127,8 +129,8 @@ void Menu::inputHandler()
         // Check for new input or key press
         // #### BUG: this will make 'decision' turn into sonething strange if 'newInput' is false and cv::waitKey times out,
         //      remember to have defaults in the switch to avoid trouble ####
-//        qDebug() << "char: " << this->decision;
-//        qDebug() << " newInput: " << newInput;
+        qDebug() << "char: " << this->decision;
+        qDebug() << " newInput: " << newInput;
         if (!newInput && (decision = (char) cv::waitKey(200)))
         {
             keyInputRunning = true;
@@ -181,7 +183,7 @@ void Menu::inputHandler()
                     break;
                 case '1':
                     // Tracking goes here
-                    toggleTracking();
+                    emit toggleTracking();
                     break;
                 default:
                     break;

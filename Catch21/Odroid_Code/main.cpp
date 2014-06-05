@@ -19,8 +19,8 @@ int main()
     Control *controller = new Control();
     Process *processer = new Process();
     Tracking *tracker = new Tracking();
-//    Serial_Communication *serial = new Serial_Communication("/dev/ttyUSB0", "/dev/ttyUSB1");
-    Serial_Communication *serial = new Serial_Communication("/dev/ttyUSB0");// #### For testing with only one arduino
+    Serial_Communication *serial = new Serial_Communication("/dev/ttyUSB0", "/dev/ttyUSB1");
+//    Serial_Communication *serial = new Serial_Communication("/dev/ttyUSB0");// #### For testing with only one arduino
     File_Handler *file_Handler = new File_Handler();
     Window_Handler *window_Handler = new Window_Handler();
     Menu *menu = new Menu();
@@ -87,7 +87,7 @@ int main()
     // Starting Threads
     t1->start();
     t2->start();
-//    t3->start();
+    t3->start();
     t4->start();
     t5->start();
 
