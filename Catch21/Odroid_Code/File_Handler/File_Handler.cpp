@@ -107,3 +107,9 @@ void File_Handler::playVideo()
         qDebug() << "No open file!";
     }
 }
+
+void File_Handler::stopVideo()
+{
+    outFile.release();
+    stop();
+}

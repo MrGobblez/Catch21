@@ -12,7 +12,7 @@ void Process::processImage(cv::Mat img)
 
     //Create another copy, fill it in white wherever the color is between the two cv::Scalar values in the HSV image and black in any other area.
     cv::Mat imgThresh = img;
-    cv::inRange(imgHSV, cv::Scalar(1, 130, 30), cv::Scalar(15, 255, 250), imgThresh);
+    cv::inRange(imgHSV, cv::Scalar(8, 150, 20), cv::Scalar(20, 255, 250), imgThresh);
 
     //Erode the image two times
     erode(imgThresh, imgThresh, cv::Mat(), cv::Point(-1, -1), 2, 1, 1);

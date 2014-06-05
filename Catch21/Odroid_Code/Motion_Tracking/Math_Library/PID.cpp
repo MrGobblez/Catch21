@@ -4,9 +4,9 @@ PID::PID()
 {
     this->sampleRate = 100000000; //10samples per second.
 
-    this->kp = 1.5;
+    this->kp = 1.75;
     this->ki = 0.0;
-    this->kd = 0.3;
+    this->kd = 0.1;
 
     clock_gettime(CLOCK_REALTIME, &lastTime);
     clock_gettime(CLOCK_REALTIME, &currentTime);
@@ -41,12 +41,12 @@ double PID::calculate(double userPosition)
         clock_gettime(CLOCK_REALTIME, &lastTime);
 
         //FILTER FOR REMOVING NOISE/SPIKES
-        if (outputSpeed < 12 && outputSpeed > 0)
+        if (outputSpeed < 20 && outputSpeed > 0)
         {
             outputSpeed = 0;
         }
 
-        else if (outputSpeed > -12 && outputSpeed < 0)
+        else if (outputSpeed > -20 && outputSpeed < 0)
         {
             outputSpeed = 0;
         }

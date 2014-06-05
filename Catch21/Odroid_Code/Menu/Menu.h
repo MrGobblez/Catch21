@@ -18,6 +18,7 @@ signals:
     void startRecording(bool showWindow);
     void stopRecording();
     void startPlayback();
+    void stopPlayback();
     void displayMenu(cv::Mat menu);
     void requestDataFromFootController();
     void toggleSlowMotion();

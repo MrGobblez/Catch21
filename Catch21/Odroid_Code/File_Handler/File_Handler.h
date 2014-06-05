@@ -14,6 +14,7 @@ public slots:
     void writeImage(cv::Mat imageIn);
     void toggleSlowMotion();
     void playVideo();
+    void stopVideo();
 signals:
     void showFrame(cv::Mat frame);
     void readyToWrite();

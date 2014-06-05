@@ -14,7 +14,7 @@ void Menu::giveInput(char input)
 {
     this->decision = input;
     this->newInput = true;
-    qDebug() << input;
+    // qDebug() << input;
 
     // Not a good fix, if going with two seperate menus we need mutex or there will be chaos
     // Added something like kind of mutex, for testing
@@ -25,6 +25,8 @@ void Menu::giveInput(char input)
         {
             // Change mode
             changeMode();
+            emit stopPlayback();
+            emit stopRecording();
             highRepetitionRunning = false;
             qDebug() << "Mode switch";
 
@@ -42,6 +44,7 @@ void Menu::giveInput(char input)
                 setWindow();
                 break;
             case 'a':
+                emit stopPlayback();
                 qDebug() << "foot rec: " << recording;
                 if (!recording)
                 {
@@ -66,6 +69,8 @@ void Menu::giveInput(char input)
                 break;
             case 'd':
                 // Replay goes here
+                emit stopRecording();
+                emit stopPlayback();
                 emit startPlayback();
                 break;
             case '1':
@@ -90,6 +95,7 @@ void Menu::giveInput(char input)
                 break;
             case 'a':
                 qDebug() << "a";
+                emit stopPlayback();
                 if (!highRepetitionRunning)
                 {
                     emit startHighRep();
@@ -129,8 +135,8 @@ void Menu::inputHandler()
         // Check for new input or key press
         // #### BUG: this will make 'decision' turn into sonething strange if 'newInput' is false and cv::waitKey times out,
         //      remember to have defaults in the switch to avoid trouble ####
-        qDebug() << "char: " << this->decision;
-        qDebug() << " newInput: " << newInput;
+        // qDebug() << "char: " << this->decision;
+        // qDebug() << " newInput: " << newInput;
         if (!newInput && (decision = (char) cv::waitKey(200)))
         {
             keyInputRunning = true;
@@ -138,6 +144,8 @@ void Menu::inputHandler()
             {
                 // Change mode
                 changeMode();
+                emit stopPlayback();
+                emit stopRecording();
                 highRepetitionRunning = false;
                 qDebug() << "Mode switch";
 
@@ -155,6 +163,7 @@ void Menu::inputHandler()
                     setWindow();
                     break;
                 case 'a':
+                    emit stopPlayback();
                     qDebug() << "key rec: " << recording;
                     if (!recording)
                     {
@@ -179,6 +188,8 @@ void Menu::inputHandler()
                     break;
                 case 'd':
                     // Replay goes here
+                    emit stopRecording();
+                    emit stopPlayback();
                     emit startPlayback();
                     break;
                 case '1':
@@ -201,6 +212,7 @@ void Menu::inputHandler()
                     break;
                 case 'a':
                     qDebug() << "a";
+                    emit stopPlayback();
                     if (!highRepetitionRunning)
                     {
                         emit startHighRep();

@@ -54,6 +54,7 @@ int main()
     QObject::connect(menu, SIGNAL(increaseDelay()), controller, SLOT(increaseDelay()));
     QObject::connect(menu, SIGNAL(modeSwitch()), controller, SLOT(endMode()));
     QObject::connect(menu, SIGNAL(startPlayback()), file_Handler, SLOT(readFromFile()));
+    QObject::connect(menu, SIGNAL(stopPlayback()), file_Handler, SLOT(stopVideo()));
     QObject::connect(menu, SIGNAL(toggleSlowMotion()), file_Handler, SLOT(toggleSlowMotion()));
     QObject::connect(menu, SIGNAL(toggleTracking()), controller, SLOT(toggleTracking()));
 
@@ -75,7 +76,8 @@ int main()
     QObject::connect(controller, SIGNAL(imageToProcess(cv::Mat)), processer, SLOT(processImage(cv::Mat)));
     QObject::connect(controller, SIGNAL(requestImage()), camera, SLOT(captureImage()));
     QObject::connect(controller, SIGNAL(imageToRecord(cv::Mat)), file_Handler, SLOT(writeImage(cv::Mat)));
-    QObject::connect(controller, SIGNAL(imageToShow(cv::Mat)), window_Handler, SLOT(drawImage(cv::Mat)));
+//    QObject::connect(controller, SIGNAL(imageToShow(cv::Mat)), window_Handler, SLOT(drawImage(cv::Mat)));
+    QObject::connect(processer, SIGNAL(processedImage(cv::Mat)), window_Handler, SLOT(drawImage(cv::Mat)));
     QObject::connect(controller, SIGNAL(stopMotor()), serial, SLOT(stopMotor()));
 
     //Thread 5
